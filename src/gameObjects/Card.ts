@@ -6,6 +6,7 @@ type CardCallback = (card: Card) => void;
 
 const CARD_WIDTH: integer = 120;
 const CARD_HEIGHT: integer = 150;
+const PADDING: integer = 20;
 
 export default class Card extends Phaser.GameObjects.Container {
   private cardData: CardData;
@@ -13,7 +14,7 @@ export default class Card extends Phaser.GameObjects.Container {
 
   private bg: Phaser.GameObjects.Rectangle;
   private back: Phaser.GameObjects.Rectangle;
-  private tokens: Token[];
+  private tokens: Token[] = [];
   private text: Phaser.GameObjects.Text;
   private value: Phaser.GameObjects.Text;
 
@@ -43,19 +44,24 @@ export default class Card extends Phaser.GameObjects.Container {
       { fontFamily: "default", fontSize: 12, color: "0xff00ff" }).setAlign("center").setOrigin(0, 0)
     this.text.setVisible(false);
 
-    this.value = new Phaser.GameObjects.Text(scene, -CARD_WIDTH / 2, 0, cardData.damage.toString(),
+    this.value = new Phaser.GameObjects.Text(scene, -CARD_WIDTH / 2 + PADDING, 0, cardData.damage.toString(),
       { fontFamily: "default", fontSize: 80, color: "0xff0000" }).setAlign("center").setOrigin(0, 0)
     this.value.setVisible(false);
-
-    //cardData.tokens.forEach(element => {
-    // let token = new Token();
-    // this.add();
-    //});
 
     this.add(this.back);
     this.add(this.bg);
     this.add(this.text);
     this.add(this.value);
+
+    let i = 0;
+    cardData.tokens.forEach(element => {
+      console.log(element)
+      let token = new Token(this.scene, -CARD_WIDTH / 2 + (i + 1) * PADDING, 20, element).setOrigin(0, 0).setScale(0.1);
+      this.tokens.push(token)
+      this.add(token);
+      token.setVisible(false);
+      i++;
+    });
 
     scene.add.existing(this);
   }
@@ -78,6 +84,9 @@ export default class Card extends Phaser.GameObjects.Container {
         this.back.setVisible(false);
         this.text.setVisible(true);
         this.value.setVisible(true);
+        this.tokens.forEach(element => {
+          element.setVisible(true)
+        });
       }
 
     })
