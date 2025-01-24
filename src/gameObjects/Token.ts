@@ -17,24 +17,26 @@ export default class Token extends Phaser.GameObjects.Sprite {
     x: number,
     y: number,
     type: TokenType,
+    active: boolean = true,
     frame?: string | number
   ) {
     const texture: string = getTexture(type)
     super(scene, x, y, texture, frame);
     
-    this.isActive = false;
+    this.isActive = active;
+    if (this.isActive) this.activate(); else this.deactivate();
     this.setInteractive();
     scene.add.existing(this);
   }
 
   activate(): void {
     this.isActive = true;
-    this.setTint(0x00ff00); // Green tint to indicate active state
+    this.alpha = 1;
   }
 
   deactivate(): void {
     this.isActive = false;
-    this.clearTint(); // Remove tint to indicate inactive state
+    this.alpha = 0.3;
   }
 
   toggle(): void {
