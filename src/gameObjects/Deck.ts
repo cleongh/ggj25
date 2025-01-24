@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import { CardData } from "../core/CardData";
-import Card from "./Card";
 
 export default class Deck extends Phaser.GameObjects.Container {
   private cards: CardData[];
@@ -24,5 +23,9 @@ export default class Deck extends Phaser.GameObjects.Container {
     }
 
     return this.cards.pop();
+  }
+
+  public addCards(newCards: CardData[]) {
+    this.cards = this.cards.concat(newCards);
   }
 }
