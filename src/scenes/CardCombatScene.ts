@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 export default class CardCombatScene extends Phaser.Scene {
     quit: Phaser.GameObjects.Text;
+    winPlaceholder: Phaser.GameObjects.Text;
     constructor() {
         super('card-combat');
 
@@ -16,6 +17,12 @@ export default class CardCombatScene extends Phaser.Scene {
 
         this.quit.on('pointerdown', () => {
             this.scene.start('main-menu')
+        });
+
+        this.winPlaceholder = this.add.text(300, 300, "win").setInteractive();
+
+        this.winPlaceholder.on('pointerdown', () => {
+            this.scene.start('combat-reward')
         });
 
     }
