@@ -1,5 +1,9 @@
 import Phaser from 'phaser';
 
+// Iconos de los tokens
+import physical from "../assets/tokens/physical.png"
+import relationships from "../assets/tokens/relationships.png"
+import work from "../assets/tokens/work.png"
 
 /**
  * Escena para la precarga de los assets que se usarán en el juego.
@@ -23,7 +27,10 @@ export default class Boot extends Phaser.Scene {
     // Con setPath podemos establecer el prefijo que se añadirá a todos los load que aparecen a continuación
     //this.load.setPath('assets/sprites/');
     // this.load.image('platform', platform);
-    
+
+    this.load.image("physical", physical)
+    this.load.image("relationships", relationships)
+    this.load.image("work", work)
   }
 
   /**
