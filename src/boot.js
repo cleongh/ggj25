@@ -31,6 +31,7 @@ export default class Boot extends Phaser.Scene {
    * nivel del juego
    */
   create() {
-    this.scene.start('CardCombatScene');
+    // this.scene.start('card-combat');
+    this.scene.start('main-menu');
   }
 }
