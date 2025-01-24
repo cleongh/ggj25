@@ -14,7 +14,7 @@ export default class CombatRewardScene extends Phaser.Scene {
         this.next = this.add.text(300, 100, "next combat").setInteractive();
 
         this.next.on('pointerdown', () => {
-            this.scene.start('card-combat')
+            this.scene.start('map')
         });
 
     }

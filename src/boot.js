@@ -39,6 +39,7 @@ export default class Boot extends Phaser.Scene {
    */
   create() {
     // this.scene.start('card-combat');
-    this.scene.start('main-menu');
+    // this.scene.start('main-menu');
+    this.scene.start('map');
   }
 }
