@@ -1,7 +1,7 @@
 import Boot from "./boot.js";
 import Menu from "./menu.js";
 import Phaser from "phaser";
-import { CardCombatScene } from "./scenes/CardCombatScene";
+import CardCombatScene from "./scenes/CardCombatScene";
 
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
