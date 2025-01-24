@@ -1,11 +1,21 @@
 import Phaser from "phaser";
 import { CardData, TokenType } from "../core/CardData";
+import Token from './Token'
 
 type CardCallback = (card: Card) => void;
 
-export default class Card extends Phaser.GameObjects.Sprite {
+const CARD_WIDTH: integer = 120;
+const CARD_HEIGHT: integer = 150;
+
+export default class Card extends Phaser.GameObjects.Container {
   private cardData: CardData;
   private onClickCallback: CardCallback;
+
+  private bg: Phaser.GameObjects.Rectangle;
+  private back: Phaser.GameObjects.Rectangle;
+  private tokens: Token[];
+  private text: Phaser.GameObjects.Text;
+  private value: Phaser.GameObjects.Text;
 
   constructor(
     scene: Phaser.Scene,
@@ -15,14 +25,62 @@ export default class Card extends Phaser.GameObjects.Sprite {
     cardData: CardData,
     onClickCallback: CardCallback
   ) {
-    super(scene, x, y, texture);
+    super(scene, x, y);
     this.cardData = cardData;
     this.onClickCallback = onClickCallback;
 
     this.setInteractive();
     this.on("pointerdown", this.handleClick, this);
 
+    this.back = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, CARD_WIDTH, CARD_HEIGHT, 0x121212);
+    this.back.setStrokeStyle(1, 0xcacaca);
+
+    this.bg = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, CARD_WIDTH, CARD_HEIGHT, 0xffffff);
+    this.bg.setStrokeStyle(1, 0xcacaca);
+    this.bg.setVisible(false);
+
+    this.text = new Phaser.GameObjects.Text(scene, -CARD_WIDTH / 2, -CARD_HEIGHT / 2, cardData.text,
+      { fontFamily: "default", fontSize: 12, color: "0xff00ff" }).setAlign("center").setOrigin(0, 0)
+    this.text.setVisible(false);
+
+    this.value = new Phaser.GameObjects.Text(scene, -CARD_WIDTH / 2, 0, cardData.damage.toString(),
+      { fontFamily: "default", fontSize: 80, color: "0xff0000" }).setAlign("center").setOrigin(0, 0)
+    this.value.setVisible(false);
+
+    //cardData.tokens.forEach(element => {
+    // let token = new Token();
+    // this.add();
+    //});
+
+    this.add(this.back);
+    this.add(this.bg);
+    this.add(this.text);
+    this.add(this.value);
+
     scene.add.existing(this);
+  }
+
+  private reveal(t = 1000): void {
+    console.log("reveal")
+    this.scene.tweens.add({
+      targets: this,
+      props: {
+        y: { value: this.y - 100, duration: t / 3, delay: 0 },
+        x: { value: this.x + 40, duration: t / 3, delay: 0 },
+        scaleX: { value: 0, duration: t / 3, delay: t / 3, yoyo: true },
+      },
+      ease: 'Linear'
+    })
+    this.scene.time.addEvent({
+      delay: 2 * t / 3,
+      callback: () => {
+        this.bg.setVisible(true);
+        this.back.setVisible(false);
+        this.text.setVisible(true);
+        this.value.setVisible(true);
+      }
+
+    })
   }
 
   private handleClick(): void {
@@ -33,5 +91,5 @@ export default class Card extends Phaser.GameObjects.Sprite {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) {}
+  public setTokenStatus(tokenStates: TokenType[]) { }
 }
