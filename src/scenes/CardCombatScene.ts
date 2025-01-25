@@ -17,6 +17,7 @@ export default class CardCombatScene extends Phaser.Scene {
   playerZone: PlayerZone;
   enemyZone: EnemyZone;
   playerDiscard: PlayerDiscard;
+  lastCardPlayer: Card;
 
   private combatManager: CombatManager;
   private effectQueue: EffectQueue;
@@ -45,7 +46,6 @@ export default class CardCombatScene extends Phaser.Scene {
 
     // Zona de cartas del jugador
     this.playerZone = new PlayerZone(this, 280, 510, (card) => {
-      console.log(card, "clicked");
       this.handleCardPlayed(card);
     });
 
@@ -66,6 +66,13 @@ export default class CardCombatScene extends Phaser.Scene {
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
+
+    this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
+      );
+    });
+
     this.combatManager.startCombat();
 
     this.quit = this.add.text(300, 100, "X").setInteractive();
@@ -99,12 +106,22 @@ export default class CardCombatScene extends Phaser.Scene {
     onAnimationComplete: () => void
   ) {
     //generar carta
-    console.log(cardData);
     const card = new Card(this, 0, 0, "", cardData);
 
     // añadir carta a la mano enemiga
     this.enemyZone.addCard(card, () => {
       onAnimationComplete();
     });
+  }
+
+  private handlePlayerDiscardEvent(
+    cardData: CardData,
+    onAnimationComplete: () => void
+  ) {
+    let card = this.playerZone.getCardByData(cardData);
+
+    if (card) {
+      this.playerDiscard.addToDiscard(card, onAnimationComplete)
+    }
   }
 }

@@ -5,7 +5,7 @@ export type GameEvent =
   | { type: "combatEntered"; payload: { enemyData: EnemyData } }
   | { type: "healingAreaEntered"; payload: { healedAmount: number } };
 
-type TypedEventHandler<T extends GameEvent["type"]> = (
+export type TypedEventHandler<T extends GameEvent["type"]> = (
   event: Extract<GameEvent, { type: T }>
 ) => void;
 
@@ -32,12 +32,10 @@ export class GameEventPublisher {
     if (!handlers) {
       return;
     }
-    /*
-    TODO
-    this.handlers[eventType] = handlers.filter(
-      (h) => h !== handler
-    );
-    */
+
+    const filtered = handlers.filter((h) => h !== handler);
+    // SOBERANA ÑAPA. Pero no caigo en el tipado.
+    this.handlers[eventType] = filtered as any;
   }
 
   emit<T extends GameEvent["type"]>(

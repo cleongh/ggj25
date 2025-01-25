@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Card from "./Card";
 import { transformCoordinates } from "../core/utils";
+import { CardData } from "../core/CardData";
 
 const OFFSET_CARDS = 4;
 const CARD_WIDTH: integer = 120;
@@ -30,7 +31,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         0,
         CARD_WIDTH,
         CARD_HEIGHT,
-        0xffffff
+        0xcacaff
       );
       bg.setStrokeStyle(1, 0xcacaca);
       this.add(bg);
@@ -108,7 +109,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
     card: Card,
     pos: integer,
     onAnimationComplete: () => void,
-    duration = 1000
+    duration = 500
   ) {
     let targetX = pos * (PADDING + CARD_WIDTH);
     let targetY = 0;
@@ -124,6 +125,10 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
       },
       ease: "Linear",
     });
+  }
+
+  public getCardByData(data: CardData): Card | undefined {
+    return this.cards.find(c => !!c && c.getCardData() === data);
   }
 
 }

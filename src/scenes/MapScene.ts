@@ -1,10 +1,22 @@
 import Phaser from "phaser";
-import { LevelData, LevelNode } from "../core/LevelData";
+import { LevelNode } from "../core/LevelData";
 import { gameManager } from "../core/general/GameManager";
+import { GameEvent } from "../core/general/GameEvents";
 
 export default class MapScene extends Phaser.Scene {
+  private combatEnteredHandler: (
+    event: Extract<GameEvent, { type: "combatEntered" }>
+  ) => void;
+
   constructor() {
     super("map");
+    this.combatEnteredHandler = (enemyData) => {
+      gameManager.eventPublisher.unsubscribe(
+        "combatEntered",
+        this.combatEnteredHandler
+      );
+      this.scene.start("card-combat", enemyData);
+    };
   }
 
   create() {
@@ -46,9 +58,10 @@ export default class MapScene extends Phaser.Scene {
     );
     this.add.existing(playerMarker);
 
-    gameManager.eventPublisher.subscribe("combatEntered", (evt) => {
-      this.scene.start("card-combat", evt.payload.enemyData);
-    });
+    gameManager.eventPublisher.subscribe(
+      "combatEntered",
+      this.combatEnteredHandler
+    );
   }
 
   private drawNode(nodeData: LevelNode) {
