@@ -54,12 +54,11 @@ export default class CardCombatScene extends Phaser.Scene {
 
     // Sprite del jugador y su barra de salud
     this.playerHealthBar = new HealthBar(this, 100 - (128 / 2), 375, 128, 16, cm.player.getMaxHealth(), cm.player.getCurrentHealth())
-    this.playerSprite = this.add.sprite(100, 315, "mrbuble").play("idle_mrbuble")
+    this.playerSprite = this.add.sprite(100, 315, "mrbuble-animations").play("idle_mrbuble-animations")
 
     // Sprite del enemigo y su barra de salud
     this.enemyHealthBar = new HealthBar(this, 680 - (128 / 2), 375, 128, 16, cm.enemy.getMaxHealth(), cm.enemy.getCurrentHealth())
-    console.log(cm.enemy.getTextureName())
-    this.enemySprite = this.add.sprite(680, 300, cm.enemy.getTextureName()).play("idle_" + cm.enemy.getTextureName())
+    this.enemySprite = this.add.sprite(680, 300, cm.enemy.getTextureName() + "-animations").play("idle_" + cm.enemy.getTextureName() + "-animations")
 
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {

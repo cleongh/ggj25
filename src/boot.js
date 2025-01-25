@@ -19,15 +19,16 @@ import health_node from '../assets/health_node.png'
 
 /**
  * List of character names. We are assuming that character spritesheets are:
- * - 4 128x128 frames
+ * - 4 128x128 frames per row
  * - named <character name>.png
  * - stored under /assets/characters
  *
  * Then, on boot.js, we will:
- * - load their spritesheets on `preload()`
+ * - load their spritesheets on `preload()`. They will be named "<character name>-animations"
  * - create the idle animation for each caracter on `create()`. This animation will be named "idle_<character name>"
+ * - create the talk animation for each caracter on `create()`. This animation will be named "talk_<character name>"
  *
- * MrDrop is a known exception that has 144x128 dimensions and 5 frames.
+ * MrDrop is a known exception that has 144x128 dimensions and 5 frames per row.
  */
 let characterNames = ["mrbatpat", "mrbuble", "mrdrop", "mrmagoo"];
 
@@ -73,9 +74,10 @@ export default class Boot extends Phaser.Scene {
 
     // Load character spritesheets
     this.load.path = "ggj25/assets/characters/";
-    characterNames.forEach((name) => {
-      let width = name == "mrdrop" ? 144 : 128;
-      this.load.spritesheet(name, name + ".png", {
+    characterNames.forEach((characterName) => {
+      let width = characterName == "mrdrop" ? 144 : 128;
+      let spriteName = characterName + "-animations"
+      this.load.spritesheet(spriteName, spriteName + ".png", {
         frameWidth: width,
         frameHeight: 128,
       });
@@ -91,17 +93,28 @@ export default class Boot extends Phaser.Scene {
     // this.scene.start('main-menu');
 
     // Create character idle animations
-    characterNames.forEach((name) => {
-      let frames = name == "mrdrop" ? 5 : 4;
+    characterNames.forEach((characterName) => {
+      let frames = characterName == "mrdrop" ? 5 : 4;
+      let spriteName = characterName + "-animations"
+
       this.anims.create({
-        key: "idle_" + name,
-        frames: this.anims.generateFrameNumbers(name, {
+        key: "idle_" + spriteName,
+        frames: this.anims.generateFrameNumbers(spriteName, {
           start: 0,
-          end: frames - 1,
+          end: frames - 1
         }),
         frameRate: 6,
-        repeat: -1,
+        repeat: -1
       });
+      this.anims.create({
+        key: "talk_" + spriteName,
+        frames: this.anims.generateFrameNumbers(spriteName, {
+          start: frames,
+          end: 2 * frames - 1
+        }),
+        frameRate: 6,
+        repeat: -1
+      })
     });
 
     // this.scene.start("map", levelDefinitions["level01"]);
