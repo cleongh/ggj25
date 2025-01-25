@@ -24,43 +24,6 @@ export default class CardCombatScene extends Phaser.Scene {
     });
   }
 
-  handleModelEvent(event: CombatEvent) {
-    switch (event.type) {
-      case "enemyDrawsCard":
-        console.log("enemy draws card");
-        //const enemyCard = event.card;
-
-        break;
-      case "playerDrawsCard":
-        console.log("player draws card");
-        this.handleDrawEvent(() => {
-          console.log("robo terminado");
-        });
-        break;
-      case "playerDefeated":
-        console.log("player defeated");
-        break;
-      case "enemyDefeated":
-        console.log("enemy defeated");
-        break;
-      case "playerPlaysCard":
-        console.log("player plays card");
-        break;
-      case "enemyPlaysCard":
-        console.log("enemy plays card");
-        break;
-      case "playerTakesDamage":
-        console.log("player takes damage");
-        break;
-      case "enemyTakesDamage":
-        console.log("enemy takes damage");
-        break;
-      default:
-        console.log("unknown event type");
-        break;
-    }
-  }
-
   create() {
     this.add.text(100, 100, "card combat babe!");
 
@@ -74,6 +37,11 @@ export default class CardCombatScene extends Phaser.Scene {
 
     this.playerZone = new PlayerZone(this, 280, 510);
 
+    this.combatManager.eventPublisher.subscribe("playerDrawsCard", () => {
+      this.handleDrawEvent(() => {
+        console.log("robo terminado");
+      });
+    });
     this.combatManager.startCombat();
 
     this.quit = this.add.text(300, 100, "X").setInteractive();
@@ -95,7 +63,6 @@ export default class CardCombatScene extends Phaser.Scene {
       drawnCard.reveal(() => {
         this.playerZone.addCard(drawnCard, onAnimationComplete);
       });
-    };
-
+    }
   }
 }
