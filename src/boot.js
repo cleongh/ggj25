@@ -14,8 +14,10 @@ import work from "../assets/tokens/work.png"
  * Then, on boot.js, we will: 
  * - load their spritesheets on `preload()`
  * - create the idle animation for each caracter on `create()`. This animation will be named "idle_<character name>"
+ * 
+ * MrDrop is a known exception that has 144x128 dimensions and 5 frames.
  */
-let characterNames = ["mrbuble", "mrbatpat", "mrmagoo"]
+let characterNames = ["mrbatpat", "mrbuble", "mrdrop", "mrmagoo"]
 
 /**
  * Escena para la precarga de los assets que se usarán en el juego.
@@ -46,9 +48,9 @@ export default class Boot extends Phaser.Scene {
 
     // Load character spritesheets
     this.load.path = 'ggj25/assets/characters/';
-    characterNames.forEach((enemyName) => {
-      console.log("Loading png for ", enemyName)
-      this.load.spritesheet(enemyName, enemyName + ".png", { frameWidth: 128, frameHeight: 128 })
+    characterNames.forEach((name) => {
+      let width = (name == "mrdrop") ? 144 : 128
+      this.load.spritesheet(name, name + ".png", { frameWidth: width, frameHeight: 128 })
     })
 
   }
@@ -62,11 +64,11 @@ export default class Boot extends Phaser.Scene {
     // this.scene.start('main-menu');
 
     // Create character idle animations
-    characterNames.forEach((enemyName) => {
-      console.log("creating idle animation for enemy ", enemyName)
+    characterNames.forEach((name) => {
+      let frames = (name == "mrdrop") ? 5 : 4
       this.anims.create({
-        key: 'idle_' + enemyName,
-        frames: this.anims.generateFrameNumbers(enemyName, { start: 0, end: 3 }),
+        key: 'idle_' + name,
+        frames: this.anims.generateFrameNumbers(name, { start: 0, end: frames - 1 }),
         frameRate: 6,
         repeat: -1
       })
