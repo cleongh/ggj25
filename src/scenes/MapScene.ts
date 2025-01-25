@@ -23,6 +23,8 @@ export default class MapScene extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(0, 0, "bg").setOrigin(0, 0);
+
     this.add.text(this.cameras.main.width / 2, 550, "Elige tu camino", defaultTextStyle).setOrigin(0.5, 0.5);
 
     gameManager.levelData.nodes.forEach((levelNode) => {
