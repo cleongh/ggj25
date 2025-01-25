@@ -43,6 +43,14 @@ export class GameManager {
     return this.currentNodeId;
   }
 
+  public getCurrentRewardCards() {
+    return this.rewardCards;
+  }
+
+  public getCombatManager() {
+    return this.combatManager;
+  }
+
   public selectNextNode(nodeId: string) {
     if (this.phase !== GamePhase.NODE_SELECT) return;
     if (!this.currentNodeId) {
@@ -80,6 +88,7 @@ export class GameManager {
           node.interaction.payload,
           this.playerStatus
         );
+
         // enter card reward phase when defeating an enemy
         this.combatManager.eventPublisher.subscribe("enemyDefeated", () => {
           this.phase = GamePhase.CHOOSE_NEW_CARD;
@@ -118,7 +127,7 @@ export class GameManager {
           payload: { healedAmount: node.interaction.payload.amountHealed },
         });
         this.phase = GamePhase.NODE_SELECT;
-        this.eventPublisher.emit({ type: "mapStageEntered", payload: {} });
+        //this.eventPublisher.emit({ type: "mapStageEntered", payload: {} });
       }
       default: {
         break;

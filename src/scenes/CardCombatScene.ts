@@ -9,6 +9,7 @@ import EnemyZone from "../gameObjects/EnemyZone";
 import Card from "../gameObjects/Card";
 import { CardData, TokenType } from "../core/CardData";
 import PlayerDiscard from "../gameObjects/PlayerDiscard";
+import { gameManager } from "../core/general/GameManager";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -19,30 +20,21 @@ export default class CardCombatScene extends Phaser.Scene {
   playerDiscard: PlayerDiscard;
   lastCardPlayer: Card;
 
-  private combatManager: CombatManager;
   private effectQueue: EffectQueue;
 
   constructor() {
     super("card-combat");
-
-    this.combatManager = new CombatManager(enemyDefinitions.guille, {
-      deck: playerDefinitions,
-      health: 10,
-      maxHealth: 10,
-    });
     this.effectQueue = new EffectQueue();
   }
 
   create() {
     this.add.text(100, 100, "card combat babe!");
 
+    const cm = gameManager.getCombatManager();
+    if (!cm) return;
+
     // Baraja del jugador en la esquinita izq.
-    this.playerDeck = new Deck(
-      this,
-      80,
-      510,
-      this.combatManager.getPlayerDeck()
-    );
+    this.playerDeck = new Deck(this, 80, 510, cm.getPlayerDeck());
 
     // Zona de cartas del jugador
     this.playerZone = new PlayerZone(this, 280, 510, (card) => {
@@ -56,43 +48,51 @@ export default class CardCombatScene extends Phaser.Scene {
     this.enemyZone = new EnemyZone(this, 360, 120);
 
     //Eventos de prueba
-    this.combatManager.eventPublisher.subscribe("playerDrawsCard", (evt) => {
+    cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleDrawEvent(onAnimationComplete)
       );
     });
 
-    this.combatManager.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
+    cm.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
 
-    this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
+    cm.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.enemyPlayCard(evt.payload.card, onAnimationComplete)
       );
     });
 
-    this.combatManager.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
+    cm.eventPublisher.subscribe("enemyDefeated", (_) => {
+      this.scene.start("combat-reward");
+    });
+
+    cm.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.reloadDeck(evt.payload.deck, onAnimationComplete)
       );
     });
 
-    this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
+    cm.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
       );
     });
 
-    this.combatManager.eventPublisher.subscribe("tokenAssigned", (evt) => {
+    cm.eventPublisher.subscribe("tokenAssigned", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
-        this.addTokenToCard(evt.payload.card, evt.payload.tokenType, onAnimationComplete)
+        this.addTokenToCard(
+          evt.payload.card,
+          evt.payload.tokenType,
+          onAnimationComplete
+        )
       );
     });
 
-    this.combatManager.startCombat();
+    cm.startCombat();
 
     this.quit = this.add.text(300, 100, "X").setInteractive();
 
@@ -103,7 +103,7 @@ export default class CardCombatScene extends Phaser.Scene {
     this.winPlaceholder = this.add.text(300, 300, "win").setInteractive();
 
     this.winPlaceholder.on("pointerdown", () => {
-      this.scene.start("combat-reward");
+      cm.enemy.takeDamage(5000);
     });
   }
 
@@ -117,7 +117,7 @@ export default class CardCombatScene extends Phaser.Scene {
   }
 
   private handleCardPlayed(card: Card) {
-    this.combatManager.playCard(card.getCardData());
+    gameManager.getCombatManager()?.playCard(card.getCardData());
   }
 
   private handleEnemyDrawEvent(
@@ -146,14 +146,20 @@ export default class CardCombatScene extends Phaser.Scene {
 
   private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {
     this.playerDiscard.clearDiscard();
-    this.playerDeck.loadDeck(cardData, onAnimationComplete)
+    this.playerDeck.loadDeck(cardData, onAnimationComplete);
   }
 
   private enemyPlayCard(cardData: CardData, onAnimationComplete: () => void) {
-    this.enemyZone.playCard(cardData, onAnimationComplete)
+    this.enemyZone.playCard(cardData, onAnimationComplete);
   }
 
-  private addTokenToCard(cardData: CardData, token: TokenType, onAnimationComplete) {
-    this.enemyZone.getCardByData(cardData)?.fillToken(token, onAnimationComplete);
+  private addTokenToCard(
+    cardData: CardData,
+    token: TokenType,
+    onAnimationComplete
+  ) {
+    this.enemyZone
+      .getCardByData(cardData)
+      ?.fillToken(token, onAnimationComplete);
   }
 }
