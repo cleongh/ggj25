@@ -34,6 +34,20 @@ export class CombatEventPublisher {
     this.handlers[eventType]!.push(handler);
   }
 
+  unsubscribe<T extends CombatEvent["type"]>(
+    eventType: T,
+    handler: TypedEventHandler<T>
+  ): void {
+    const handlers = this.handlers[eventType];
+    if (!handlers) {
+      return;
+    }
+
+    const filtered = handlers.filter((h) => h !== handler);
+    // SOBERANA ÑAPA. Pero no caigo en el tipado.
+    this.handlers[eventType] = filtered as any;
+  }
+
   emit<T extends CombatEvent["type"]>(
     event: Extract<CombatEvent, { type: T }>
   ): void {
