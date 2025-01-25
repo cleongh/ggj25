@@ -78,7 +78,6 @@ export default class Card extends Phaser.GameObjects.Container {
 
     let i = 0;
     cardData.tokens.forEach((element) => {
-      console.log(element);
       let token = new Token(
         this.scene,
         -CARD_WIDTH / 2 + (i + 1) * PADDING,
@@ -123,7 +122,7 @@ export default class Card extends Phaser.GameObjects.Container {
     });
   }
 
-  public reveal(onAnimationComplete: () => void, t = 1000): void {
+  public reveal(onAnimationComplete: () => void, t = 500): void {
     this.scene.tweens.add({
       targets: this,
       props: {

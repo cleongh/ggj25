@@ -38,7 +38,7 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
      * @param duration Tiempo de la animación
      * @returns 
      */
-    public addCard(card: Card, onAnimationComplete, duration = 1000) {
+    public addCard(card: Card, onAnimationComplete, duration = 500) {
         card.instantShow();
         for (let i = 0; i < this.cards.length; i++) {
             if (!this.cards[i]) {

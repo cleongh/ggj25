@@ -46,7 +46,6 @@ export default class CardCombatScene extends Phaser.Scene {
 
     // Zona de cartas del jugador
     this.playerZone = new PlayerZone(this, 280, 510, (card) => {
-      console.log(card, "clicked");
       this.handleCardPlayed(card);
     });
 
@@ -107,7 +106,6 @@ export default class CardCombatScene extends Phaser.Scene {
     onAnimationComplete: () => void
   ) {
     //generar carta
-    console.log(cardData);
     const card = new Card(this, 0, 0, "", cardData);
 
     // añadir carta a la mano enemiga
@@ -120,10 +118,9 @@ export default class CardCombatScene extends Phaser.Scene {
     cardData: CardData,
     onAnimationComplete: () => void
   ) {
-    console.log("descarta", cardData)
     let card = this.playerZone.getCardByData(cardData);
+
     if (card) {
-      console.log("mov descartar", card)
       this.playerDiscard.addToDiscard(card, onAnimationComplete)
     }
   }

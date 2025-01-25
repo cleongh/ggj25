@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { CardData } from "../core/CardData";
 import Card from "./Card";
 import { transformCoordinates } from "../core/utils";
+import PlayerZone from "./PlayerZone";
 
 const OFFSET_CARDS = 4;
 const CARD_WIDTH: integer = 120;
@@ -32,7 +33,7 @@ export default class PlayerDiscard extends Phaser.GameObjects.Container {
         scene.add.existing(this);
     }
 
-    public addToDiscard(card: Card, onAnimationComplete, duration = 1000) {
+    public addToDiscard(card: Card, onAnimationComplete, duration = 500) {
         this.cards.push(card);
         const localCoords = transformCoordinates(
             card.parentContainer,
@@ -41,12 +42,15 @@ export default class PlayerDiscard extends Phaser.GameObjects.Container {
             card.y
         );
         if (card.parentContainer) {
-            card.parentContainer.remove(card);
+            if (card.parentContainer instanceof PlayerZone) {
+                card.parentContainer.removeCardByCard(card);
+            }
         }
         this.add(card);
         card.x = localCoords.x;
         card.y = localCoords.y;
 
+        console.log(this.cards.length);
         let targetX = OFFSET_CARDS * this.cards.length;
         let targetY = -OFFSET_CARDS * this.cards.length;
 

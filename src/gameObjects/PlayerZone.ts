@@ -31,7 +31,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         0,
         CARD_WIDTH,
         CARD_HEIGHT,
-        0xffffff
+        0xcacaff
       );
       bg.setStrokeStyle(1, 0xcacaca);
       this.add(bg);
@@ -109,7 +109,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
     card: Card,
     pos: integer,
     onAnimationComplete: () => void,
-    duration = 1000
+    duration = 500
   ) {
     let targetX = pos * (PADDING + CARD_WIDTH);
     let targetY = 0;
