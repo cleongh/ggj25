@@ -17,6 +17,7 @@ export default class CardCombatScene extends Phaser.Scene {
   playerZone: PlayerZone;
   enemyZone: EnemyZone;
   playerDiscard: PlayerDiscard;
+  lastCardPlayer: Card;
 
   private combatManager: CombatManager;
   private effectQueue: EffectQueue;
@@ -66,6 +67,13 @@ export default class CardCombatScene extends Phaser.Scene {
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
+
+    this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
+      );
+    });
+
     this.combatManager.startCombat();
 
     this.quit = this.add.text(300, 100, "X").setInteractive();
@@ -106,5 +114,17 @@ export default class CardCombatScene extends Phaser.Scene {
     this.enemyZone.addCard(card, () => {
       onAnimationComplete();
     });
+  }
+
+  private handlePlayerDiscardEvent(
+    cardData: CardData,
+    onAnimationComplete: () => void
+  ) {
+    console.log("descarta", cardData)
+    let card = this.playerZone.getCardByData(cardData);
+    if (card) {
+      console.log("mov descartar", card)
+      this.playerDiscard.addToDiscard(card, onAnimationComplete)
+    }
   }
 }

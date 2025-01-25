@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Card from "./Card";
 import { transformCoordinates } from "../core/utils";
+import { CardData } from "../core/CardData";
 
 const OFFSET_CARDS = 4;
 const CARD_WIDTH: integer = 120;
@@ -124,6 +125,10 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
       },
       ease: "Linear",
     });
+  }
+
+  public getCardByData(data: CardData): Card | undefined {
+    return this.cards.find(c => !!c && c.getCardData() === data);
   }
 
 }
