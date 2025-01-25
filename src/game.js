@@ -5,6 +5,8 @@ import Credits from "./scenes/Credits.ts";
 import MainMenuScene from "./scenes/MainMenuScene.ts";
 import MapScene from "./scenes/MapScene.ts";
 import Phaser from "phaser";
+import WinScene from './scenes/WinScene.ts'
+import LoseScene from './scenes/LoseScene.ts'
 import CardCombatScene from "./scenes/CardCombatScene";
 
 /**
@@ -21,7 +23,7 @@ let config = {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
   },
   pixelArt: true,
-  scene: [Boot, MainMenuScene, MapScene, Credits, Intro, CombatRewardScene, CardCombatScene],
+  scene: [Boot, MainMenuScene, MapScene, Credits, Intro, CombatRewardScene, WinScene, LoseScene, CardCombatScene],
   physics: {
     default: "arcade",
     arcade: {
