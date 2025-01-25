@@ -7,6 +7,7 @@ import PlayerZone from "../gameObjects/PlayerZone";
 import { EffectQueue } from "./EffectQueue";
 import EnemyZone from "../gameObjects/EnemyZone";
 import Card from "../gameObjects/Card";
+import { CardData } from "../core/CardData";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -81,10 +82,13 @@ export default class CardCombatScene extends Phaser.Scene {
     }
   }
 
-  private handleEnemyDrawEvent(cardData, onAnimationComplete) {
+  private handleEnemyDrawEvent(
+    cardData: CardData,
+    onAnimationComplete: () => void
+  ) {
     //generar carta
     console.log(cardData);
-    const card = new Card(this, 0, 0, "", cardData, () => {});
+    const card = new Card(this, 0, 0, "", cardData);
 
     // añadir carta a la mano enemiga
     this.enemyZone.addCard(card, () => {

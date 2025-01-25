@@ -17,8 +17,8 @@ export default class Deck extends Phaser.GameObjects.Container {
 
     let offsetX = 0;
     let offsetY = 0;
-    originalCards.forEach(element => {
-      let card = new Card(scene, offsetX, offsetY, "", element, () => { });
+    originalCards.forEach((element) => {
+      let card = new Card(scene, offsetX, offsetY, "", element);
       offsetX += OFFSET_CARDS;
       offsetY -= OFFSET_CARDS;
       this.add(card);

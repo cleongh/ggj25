@@ -10,7 +10,7 @@ const PADDING: integer = 20;
 
 export default class Card extends Phaser.GameObjects.Container {
   private cardData: CardData;
-  private onClickCallback: CardCallback;
+  private onClickCallback?: CardCallback;
 
   private bg: Phaser.GameObjects.Rectangle;
   private back: Phaser.GameObjects.Rectangle;
@@ -23,12 +23,10 @@ export default class Card extends Phaser.GameObjects.Container {
     x: number,
     y: number,
     texture: string,
-    cardData: CardData,
-    onClickCallback: CardCallback
+    cardData: CardData
   ) {
     super(scene, x, y);
     this.cardData = cardData;
-    this.onClickCallback = onClickCallback;
 
     this.setInteractive();
     this.on("pointerdown", this.handleClick, this);
@@ -101,6 +99,10 @@ export default class Card extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  public setClickHandler(onClick: CardCallback) {
+    this.onClickCallback = onClick;
+  }
+
   public instantShow() {
     this.bg.setVisible(true);
     this.back.setVisible(false);
@@ -121,7 +123,7 @@ export default class Card extends Phaser.GameObjects.Container {
     });
   }
 
-  public reveal(onAnimationComplete, t = 1000): void {
+  public reveal(onAnimationComplete: () => void, t = 1000): void {
     this.scene.tweens.add({
       targets: this,
       props: {
@@ -147,12 +149,12 @@ export default class Card extends Phaser.GameObjects.Container {
   }
 
   private handleClick(): void {
-    this.onClickCallback(this);
+    if (this.onClickCallback) this.onClickCallback(this);
   }
 
   public getCardData(): CardData {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) { }
+  public setTokenStatus(tokenStates: TokenType[]) {}
 }
