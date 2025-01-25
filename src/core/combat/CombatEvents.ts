@@ -2,6 +2,7 @@ import { CardData, TokenType } from "../CardData";
 
 export type CombatEvent =
   | { type: "playerDrawsCard"; payload: { card: CardData } }
+  | { type: "playerDiscardsCard"; payload: { card: CardData } }
   | { type: "enemyDrawsCard"; payload: { card: CardData } }
   | { type: "playerPlaysCard"; payload: { card: CardData } }
   | { type: "enemyPlaysCard"; payload: { card: CardData } }

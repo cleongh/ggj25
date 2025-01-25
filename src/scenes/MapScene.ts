@@ -45,6 +45,10 @@ export default class MapScene extends Phaser.Scene {
       1
     );
     this.add.existing(playerMarker);
+
+    gameManager.eventPublisher.subscribe("combatEntered", (evt) => {
+      this.scene.start("card-combat", evt.payload.enemyData);
+    });
   }
 
   private drawNode(nodeData: LevelNode) {
@@ -53,7 +57,7 @@ export default class MapScene extends Phaser.Scene {
       .text(nodeData.x, nodeData.y, nodeType === "enemy" ? "E" : "H")
       .setInteractive()
       .on("pointerdown", () => {
-        this.scene.start("card-combat", nodeData.interaction.payload);
+        gameManager.selectNextNode(nodeData.id);
       });
   }
 }

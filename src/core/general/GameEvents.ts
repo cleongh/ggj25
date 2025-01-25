@@ -24,6 +24,22 @@ export class GameEventPublisher {
     this.handlers[eventType]!.push(handler);
   }
 
+  unsubscribe<T extends GameEvent["type"]>(
+    eventType: T,
+    handler: TypedEventHandler<T>
+  ): void {
+    const handlers = this.handlers[eventType];
+    if (!handlers) {
+      return;
+    }
+    /*
+    TODO
+    this.handlers[eventType] = handlers.filter(
+      (h) => h !== handler
+    );
+    */
+  }
+
   emit<T extends GameEvent["type"]>(
     event: Extract<GameEvent, { type: T }>
   ): void {
