@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Card from "./Card";
+import { CardData } from "../core/CardData";
 
 const OFFSET_CARDS = 4;
 const START_Y = -200;
@@ -35,6 +36,7 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
    * @returns
    */
   public addCard(card: Card, onAnimationComplete, duration = 500) {
+    card.instantClearToken();
     card.instantShow();
     for (let i = 0; i < this.cards.length; i++) {
       if (!this.cards[i]) {
@@ -87,5 +89,29 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
     this.cards[pos] = undefined;
 
     return c;
+  }
+
+  public playCard(data: CardData, onAnimationComplete, duration = 500) {
+    let card = this.getCardByData(data);
+    this.scene.tweens.add({
+      targets: card,
+      props: {
+        y: { value: -200, duration: duration, delay: 0 },
+      },
+      onComplete: () => {
+        if (card) {
+          this.removeCardByCard(card);
+          this.remove(card);
+          card.destroy();
+        }
+        onAnimationComplete();
+      },
+      ease: "Linear",
+    });
+
+  }
+
+  public getCardByData(data: CardData): Card | undefined {
+    return this.cards.find(c => !!c && c.getCardData() === data);
   }
 }

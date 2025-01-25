@@ -7,7 +7,7 @@ import PlayerZone from "../gameObjects/PlayerZone";
 import { EffectQueue } from "./EffectQueue";
 import EnemyZone from "../gameObjects/EnemyZone";
 import Card from "../gameObjects/Card";
-import { CardData } from "../core/CardData";
+import { CardData, TokenType } from "../core/CardData";
 import PlayerDiscard from "../gameObjects/PlayerDiscard";
 
 export default class CardCombatScene extends Phaser.Scene {
@@ -69,7 +69,9 @@ export default class CardCombatScene extends Phaser.Scene {
     });
 
     this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
-
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.enemyPlayCard(evt.payload.card, onAnimationComplete)
+      );
     });
 
     this.combatManager.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
@@ -81,6 +83,12 @@ export default class CardCombatScene extends Phaser.Scene {
     this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
+      );
+    });
+
+    this.combatManager.eventPublisher.subscribe("tokenAssigned", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.addTokenToCard(evt.payload.card, evt.payload.tokenType, onAnimationComplete)
       );
     });
 
@@ -139,5 +147,13 @@ export default class CardCombatScene extends Phaser.Scene {
   private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {
     this.playerDiscard.clearDiscard();
     this.playerDeck.loadDeck(cardData, onAnimationComplete)
+  }
+
+  private enemyPlayCard(cardData: CardData, onAnimationComplete: () => void) {
+    this.enemyZone.playCard(cardData, onAnimationComplete)
+  }
+
+  private addTokenToCard(cardData: CardData, token: TokenType, onAnimationComplete) {
+    this.enemyZone.getCardByData(cardData)?.fillToken(token, onAnimationComplete);
   }
 }
