@@ -66,6 +66,9 @@ export default class CardCombatScene extends Phaser.Scene {
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
+    this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
+      console.log("View [Enemy Plays Card]");
+    });
 
     this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
@@ -121,7 +124,7 @@ export default class CardCombatScene extends Phaser.Scene {
     let card = this.playerZone.getCardByData(cardData);
 
     if (card) {
-      this.playerDiscard.addToDiscard(card, onAnimationComplete)
+      this.playerDiscard.addToDiscard(card, onAnimationComplete);
     }
   }
 }

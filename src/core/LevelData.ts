@@ -8,7 +8,8 @@ export interface LevelData {
 
 export type NodeInteraction =
   | { type: "enemy"; payload: EnemyData }
-  | { type: "healing"; payload: { amountHealed: number } };
+  | { type: "healing"; payload: { amountHealed: number } }
+  | { type: "startingNode"; payload: {} };
 // TODO: add any other node interaction that might be needed (healing?)
 
 export interface LevelNode {

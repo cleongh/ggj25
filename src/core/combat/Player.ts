@@ -71,6 +71,12 @@ export class Player extends CombatEntity {
         this.drawPile = this.discardPile.slice();
         this.discardPile = [];
         shuffleArray(this.drawPile);
+        this.combatManager.eventPublisher.emit({
+          type: "playerShuffleDiscardIntoDraw",
+          payload: {
+            deck: this.drawPile,
+          },
+        });
       }
     }
 

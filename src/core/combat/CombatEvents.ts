@@ -2,6 +2,7 @@ import { CardData, TokenType } from "../CardData";
 
 export type CombatEvent =
   | { type: "playerDrawsCard"; payload: { card: CardData } }
+  | { type: "playerShuffleDiscardIntoDraw"; payload: { deck: CardData[] } }
   | { type: "playerDiscardsCard"; payload: { card: CardData } }
   | { type: "enemyDrawsCard"; payload: { card: CardData } }
   | { type: "playerPlaysCard"; payload: { card: CardData } }
@@ -51,6 +52,7 @@ export class CombatEventPublisher {
   emit<T extends CombatEvent["type"]>(
     event: Extract<CombatEvent, { type: T }>
   ): void {
+    console.log(`Emit event ${event.type}`, event.payload);
     const handlers = this.handlers[event.type];
     if (handlers) {
       handlers.forEach((handler) => handler(event));
