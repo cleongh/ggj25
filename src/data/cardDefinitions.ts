@@ -66,11 +66,13 @@ export const playerDefinitions: CardData[] = [
 ];
 
 export const getInitialDeck = (): CardData[] => {
-  return playerDefinitions.slice(0, 10);
+  return playerDefinitions.slice(0, Math.max(playerDefinitions.length / 2, 6));
 };
 
 export const getRandomRewardChoice = (nCardsToOffer: number): CardData[] => {
-  const shuffled = playerDefinitions.slice(10);
+  const shuffled = playerDefinitions.slice(
+    Math.max(playerDefinitions.length / 2, 6)
+  );
   shuffleArray(shuffled);
   return shuffled.slice(0, nCardsToOffer);
 };
