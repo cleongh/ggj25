@@ -1,0 +1,45 @@
+ EN EL BOOT.JS
+
+ this.load.spritesheet("mrbuble-animations", "mrbuble-animations"+ ".png", { frameWidth: 128, frameHeight: 128 })
+    this.load.spritesheet("mrmagoo-animations", "mrmagoo-animations"+ ".png", { frameWidth: 128, frameHeight: 128 })
+    this.load.spritesheet("mrdrop-animations", "mrdrop-animations"+ ".png", { frameWidth: 144, frameHeight: 128 })
+    this.load.spritesheet("mrbatpat-animations", "mrbatpat-animations"+ ".png", { frameWidth: 128, frameHeight: 128 })
+
+ 
+ this.anims.create({
+      key: 'talk_' + "mrbuble-animations",
+      frames: this.anims.generateFrameNumbers("mrbuble-animations", { start: 4, end: 7 }),
+      frameRate: 6,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'talk_' + "mrmagoo-animations",
+      frames: this.anims.generateFrameNumbers("mrmagoo-animations", { start: 4, end: 7 }),
+      frameRate: 6,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'talk_' + "mrbatpat-animations",
+      frames: this.anims.generateFrameNumbers("mrbatpat-animations", { start: 4, end: 7 }),
+      frameRate: 6,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'talk_' + "mrdrop-animations",
+      frames: this.anims.generateFrameNumbers("mrdrop-animations", { start: 5, end: 9 }),
+      frameRate: 6,
+      repeat: -1
+    })
+
+    EN LA ESCENA
+
+            let mrbuble = this.add.sprite(128, 100, "mrbuble-animations").play("talk_mrbuble-animations")
+
+        let mrbatpat = this.add.sprite(256, 100, "mrbatpat-animations").play("talk_mrbatpat-animations")
+
+        let mrmagoo = this.add.sprite(128*3, 100, "mrmagoo-animations").play("talk_mrmagoo-animations")
+
+        let mrdrop = this.add.sprite(128*4, 100, "mrdrop-animations").play("talk_mrdrop-animations")
