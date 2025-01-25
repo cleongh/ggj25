@@ -3,7 +3,7 @@ import { CombatManager } from "../core/combat/CombatManager";
 import { enemyDefinitions } from "../data/enemyDefinitions";
 import { playerDefinitions } from "../data/cardDefinitions";
 import Deck from "../gameObjects/Deck";
-import { CombatEvent } from "../core/combat/CombatManager";
+import { CombatEvent } from "../core/combat/CombatEvents";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -14,23 +14,19 @@ export default class CardCombatScene extends Phaser.Scene {
   constructor() {
     super("card-combat");
 
-    this.combatManager = new CombatManager(
-      enemyDefinitions["phdStudent"],
-      {
-        deck: playerDefinitions,
-        health: 10,
-        maxHealth: 10,
-        name: "Player",
-      },
-      (event) => this.handleModelEvent(event)
-    );
+    this.combatManager = new CombatManager(enemyDefinitions["phdStudent"], {
+      deck: playerDefinitions,
+      health: 10,
+      maxHealth: 10,
+      name: "Player",
+    });
   }
 
   handleModelEvent(event: CombatEvent) {
     switch (event.type) {
       case "enemyDrawsCard":
         console.log("enemy draws card");
-        const enemyCard = event.card;
+        //const enemyCard = event.card;
 
         break;
       case "playerDrawsCard":
