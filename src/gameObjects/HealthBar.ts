@@ -39,6 +39,11 @@ export default class HealthBar extends Phaser.GameObjects.Container {
     this.currentHealth = Phaser.Math.Clamp(health, 0, this.maxHealth);
     this.draw();
   }
+  
+  public dealDamage(damage: number) {
+    this.currentHealth = Phaser.Math.Clamp(this.currentHealth - damage, 0, this.maxHealth);
+    this.draw()
+  }
 
   colorFromHealth(): number {
     let healthRatio = this.currentHealth / this.maxHealth

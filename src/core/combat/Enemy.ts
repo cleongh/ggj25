@@ -17,6 +17,18 @@ export class Enemy extends CombatEntity {
     this.visibleCards = [];
   }
 
+  public getMaxHealth(): number {
+    return this.enemyData.health;
+  }
+
+  public getCurrentHealth(): number {
+    return this.health;
+  }
+
+  public getTextureName(): string {
+    return this.enemyData.texture;
+  }
+
   public takeDamage(damage: number): void {
     this.health -= damage;
     this.combatManager.eventPublisher.emit({

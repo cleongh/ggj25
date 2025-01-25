@@ -10,6 +10,7 @@ import Card from "../gameObjects/Card";
 import { CardData, TokenType } from "../core/CardData";
 import PlayerDiscard from "../gameObjects/PlayerDiscard";
 import { gameManager } from "../core/general/GameManager";
+import HealthBar from "../gameObjects/HealthBar";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -19,6 +20,10 @@ export default class CardCombatScene extends Phaser.Scene {
   enemyZone: EnemyZone;
   playerDiscard: PlayerDiscard;
   lastCardPlayer: Card;
+  playerHealthBar: HealthBar;
+  enemyHealthBar: HealthBar;
+  playerSprite: Phaser.GameObjects.Sprite;
+  enemySprite: Phaser.GameObjects.Sprite;
 
   private effectQueue: EffectQueue;
 
@@ -46,6 +51,15 @@ export default class CardCombatScene extends Phaser.Scene {
 
     // Zona de cartas del enemigo
     this.enemyZone = new EnemyZone(this, 360, 120);
+
+    // Sprite del jugador y su barra de salud
+    this.playerHealthBar = new HealthBar(this, 100-(128/2), 375, 128, 16, cm.player.getMaxHealth(), cm.player.getCurrentHealth())
+    this.playerSprite = this.add.sprite(100, 315, "mrbuble").play("idle_mrbuble")
+    
+    // Sprite del enemigo y su barra de salud
+    this.enemyHealthBar = new HealthBar(this, 680-(128/2), 375, 128, 16, cm.enemy.getMaxHealth(), cm.enemy.getCurrentHealth())
+    console.log( cm.enemy.getTextureName())
+    this.enemySprite = this.add.sprite(680, 300, cm.enemy.getTextureName()).play("idle_"+cm.enemy.getTextureName())
 
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {
@@ -91,6 +105,17 @@ export default class CardCombatScene extends Phaser.Scene {
         )
       );
     });
+
+    cm.eventPublisher.subscribe("playerTakesDamage", (evt) => {
+      console.log("Player takes damage event received, damage: ", evt.payload.damage)
+      this.playerHealthBar.dealDamage(evt.payload.damage)
+    })
+
+    cm.eventPublisher.subscribe("enemyTakesDamage", (evt) => {
+      console.log("Enemy takes damage event received, damage: ", evt.payload.damage)
+
+      this.enemyHealthBar.dealDamage(evt.payload.damage)
+    })
 
     cm.startCombat();
 

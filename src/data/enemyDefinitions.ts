@@ -135,43 +135,43 @@ export const enemyDefinitions: { [key: string]: EnemyData } = {
   guille: {
     name: "Will Magoo",
     health: 50,
-    texture: "magoo",
+    texture: "mrmagoo",
     deck: allEnemyCards.slice(0, 5)
   },
   ishmael: {
     name: "Ishmael",
     health: 5,
-    texture: "bat",
+    texture: "mrbatpat",
     deck: allEnemyCards.slice(0, 6)
   },
   maria: {
     name: "Marisánchez",
     health: 7,
-    texture: "drop",
+    texture: "mrdrop",
     deck: allEnemyCards.slice(0, 7)
   },
   cleon: {
     name: "cleon",
     health: 7,
-    texture: "magoo",
+    texture: "mrmagoo",
     deck: allEnemyCards.slice(0, 9)
   },
   pablo: {
     name: "Typescript hipster",
     health: 7,
-    texture: "bat",
+    texture: "mrbatpat",
     deck: allEnemyCards.slice(0, 11)
   },
   tony: {
     name: "HormigaCebolla",
     health: 7,
-    texture: "drop",
+    texture: "mrdrop",
     deck: allEnemyCards.slice(0, 12)
   },
   ana: {
     name: "cleon",
     health: 7,
-    texture: "bat",
+    texture: "mrbatpat",
     deck: allEnemyCards.slice(0, 12)
   }
 };

@@ -18,6 +18,14 @@ export class Player extends CombatEntity {
     this.discardPile = [];
   }
 
+  public getMaxHealth(): number {
+    return this.playerStatus.maxHealth;
+  }
+
+  public getCurrentHealth(): number {
+    return this.playerStatus.health;
+  }
+
   public getDrawPile(): CardData[] {
     return this.drawPile;
   }
