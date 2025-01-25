@@ -6,6 +6,7 @@ import MainMenuScene from "./scenes/MainMenuScene.ts";
 import MapScene from "./scenes/MapScene.ts";
 import Phaser from "phaser";
 import CardCombatScene from "./scenes/CardCombatScene";
+import TestScene from "./scenes/AnaTestScene.ts";
 
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
@@ -21,7 +22,7 @@ let config = {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
   },
   pixelArt: true,
-  scene: [Boot, MainMenuScene, MapScene, Credits, Intro, CombatRewardScene, CardCombatScene],
+  scene: [Boot, MainMenuScene, MapScene, Credits, Intro, CombatRewardScene, CardCombatScene, TestScene],
   physics: {
     default: "arcade",
     arcade: {
