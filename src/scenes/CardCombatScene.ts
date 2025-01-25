@@ -125,7 +125,7 @@ export default class CardCombatScene extends Phaser.Scene {
     onAnimationComplete: () => void
   ) {
     //generar carta
-    const card = new Card(this, 0, 0, "", cardData);
+    const card = new Card(this, 0, 0, null, null, cardData);
 
     // añadir carta a la mano enemiga
     this.enemyZone.addCard(card, () => {

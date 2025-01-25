@@ -14,9 +14,9 @@ export default class CombatRewardScene extends Phaser.Scene {
     const rewardCards = gameManager.getCurrentRewardCards();
     if (!rewardCards) return;
 
-    console.log(rewardCards);
     rewardCards.forEach((card, i) => {
-      const c = new Card(this, 100 + 100 * i, 200, "", card);
+      const c = new Card(this, 200 + 200 * i, 300, null, null, card);
+      c.instantShow();
       c.setClickHandler(() => {
         gameManager.selectRewardCard(card);
       });
@@ -24,7 +24,7 @@ export default class CombatRewardScene extends Phaser.Scene {
 
     gameManager.eventPublisher.subscribe(
       "mapStageEntered",
-      this.handleMapStageEntered
+      this.handleMapStageEntered.bind(this)
     );
   }
 
@@ -32,7 +32,7 @@ export default class CombatRewardScene extends Phaser.Scene {
     this.scene.start("map");
     gameManager.eventPublisher.unsubscribe(
       "mapStageEntered",
-      this.handleMapStageEntered
+      this.handleMapStageEntered // todo
     );
   }
 }

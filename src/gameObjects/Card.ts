@@ -12,8 +12,8 @@ export default class Card extends Phaser.GameObjects.Container {
   private cardData: CardData;
   private onClickCallback?: CardCallback;
 
-  private bg: Phaser.GameObjects.Rectangle;
-  private back: Phaser.GameObjects.Rectangle;
+  private bg: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
+  private back: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
   private tokens: Token[] = [];
   private text: Phaser.GameObjects.Text;
   private value: Phaser.GameObjects.Text;
@@ -22,37 +22,47 @@ export default class Card extends Phaser.GameObjects.Container {
     scene: Phaser.Scene,
     x: number,
     y: number,
-    texture: string,
+    textureFront: string | null,
+    textureBack: string | null,
     cardData: CardData
   ) {
     super(scene, x, y);
     this.cardData = cardData;
 
-    this.back = new Phaser.GameObjects.Rectangle(
-      this.scene,
-      0,
-      0,
-      CARD_WIDTH,
-      CARD_HEIGHT,
-      0x121212
-    );
-    this.back.setStrokeStyle(1, 0xcacaca);
+    if (!textureBack) {
+      this.back = new Phaser.GameObjects.Rectangle(
+        this.scene,
+        0,
+        0,
+        CARD_WIDTH,
+        CARD_HEIGHT,
+        0x121212
+      );
+      this.back.setStrokeStyle(1, 0xcacaca);
+    } else {
+      this.back = new Phaser.GameObjects.Sprite(scene, 0, 0, textureBack);
+    }
 
-    this.bg = new Phaser.GameObjects.Rectangle(
-      this.scene,
-      0,
-      0,
-      CARD_WIDTH,
-      CARD_HEIGHT,
-      0xffffff
-    );
-    this.bg.setStrokeStyle(1, 0xcacaca);
+    if (!textureFront) {
+      this.bg = new Phaser.GameObjects.Rectangle(
+        this.scene,
+        0,
+        0,
+        CARD_WIDTH,
+        CARD_HEIGHT,
+        0xffffff
+      );
+      this.bg.setStrokeStyle(1, 0xcacaca);
+    } else {
+      this.bg = new Phaser.GameObjects.Sprite(scene, 0, 0, textureFront)
+    }
     this.bg.setVisible(false);
+
 
     this.text = new Phaser.GameObjects.Text(
       scene,
-      -CARD_WIDTH / 2,
-      -CARD_HEIGHT / 2,
+      -CARD_WIDTH / 2 + PADDING,
+      -CARD_HEIGHT / 2 + PADDING,
       cardData.text,
       { fontFamily: "default", fontSize: 12, color: "0xff00ff" }
     )
@@ -62,7 +72,7 @@ export default class Card extends Phaser.GameObjects.Container {
 
     this.value = new Phaser.GameObjects.Text(
       scene,
-      -CARD_WIDTH / 2 + PADDING,
+      10,
       0,
       cardData.damage.toString(),
       { fontFamily: "default", fontSize: 80, color: "0xff0000" }
@@ -80,8 +90,8 @@ export default class Card extends Phaser.GameObjects.Container {
     cardData.tokens.forEach((element) => {
       let token = new Token(
         this.scene,
-        -CARD_WIDTH / 2 + (i + 1) * PADDING,
-        20,
+        PADDING / 2 - CARD_WIDTH / 2 + (i + 1) * PADDING,
+        44,
         element
       )
         .setOrigin(0, 0);
@@ -96,7 +106,6 @@ export default class Card extends Phaser.GameObjects.Container {
     this.bg.setInteractive();
     this.bg.on("pointerdown", this.handleClick, this);
   }
-
   public setClickHandler(onClick: CardCallback) {
     this.onClickCallback = onClick;
   }
