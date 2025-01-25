@@ -84,8 +84,7 @@ export default class Card extends Phaser.GameObjects.Container {
         20,
         element
       )
-        .setOrigin(0, 0)
-        .setScale(0.1);
+        .setOrigin(0, 0);
       this.tokens.push(token);
       this.add(token);
       token.setVisible(false);
@@ -100,6 +99,27 @@ export default class Card extends Phaser.GameObjects.Container {
 
   public setClickHandler(onClick: CardCallback) {
     this.onClickCallback = onClick;
+  }
+
+  public instantFillTokens() {
+    this.tokens.forEach(element => {
+      element.instantActivate();
+    });
+  }
+
+  public instantClearToken() {
+    this.tokens.forEach(element => {
+      element.instantDeactivate();
+    });
+  }
+
+  public fillToken(token: TokenType, onAnimationComplete) {
+    const t = this.tokens.find(element => element.getTokenType() === token && !element.isActive)
+    if (t) {
+      t.activate(onAnimationComplete);
+      return;
+    }
+    onAnimationComplete();
   }
 
   public instantShow() {
