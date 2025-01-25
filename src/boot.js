@@ -4,6 +4,7 @@ import Phaser from 'phaser';
 import physical from "../assets/tokens/physical.png"
 import relationships from "../assets/tokens/relationships.png"
 import work from "../assets/tokens/work.png"
+import bg from "../assets/background.png"
 
 /**
  * List of character names. We are assuming that character spritesheets are: 
@@ -45,6 +46,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("physical", physical)
     this.load.image("relationships", relationships)
     this.load.image("work", work)
+    this.load.image("bg", bg)
+
 
     // Load character spritesheets
     this.load.path = 'ggj25/assets/characters/';

@@ -16,6 +16,8 @@ export default class TestScene extends Phaser.Scene {
 
     create() {
 
+        let bg = this.add.sprite(400, 300, "bg");
+
         let mrbuble = this.add.sprite(128, 100, "mrbuble-animations").play("talk_mrbuble-animations")
 
         let mrbatpat = this.add.sprite(256, 100, "mrbatpat").play("idle_mrbatpat")
