@@ -4,11 +4,8 @@ import Phaser from "phaser";
 import physical from "../assets/tokens/physical.png";
 import relationships from "../assets/tokens/relationships.png";
 import work from "../assets/tokens/work.png";
-<<<<<<< HEAD
 import mainMenuBackground from "../assets/menu.png";
-=======
 import tokens from "../assets/tokens/tokens.png"
->>>>>>> 53d36c2aba828c23515c4cdc19d25d991d378c55
 import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png"
 
