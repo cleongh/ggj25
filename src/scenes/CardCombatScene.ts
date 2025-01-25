@@ -8,6 +8,7 @@ import { EffectQueue } from "./EffectQueue";
 import EnemyZone from "../gameObjects/EnemyZone";
 import Card from "../gameObjects/Card";
 import { CardData } from "../core/CardData";
+import PlayerDiscard from "../gameObjects/PlayerDiscard";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -15,6 +16,7 @@ export default class CardCombatScene extends Phaser.Scene {
   playerDeck: Deck;
   playerZone: PlayerZone;
   enemyZone: EnemyZone;
+  playerDiscard: PlayerDiscard;
 
   private combatManager: CombatManager;
   private effectQueue: EffectQueue;
@@ -46,6 +48,9 @@ export default class CardCombatScene extends Phaser.Scene {
       console.log(card, "clicked");
       this.handleCardPlayed(card);
     });
+
+    // Zona de descarte del jugador
+    this.playerDiscard = new PlayerDiscard(this, 900, 510);
 
     // Zona de cartas del enemigo
     this.enemyZone = new EnemyZone(this, 360, 120);
