@@ -72,6 +72,6 @@ export default class Boot extends Phaser.Scene {
       })
     })
 
-    this.scene.start('test-scene');
+    this.scene.start('map');
   }
 }
