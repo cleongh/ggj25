@@ -12,10 +12,10 @@ import playerCard from '../assets/cards/playerCard.png'
 import backCard from '../assets/cards/backCard.png'
 import enemyCard from '../assets/cards/enemyCard.png'
 
-import checked_node from './assets/checked_node.png'
-import empty_node from './assets/empty_node.png'
-import fight_node from './assets/fight_node.png'
-import health_node from './assets/health_node.png'
+import checked_node from '../assets/checked_node.png'
+import empty_node from '../assets/empty_node.png'
+import fight_node from '../assets/fight_node.png'
+import health_node from '../assets/health_node.png'
 
 /**
  * List of character names. We are assuming that character spritesheets are:
@@ -64,10 +64,10 @@ export default class Boot extends Phaser.Scene {
     this.load.image("backCard", backCard)
     this.load.image("enemyCard", enemyCard)
 
-    this.load.image(checked_node, 'checked_node')
-    this.load.image(empty_node, 'empty_node')
-    this.load.image(fight_node, 'fight_node')
-    this.load.image(health_node, 'health_node')
+    this.load.image('checked_node', checked_node)
+    this.load.image('empty_node', empty_node)
+    this.load.image('fight_node', fight_node)
+    this.load.image('health_node', health_node)
 
     this.load.spritesheet("tokens", tokens, { frameWidth: 16, frameHeight: 16 });
 
