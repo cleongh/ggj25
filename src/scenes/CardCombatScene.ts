@@ -4,7 +4,7 @@ import { enemyDefinitions } from "../data/enemyDefinitions";
 import { playerDefinitions } from "../data/cardDefinitions";
 import Deck from "../gameObjects/Deck";
 import PlayerZone from "../gameObjects/PlayerZone";
-import { CombatEvent } from "../core/combat/CombatEvents";
+import { EffectQueue } from "./EffectQueue";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -13,6 +13,8 @@ export default class CardCombatScene extends Phaser.Scene {
   playerZone: PlayerZone;
 
   private combatManager: CombatManager;
+  private effectQueue: EffectQueue;
+
   constructor() {
     super("card-combat");
 
@@ -22,6 +24,7 @@ export default class CardCombatScene extends Phaser.Scene {
       maxHealth: 10,
       name: "Player",
     });
+    this.effectQueue = new EffectQueue();
   }
 
   create() {
@@ -38,9 +41,9 @@ export default class CardCombatScene extends Phaser.Scene {
     this.playerZone = new PlayerZone(this, 280, 510);
 
     this.combatManager.eventPublisher.subscribe("playerDrawsCard", () => {
-      this.handleDrawEvent(() => {
-        console.log("robo terminado");
-      });
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handleDrawEvent(onAnimationComplete)
+      );
     });
     this.combatManager.startCombat();
 
@@ -57,7 +60,7 @@ export default class CardCombatScene extends Phaser.Scene {
     });
   }
 
-  private handleDrawEvent(onAnimationComplete) {
+  private handleDrawEvent(onAnimationComplete: () => void) {
     const drawnCard = this.playerDeck.draw();
     if (drawnCard) {
       drawnCard.reveal(() => {

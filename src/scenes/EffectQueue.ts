@@ -1,15 +1,15 @@
-export type Effect = (onEffectCompleted: () => void) => void;
+export type Effect = (onEffectCompleted: (value?: unknown) => void) => void;
 
 export class EffectQueue {
-  private queue: (() => Promise<void>)[] = [];
+  private queue: Effect[] = [];
   private isProcessing: boolean = false;
 
-  public enqueue(effect: () => Promise<void>): void {
+  public enqueue(effect: Effect): void {
     this.queue.push(effect);
     if (!this.isProcessing) {
       this.processNext();
     }
-  }
+  } // enqueue
 
   private async processNext(): Promise<void> {
     if (this.queue.length === 0) {
@@ -20,7 +20,9 @@ export class EffectQueue {
     this.isProcessing = true;
     const effect = this.queue.shift();
     if (effect) {
-      await effect();
+      await new Promise((resolve, _) => {
+        effect(resolve);
+      });
       this.processNext();
     }
   }
