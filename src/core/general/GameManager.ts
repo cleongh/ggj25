@@ -61,7 +61,6 @@ export class GameManager {
           this.playerStatus
         );
         this.phase = GamePhase.BATTLE_STAGE;
-        this.combatManager.startCombat();
         this.eventPublisher.emit({
           type: "combatEntered",
           payload: { enemyData: node.interaction.payload },

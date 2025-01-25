@@ -66,4 +66,10 @@ export default class PlayerDiscard extends Phaser.GameObjects.Container {
             ease: "Linear",
         });
     }
+
+    public clearDiscard() {
+        this.cards.forEach(element => {
+            element.destroy();
+        });
+    }
 }

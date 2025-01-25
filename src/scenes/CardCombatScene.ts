@@ -25,7 +25,7 @@ export default class CardCombatScene extends Phaser.Scene {
   constructor() {
     super("card-combat");
 
-    this.combatManager = new CombatManager(enemyDefinitions["phdStudent"], {
+    this.combatManager = new CombatManager(enemyDefinitions.guille, {
       deck: playerDefinitions,
       health: 10,
       maxHealth: 10,
@@ -56,14 +56,25 @@ export default class CardCombatScene extends Phaser.Scene {
     this.enemyZone = new EnemyZone(this, 360, 120);
 
     //Eventos de prueba
-    this.combatManager.eventPublisher.subscribe("playerDrawsCard", () => {
+    this.combatManager.eventPublisher.subscribe("playerDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleDrawEvent(onAnimationComplete)
       );
     });
+
     this.combatManager.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
+      );
+    });
+
+    this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
+
+    });
+
+    this.combatManager.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.reloadDeck(evt.payload.deck, onAnimationComplete)
       );
     });
 
@@ -121,7 +132,12 @@ export default class CardCombatScene extends Phaser.Scene {
     let card = this.playerZone.getCardByData(cardData);
 
     if (card) {
-      this.playerDiscard.addToDiscard(card, onAnimationComplete)
+      this.playerDiscard.addToDiscard(card, onAnimationComplete);
     }
+  }
+
+  private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {
+    this.playerDiscard.clearDiscard();
+    this.playerDeck.loadDeck(cardData, onAnimationComplete)
   }
 }
