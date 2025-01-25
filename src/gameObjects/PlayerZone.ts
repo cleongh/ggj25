@@ -30,6 +30,12 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         scene.add.existing(this);
     }
 
+    /**
+     * Añade la carta a la mano del jugador
+     * @param card 
+     * @param onAnimationComplete 
+     * @returns 
+     */
     public addCard(card: Card, onAnimationComplete) {
         for (let i = 0; i < this.cards.length; i++) {
             if (!this.cards[i]) {
@@ -47,6 +53,11 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         }
     }
 
+    /**
+     * Elimina la carta de la mano del jugador
+     * @param card 
+     * @returns 
+     */
     public removeCardByCard(card: Card): Card | undefined {
         for (let i = 0; i < this.cards.length; i++) {
             if (this.cards[i] === card) {
@@ -58,6 +69,11 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         return undefined;
     }
 
+    /**
+     * Elimina la carta de la mano del jugador en base a la posición dicha
+     * @param pos 
+     * @returns 
+     */
     public removeCardByPos(pos: integer): Card | undefined {
         let c = this.cards[pos];
         if (c)
@@ -68,6 +84,13 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
     }
 
 
+    /**
+     * Mueve una carta desde su posición al primer hueco vacío de la mano.
+     * @param card 
+     * @param pos 
+     * @param onAnimationComplete 
+     * @param duration 
+     */
     public moveToSlot(card: Card, pos: integer, onAnimationComplete, duration = 1000) {
         let targetX = pos * (PADDING + CARD_WIDTH);
         let targetY = 0;
@@ -85,6 +108,14 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         });
     }
 
+    /**
+     * Función para transformar coordenadas relativas de un padre a otro. Esto habría que moverlo a utils.
+     * @param sourceContainer 
+     * @param targetContainer 
+     * @param x 
+     * @param y 
+     * @returns 
+     */
     private transformCoordinates(
         sourceContainer: Phaser.GameObjects.Container,
         targetContainer: Phaser.GameObjects.Container,

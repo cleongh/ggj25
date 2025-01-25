@@ -101,6 +101,26 @@ export default class Card extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  public instantShow() {
+    this.bg.setVisible(true);
+    this.back.setVisible(false);
+    this.text.setVisible(true);
+    this.value.setVisible(true);
+    this.tokens.forEach((element) => {
+      element.setVisible(true);
+    });
+  }
+
+  public instantHide() {
+    this.bg.setVisible(false);
+    this.back.setVisible(true);
+    this.text.setVisible(false);
+    this.value.setVisible(false);
+    this.tokens.forEach((element) => {
+      element.setVisible(false);
+    });
+  }
+
   public reveal(onAnimationComplete, t = 1000): void {
     this.scene.tweens.add({
       targets: this,
