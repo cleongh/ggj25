@@ -1,19 +1,19 @@
 import { CardData, TokenType } from "../CardData";
-import { PlayerData } from "../PlayerData";
+import { PlayerStatus } from "../general/PlayerStatus";
 import { shuffleArray } from "../utils";
 import { CombatEntity } from "./CombatEntity";
 import { CombatManager } from "./CombatManager";
 
 export class Player extends CombatEntity {
-  private playerData: PlayerData;
+  private playerStatus: PlayerStatus;
   private hand: CardData[];
   private discardPile: CardData[];
   private drawPile: CardData[];
 
-  constructor(combatManager: CombatManager, playerData: PlayerData) {
+  constructor(combatManager: CombatManager, playerStatus: PlayerStatus) {
     super(combatManager);
-    this.playerData = playerData;
-    this.drawPile = playerData.deck.slice();
+    this.playerStatus = playerStatus;
+    this.drawPile = playerStatus.deck.slice();
     this.hand = [];
     this.discardPile = [];
   }
@@ -23,12 +23,12 @@ export class Player extends CombatEntity {
   }
 
   public takeDamage(damage: number): void {
-    this.playerData.health -= damage;
+    this.playerStatus.health -= damage;
     this.combatManager.eventPublisher.emit({
       type: "playerTakesDamage",
       payload: { damage },
     });
-    if (this.playerData.health <= 0) {
+    if (this.playerStatus.health <= 0) {
       // Handle player defeat
       this.combatManager.eventPublisher.emit({
         type: "playerDefeated",
