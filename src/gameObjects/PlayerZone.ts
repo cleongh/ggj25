@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import Card from "./Card";
+import { transformCoordinates } from "../core/utils";
+import { CardData } from "../core/CardData";
 
 const OFFSET_CARDS = 4;
 const CARD_WIDTH: integer = 120;
@@ -29,7 +31,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         0,
         CARD_WIDTH,
         CARD_HEIGHT,
-        0xffffff
+        0xcacaff
       );
       bg.setStrokeStyle(1, 0xcacaca);
       this.add(bg);
@@ -48,7 +50,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
     for (let i = 0; i < this.cards.length; i++) {
       if (!this.cards[i]) {
         this.cards[i] = card;
-        const localCoords = this.transformCoordinates(
+        const localCoords = transformCoordinates(
           card.parentContainer,
           this,
           card.x,
@@ -107,7 +109,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
     card: Card,
     pos: integer,
     onAnimationComplete: () => void,
-    duration = 1000
+    duration = 500
   ) {
     let targetX = pos * (PADDING + CARD_WIDTH);
     let targetY = 0;
@@ -125,41 +127,8 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
     });
   }
 
-  /**
-   * Función para transformar coordenadas relativas de un padre a otro. Esto habría que moverlo a utils.
-   * @param sourceContainer
-   * @param targetContainer
-   * @param x
-   * @param y
-   * @returns
-   */
-  private transformCoordinates(
-    sourceContainer: Phaser.GameObjects.Container,
-    targetContainer: Phaser.GameObjects.Container,
-    x: number,
-    y: number
-  ): { x: number; y: number } {
-    // Get the world transform matrix of the source container
-    const sourceMatrix = sourceContainer.getWorldTransformMatrix();
-
-    // Apply the matrix to the coordinates to get the world coordinates
-    const worldX = sourceMatrix.tx + x * sourceMatrix.a + y * sourceMatrix.c;
-    const worldY = sourceMatrix.ty + x * sourceMatrix.b + y * sourceMatrix.d;
-
-    // Get the inverse world transform matrix of the target container
-    const targetMatrix = targetContainer.getWorldTransformMatrix();
-    const inverseTargetMatrix = targetMatrix.invert();
-
-    // Apply the inverse matrix to the world coordinates to get the local coordinates of the target container
-    const localX =
-      inverseTargetMatrix.tx +
-      worldX * inverseTargetMatrix.a +
-      worldY * inverseTargetMatrix.c;
-    const localY =
-      inverseTargetMatrix.ty +
-      worldX * inverseTargetMatrix.b +
-      worldY * inverseTargetMatrix.d;
-
-    return { x: localX, y: localY };
+  public getCardByData(data: CardData): Card | undefined {
+    return this.cards.find(c => !!c && c.getCardData() === data);
   }
+
 }

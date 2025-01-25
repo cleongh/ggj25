@@ -1,10 +1,22 @@
 import Phaser from "phaser";
-import { LevelData, LevelNode } from "../core/LevelData";
+import { LevelNode } from "../core/LevelData";
 import { gameManager } from "../core/general/GameManager";
+import { GameEvent } from "../core/general/GameEvents";
 
 export default class MapScene extends Phaser.Scene {
+  private combatEnteredHandler: (
+    event: Extract<GameEvent, { type: "combatEntered" }>
+  ) => void;
+
   constructor() {
     super("map");
+    this.combatEnteredHandler = (enemyData) => {
+      gameManager.eventPublisher.unsubscribe(
+        "combatEntered",
+        this.combatEnteredHandler
+      );
+      this.scene.start("card-combat", enemyData);
+    };
   }
 
   create() {
@@ -31,29 +43,49 @@ export default class MapScene extends Phaser.Scene {
       });
     });
 
+    this.drawNode({
+      x: 50,
+      y: 250,
+      nextNodes: [gameManager.levelData.rootNodeId],
+      id: "startingArea",
+      interaction: { type: "startingNode", payload: {} },
+    });
+
     const currentNode = gameManager.levelData.nodes.find(
       (n) => n.id === gameManager.levelData.rootNodeId
     );
     if (!currentNode) return;
-    const playerMarker = new Phaser.GameObjects.Ellipse(
-      this,
-      currentNode.x,
-      currentNode.y,
-      30,
-      30,
-      0xff0000,
-      1
+
+    const graphics = this.add.graphics();
+
+    const ellipse = new Phaser.Geom.Ellipse(
+      currentNode.x + 5,
+      currentNode.y + 5,
+      32,
+      32
     );
-    this.add.existing(playerMarker);
+    Phaser.Geom.Ellipse.Circumference(ellipse);
+
+    graphics.lineStyle(3, 0xff0000);
+    graphics.strokeEllipseShape(ellipse);
+
+    gameManager.eventPublisher.subscribe(
+      "combatEntered",
+      this.combatEnteredHandler
+    );
   }
 
   private drawNode(nodeData: LevelNode) {
     const nodeType = nodeData.interaction.type;
     this.add
-      .text(nodeData.x, nodeData.y, nodeType === "enemy" ? "E" : "H")
+      .text(
+        nodeData.x,
+        nodeData.y,
+        nodeType === "enemy" ? "E" : nodeType === "healing" ? "H" : "S"
+      )
       .setInteractive()
       .on("pointerdown", () => {
-        this.scene.start("card-combat", nodeData.interaction.payload);
+        gameManager.selectNextNode(nodeData.id);
       });
   }
 }

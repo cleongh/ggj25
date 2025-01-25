@@ -8,6 +8,7 @@ import { EffectQueue } from "./EffectQueue";
 import EnemyZone from "../gameObjects/EnemyZone";
 import Card from "../gameObjects/Card";
 import { CardData } from "../core/CardData";
+import PlayerDiscard from "../gameObjects/PlayerDiscard";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -15,6 +16,8 @@ export default class CardCombatScene extends Phaser.Scene {
   playerDeck: Deck;
   playerZone: PlayerZone;
   enemyZone: EnemyZone;
+  playerDiscard: PlayerDiscard;
+  lastCardPlayer: Card;
 
   private combatManager: CombatManager;
   private effectQueue: EffectQueue;
@@ -22,7 +25,7 @@ export default class CardCombatScene extends Phaser.Scene {
   constructor() {
     super("card-combat");
 
-    this.combatManager = new CombatManager(enemyDefinitions["phdStudent"], {
+    this.combatManager = new CombatManager(enemyDefinitions.guille, {
       deck: playerDefinitions,
       health: 10,
       maxHealth: 10,
@@ -43,24 +46,44 @@ export default class CardCombatScene extends Phaser.Scene {
 
     // Zona de cartas del jugador
     this.playerZone = new PlayerZone(this, 280, 510, (card) => {
-      console.log(card, "clicked");
       this.handleCardPlayed(card);
     });
+
+    // Zona de descarte del jugador
+    this.playerDiscard = new PlayerDiscard(this, 900, 510);
 
     // Zona de cartas del enemigo
     this.enemyZone = new EnemyZone(this, 360, 120);
 
     //Eventos de prueba
-    this.combatManager.eventPublisher.subscribe("playerDrawsCard", () => {
+    this.combatManager.eventPublisher.subscribe("playerDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleDrawEvent(onAnimationComplete)
       );
     });
+
     this.combatManager.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
+
+    this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
+
+    });
+
+    this.combatManager.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.reloadDeck(evt.payload.deck, onAnimationComplete)
+      );
+    });
+
+    this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
+      );
+    });
+
     this.combatManager.startCombat();
 
     this.quit = this.add.text(300, 100, "X").setInteractive();
@@ -94,12 +117,27 @@ export default class CardCombatScene extends Phaser.Scene {
     onAnimationComplete: () => void
   ) {
     //generar carta
-    console.log(cardData);
     const card = new Card(this, 0, 0, "", cardData);
 
     // añadir carta a la mano enemiga
     this.enemyZone.addCard(card, () => {
       onAnimationComplete();
     });
+  }
+
+  private handlePlayerDiscardEvent(
+    cardData: CardData,
+    onAnimationComplete: () => void
+  ) {
+    let card = this.playerZone.getCardByData(cardData);
+
+    if (card) {
+      this.playerDiscard.addToDiscard(card, onAnimationComplete);
+    }
+  }
+
+  private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {
+    this.playerDiscard.clearDiscard();
+    this.playerDeck.loadDeck(cardData, onAnimationComplete)
   }
 }

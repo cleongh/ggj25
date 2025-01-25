@@ -1,5 +1,6 @@
 import { playerDefinitions } from "../../data/cardDefinitions";
 import { levelDefinitions } from "../../data/levelDefinitions";
+import { CombatManager } from "../combat/CombatManager";
 import { LevelData } from "../LevelData";
 import { PlayerData } from "../PlayerData";
 import { GameEventPublisher } from "./GameEvents";
@@ -16,7 +17,8 @@ export class GameManager {
   private currentNodeId: string | undefined;
   private phase: GamePhase;
   public readonly levelData: LevelData;
-  private readonly eventPublisher: GameEventPublisher;
+  public readonly eventPublisher: GameEventPublisher;
+  private combatManager: CombatManager | undefined;
 
   constructor(levelData: LevelData, playerData: PlayerData) {
     this.playerStatus = {
@@ -45,6 +47,7 @@ export class GameManager {
     }
     this.currentNodeId = nodeId;
     this.eventPublisher.emit({ type: "nodeSelected", payload: { nodeId } });
+    this.invokeCurrentNode();
   }
 
   public invokeCurrentNode() {
@@ -53,6 +56,11 @@ export class GameManager {
 
     switch (node.interaction.type) {
       case "enemy": {
+        this.combatManager = new CombatManager(
+          node.interaction.payload,
+          this.playerStatus
+        );
+        this.phase = GamePhase.BATTLE_STAGE;
         this.eventPublisher.emit({
           type: "combatEntered",
           payload: { enemyData: node.interaction.payload },

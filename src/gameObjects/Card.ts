@@ -28,9 +28,6 @@ export default class Card extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.cardData = cardData;
 
-    this.setInteractive();
-    this.on("pointerdown", this.handleClick, this);
-
     this.back = new Phaser.GameObjects.Rectangle(
       this.scene,
       0,
@@ -81,7 +78,6 @@ export default class Card extends Phaser.GameObjects.Container {
 
     let i = 0;
     cardData.tokens.forEach((element) => {
-      console.log(element);
       let token = new Token(
         this.scene,
         -CARD_WIDTH / 2 + (i + 1) * PADDING,
@@ -97,6 +93,9 @@ export default class Card extends Phaser.GameObjects.Container {
     });
 
     scene.add.existing(this);
+
+    this.bg.setInteractive();
+    this.bg.on("pointerdown", this.handleClick, this);
   }
 
   public setClickHandler(onClick: CardCallback) {
@@ -123,7 +122,7 @@ export default class Card extends Phaser.GameObjects.Container {
     });
   }
 
-  public reveal(onAnimationComplete: () => void, t = 1000): void {
+  public reveal(onAnimationComplete: () => void, t = 500): void {
     this.scene.tweens.add({
       targets: this,
       props: {
@@ -156,5 +155,5 @@ export default class Card extends Phaser.GameObjects.Container {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) {}
+  public setTokenStatus(tokenStates: TokenType[]) { }
 }

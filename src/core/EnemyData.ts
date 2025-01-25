@@ -4,4 +4,5 @@ export interface EnemyData {
   name: string;
   health: number;
   deck: CardData[];
+  texture: string;
 }

@@ -43,21 +43,24 @@ export class Player extends CombatEntity {
 
     const card = this.hand[cardIndex];
 
-    // Remove the card from the player's hand
-    this.hand.splice(cardIndex, 1);
-
     this.combatManager.eventPublisher.emit({
       type: "playerPlaysCard",
-      payload: { card: card },
+      payload: { card },
     });
 
     this.combatManager.enemy.takeDamage(card.damage);
 
-    // Add the card to the discard pile
-    this.discardPile.push(card);
-
     // Activate the card's tokens
     this.combatManager.enemy.distributeTokens(card.tokens);
+
+    // Remove the card from the player's hand
+    this.hand.splice(cardIndex, 1);
+    // Add the card to the discard pile
+    this.discardPile.push(card);
+    this.combatManager.eventPublisher.emit({
+      type: "playerDiscardsCard",
+      payload: { card },
+    });
   }
 
   public drawCards(numCards: number): CardData[] {
@@ -68,6 +71,12 @@ export class Player extends CombatEntity {
         this.drawPile = this.discardPile.slice();
         this.discardPile = [];
         shuffleArray(this.drawPile);
+        this.combatManager.eventPublisher.emit({
+          type: "playerShuffleDiscardIntoDraw",
+          payload: {
+            deck: this.drawPile,
+          },
+        });
       }
     }
 
