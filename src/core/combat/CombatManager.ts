@@ -1,6 +1,6 @@
 import { CardData } from "../CardData";
 import { EnemyData } from "../EnemyData";
-import { PlayerData } from "../PlayerData";
+import { PlayerStatus } from "../general/PlayerStatus";
 import { CombatEventPublisher } from "./CombatEvents";
 import { Enemy } from "./Enemy";
 import { Player } from "./Player";
@@ -11,10 +11,10 @@ export class CombatManager {
   private ongoing: boolean = true;
   public readonly eventPublisher: CombatEventPublisher;
 
-  constructor(enemyData: EnemyData, playerData: PlayerData) {
+  constructor(enemyData: EnemyData, playerStatus: PlayerStatus) {
     this.eventPublisher = new CombatEventPublisher();
     this.enemy = new Enemy(this, enemyData);
-    this.player = new Player(this, playerData);
+    this.player = new Player(this, playerStatus);
     this.ongoing = true;
     this.eventPublisher.subscribe("enemyDefeated", () => this.endCombat());
     this.eventPublisher.subscribe("playerDefeated", () => this.endCombat());

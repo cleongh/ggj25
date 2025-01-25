@@ -42,5 +42,3 @@ export class CombatEventPublisher {
     }
   }
 }
-
-export const combatEventPublisher = new CombatEventPublisher();
