@@ -30,6 +30,8 @@ export class CombatManager {
     if (!this.ongoing) return;
     // play any enemy cards that are ready
     this.enemy.playReadyCards();
+
+    this.player.drawCards(1);
   }
 
   public startCombat(): void {
