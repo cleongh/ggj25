@@ -37,25 +37,30 @@ export class Player extends CombatEntity {
     }
   }
 
-  public playCard(cardIndex: number): void {
-    const card = this.hand[cardIndex];
-    if (!card) return;
+  public playCard(cardData: CardData): void {
+    const cardIndex = this.hand.findIndex((c) => c === cardData);
+    if (cardIndex < 0) return;
 
-    // Remove the card from the player's hand
-    this.hand.splice(cardIndex, 1);
+    const card = this.hand[cardIndex];
 
     this.combatManager.eventPublisher.emit({
       type: "playerPlaysCard",
-      payload: { card: card },
+      payload: { card },
     });
 
     this.combatManager.enemy.takeDamage(card.damage);
 
-    // Add the card to the discard pile
-    this.discardPile.push(card);
-
     // Activate the card's tokens
     this.combatManager.enemy.distributeTokens(card.tokens);
+
+    // Remove the card from the player's hand
+    this.hand.splice(cardIndex, 1);
+    // Add the card to the discard pile
+    this.discardPile.push(card);
+    this.combatManager.eventPublisher.emit({
+      type: "playerDiscardsCard",
+      payload: { card },
+    });
   }
 
   public drawCards(numCards: number): CardData[] {

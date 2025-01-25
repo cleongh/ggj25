@@ -8,6 +8,7 @@ import { EffectQueue } from "./EffectQueue";
 import EnemyZone from "../gameObjects/EnemyZone";
 import Card from "../gameObjects/Card";
 import { CardData } from "../core/CardData";
+import PlayerDiscard from "../gameObjects/PlayerDiscard";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -15,6 +16,8 @@ export default class CardCombatScene extends Phaser.Scene {
   playerDeck: Deck;
   playerZone: PlayerZone;
   enemyZone: EnemyZone;
+  playerDiscard: PlayerDiscard;
+  lastCardPlayer: Card;
 
   private combatManager: CombatManager;
   private effectQueue: EffectQueue;
@@ -42,7 +45,12 @@ export default class CardCombatScene extends Phaser.Scene {
     );
 
     // Zona de cartas del jugador
-    this.playerZone = new PlayerZone(this, 280, 510);
+    this.playerZone = new PlayerZone(this, 280, 510, (card) => {
+      this.handleCardPlayed(card);
+    });
+
+    // Zona de descarte del jugador
+    this.playerDiscard = new PlayerDiscard(this, 900, 510);
 
     // Zona de cartas del enemigo
     this.enemyZone = new EnemyZone(this, 360, 120);
@@ -54,10 +62,17 @@ export default class CardCombatScene extends Phaser.Scene {
       );
     });
     this.combatManager.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
-      this.handleEnemyDrawEvent(evt.payload.card, () => {
-        console.log("robo enemigo terminado");
-      });
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
+      );
     });
+
+    this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
+      );
+    });
+
     this.combatManager.startCombat();
 
     this.quit = this.add.text(300, 100, "X").setInteractive();
@@ -82,17 +97,31 @@ export default class CardCombatScene extends Phaser.Scene {
     }
   }
 
+  private handleCardPlayed(card: Card) {
+    this.combatManager.playCard(card.getCardData());
+  }
+
   private handleEnemyDrawEvent(
     cardData: CardData,
     onAnimationComplete: () => void
   ) {
     //generar carta
-    console.log(cardData);
     const card = new Card(this, 0, 0, "", cardData);
 
     // añadir carta a la mano enemiga
     this.enemyZone.addCard(card, () => {
       onAnimationComplete();
     });
+  }
+
+  private handlePlayerDiscardEvent(
+    cardData: CardData,
+    onAnimationComplete: () => void
+  ) {
+    let card = this.playerZone.getCardByData(cardData);
+
+    if (card) {
+      this.playerDiscard.addToDiscard(card, onAnimationComplete)
+    }
   }
 }

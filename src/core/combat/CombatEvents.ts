@@ -2,6 +2,7 @@ import { CardData, TokenType } from "../CardData";
 
 export type CombatEvent =
   | { type: "playerDrawsCard"; payload: { card: CardData } }
+  | { type: "playerDiscardsCard"; payload: { card: CardData } }
   | { type: "enemyDrawsCard"; payload: { card: CardData } }
   | { type: "playerPlaysCard"; payload: { card: CardData } }
   | { type: "enemyPlaysCard"; payload: { card: CardData } }
@@ -31,6 +32,20 @@ export class CombatEventPublisher {
       this.handlers[eventType] = [];
     }
     this.handlers[eventType]!.push(handler);
+  }
+
+  unsubscribe<T extends CombatEvent["type"]>(
+    eventType: T,
+    handler: TypedEventHandler<T>
+  ): void {
+    const handlers = this.handlers[eventType];
+    if (!handlers) {
+      return;
+    }
+
+    const filtered = handlers.filter((h) => h !== handler);
+    // SOBERANA ÑAPA. Pero no caigo en el tipado.
+    this.handlers[eventType] = filtered as any;
   }
 
   emit<T extends CombatEvent["type"]>(
