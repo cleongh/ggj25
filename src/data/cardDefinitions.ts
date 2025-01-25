@@ -16,6 +16,24 @@ export const playerDefinitions: CardData[] = [
     damage: 1,
     tokens: [TokenType.PHYSICAL],
   },
+  {
+    text: "You are a loser.",
+    damage: 3,
+    tokens: [TokenType.WORK, TokenType.RELATIONSHIPS],
+  },
+  {
+    text: "Nobody likes you.",
+    damage: 2,
+    tokens: [TokenType.RELATIONSHIPS, TokenType.RELATIONSHIPS],
+  },
+  {
+    text: "Do you really want another donut?",
+    damage: 1,
+    tokens: [TokenType.PHYSICAL],
+  },
+  {
+    text: "No work... no friends... no girlfriend...",
+    damage: 3,
+    tokens: [TokenType.WORK, TokenType.RELATIONSHIPS],
+  },
 ];
-
-

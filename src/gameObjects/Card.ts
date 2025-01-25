@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { CardData, TokenType } from "../core/CardData";
-import Token from './Token'
+import Token from "./Token";
 
 type CardCallback = (card: Card) => void;
 
@@ -33,19 +33,47 @@ export default class Card extends Phaser.GameObjects.Container {
     this.setInteractive();
     this.on("pointerdown", this.handleClick, this);
 
-    this.back = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, CARD_WIDTH, CARD_HEIGHT, 0x121212);
+    this.back = new Phaser.GameObjects.Rectangle(
+      this.scene,
+      0,
+      0,
+      CARD_WIDTH,
+      CARD_HEIGHT,
+      0x121212
+    );
     this.back.setStrokeStyle(1, 0xcacaca);
 
-    this.bg = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, CARD_WIDTH, CARD_HEIGHT, 0xffffff);
+    this.bg = new Phaser.GameObjects.Rectangle(
+      this.scene,
+      0,
+      0,
+      CARD_WIDTH,
+      CARD_HEIGHT,
+      0xffffff
+    );
     this.bg.setStrokeStyle(1, 0xcacaca);
     this.bg.setVisible(false);
 
-    this.text = new Phaser.GameObjects.Text(scene, -CARD_WIDTH / 2, -CARD_HEIGHT / 2, cardData.text,
-      { fontFamily: "default", fontSize: 12, color: "0xff00ff" }).setAlign("center").setOrigin(0, 0)
+    this.text = new Phaser.GameObjects.Text(
+      scene,
+      -CARD_WIDTH / 2,
+      -CARD_HEIGHT / 2,
+      cardData.text,
+      { fontFamily: "default", fontSize: 12, color: "0xff00ff" }
+    )
+      .setAlign("center")
+      .setOrigin(0, 0);
     this.text.setVisible(false);
 
-    this.value = new Phaser.GameObjects.Text(scene, -CARD_WIDTH / 2 + PADDING, 0, cardData.damage.toString(),
-      { fontFamily: "default", fontSize: 80, color: "0xff0000" }).setAlign("center").setOrigin(0, 0)
+    this.value = new Phaser.GameObjects.Text(
+      scene,
+      -CARD_WIDTH / 2 + PADDING,
+      0,
+      cardData.damage.toString(),
+      { fontFamily: "default", fontSize: 80, color: "0xff0000" }
+    )
+      .setAlign("center")
+      .setOrigin(0, 0);
     this.value.setVisible(false);
 
     this.add(this.back);
@@ -54,10 +82,17 @@ export default class Card extends Phaser.GameObjects.Container {
     this.add(this.value);
 
     let i = 0;
-    cardData.tokens.forEach(element => {
-      console.log(element)
-      let token = new Token(this.scene, -CARD_WIDTH / 2 + (i + 1) * PADDING, 20, element).setOrigin(0, 0).setScale(0.1);
-      this.tokens.push(token)
+    cardData.tokens.forEach((element) => {
+      console.log(element);
+      let token = new Token(
+        this.scene,
+        -CARD_WIDTH / 2 + (i + 1) * PADDING,
+        20,
+        element
+      )
+        .setOrigin(0, 0)
+        .setScale(0.1);
+      this.tokens.push(token);
       this.add(token);
       token.setVisible(false);
       i++;
@@ -66,8 +101,8 @@ export default class Card extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  private reveal(t = 1000): void {
-    console.log("reveal")
+  public reveal(t = 1000): void {
+    console.log("reveal");
     this.scene.tweens.add({
       targets: this,
       props: {
@@ -75,21 +110,20 @@ export default class Card extends Phaser.GameObjects.Container {
         x: { value: this.x + 40, duration: t / 3, delay: 0 },
         scaleX: { value: 0, duration: t / 3, delay: t / 3, yoyo: true },
       },
-      ease: 'Linear'
-    })
+      ease: "Linear",
+    });
     this.scene.time.addEvent({
-      delay: 2 * t / 3,
+      delay: (2 * t) / 3,
       callback: () => {
         this.bg.setVisible(true);
         this.back.setVisible(false);
         this.text.setVisible(true);
         this.value.setVisible(true);
-        this.tokens.forEach(element => {
-          element.setVisible(true)
+        this.tokens.forEach((element) => {
+          element.setVisible(true);
         });
-      }
-
-    })
+      },
+    });
   }
 
   private handleClick(): void {
@@ -100,5 +134,5 @@ export default class Card extends Phaser.GameObjects.Container {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) { }
+  public setTokenStatus(tokenStates: TokenType[]) {}
 }
