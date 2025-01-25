@@ -8,6 +8,8 @@ import mainMenuBackground from "../assets/menu.png";
 import tokens from "../assets/tokens/tokens.png"
 import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png"
+import playerCard from '../assets/cards/playerCard.png'
+import backCard from '../assets/cards/backCard.png'
 
 /**
  * List of character names. We are assuming that character spritesheets are:
@@ -51,6 +53,10 @@ export default class Boot extends Phaser.Scene {
     this.load.image("bg", bg);
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
+
+    this.load.image("playerCard", playerCard)
+    this.load.image("backCard", backCard)
+
     this.load.spritesheet("tokens", tokens, { frameWidth: 16, frameHeight: 16 });
 
     // Load character spritesheets
