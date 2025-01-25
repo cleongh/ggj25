@@ -101,8 +101,7 @@ export default class Card extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  public reveal(t = 1000): void {
-    console.log("reveal");
+  public reveal(onAnimationComplete, t = 1000): void {
     this.scene.tweens.add({
       targets: this,
       props: {
@@ -122,6 +121,7 @@ export default class Card extends Phaser.GameObjects.Container {
         this.tokens.forEach((element) => {
           element.setVisible(true);
         });
+        onAnimationComplete();
       },
     });
   }
@@ -134,5 +134,5 @@ export default class Card extends Phaser.GameObjects.Container {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) {}
+  public setTokenStatus(tokenStates: TokenType[]) { }
 }

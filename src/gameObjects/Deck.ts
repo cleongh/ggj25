@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { CardData } from "../core/CardData";
 import Card from "./Card";
 
+const OFFSET_CARDS = 4;
+
 export default class Deck extends Phaser.GameObjects.Container {
   private cards: Card[] = [];
 
@@ -17,8 +19,8 @@ export default class Deck extends Phaser.GameObjects.Container {
     let offsetY = 0;
     originalCards.forEach(element => {
       let card = new Card(scene, offsetX, offsetY, "", element, () => { });
-      offsetX += 4;
-      offsetY -= 4;
+      offsetX += OFFSET_CARDS;
+      offsetY -= OFFSET_CARDS;
       this.add(card);
       this.cards.push(card);
     });

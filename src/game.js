@@ -13,15 +13,15 @@ import CardCombatScene from "./scenes/CardCombatScene";
  */
 let config = {
   type: Phaser.AUTO,
-  width: 1000,
-  height: 500,
+  width: 800,
+  height: 600,
   parent: "juego",
   scale: {
-    //mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
   },
   pixelArt: true,
-    scene: [Boot, MainMenuScene, MapScene, Credits, Intro, CombatRewardScene, CardCombatScene],
+  scene: [Boot, MainMenuScene, MapScene, Credits, Intro, CombatRewardScene, CardCombatScene],
   physics: {
     default: "arcade",
     arcade: {

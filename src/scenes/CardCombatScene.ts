@@ -3,12 +3,14 @@ import { CombatManager } from "../core/combat/CombatManager";
 import { enemyDefinitions } from "../data/enemyDefinitions";
 import { playerDefinitions } from "../data/cardDefinitions";
 import Deck from "../gameObjects/Deck";
-import { CombatEvent } from "../core/combat/CombatEvents";
+import { CombatEvent } from "../core/combat/CombatManager";
+import PlayerZone from "../gameObjects/PlayerZone";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
   winPlaceholder: Phaser.GameObjects.Text;
   playerDeck: Deck;
+  playerZone: PlayerZone;
 
   private combatManager: CombatManager;
   constructor() {
@@ -31,8 +33,9 @@ export default class CardCombatScene extends Phaser.Scene {
         break;
       case "playerDrawsCard":
         console.log("player draws card");
-        const drawnCard = this.playerDeck.draw();
-        if (drawnCard) drawnCard.reveal();
+        this.handleDrawEvent(() => {
+          console.log("robo terminado");
+        });
         break;
       case "playerDefeated":
         console.log("player defeated");
@@ -61,12 +64,15 @@ export default class CardCombatScene extends Phaser.Scene {
   create() {
     this.add.text(100, 100, "card combat babe!");
 
+    // Baraja del jugador en la esquinita izq.
     this.playerDeck = new Deck(
       this,
-      300,
-      400,
+      80,
+      510,
       this.combatManager.getPlayerDeck()
     );
+
+    this.playerZone = new PlayerZone(this, 280, 510);
 
     this.combatManager.startCombat();
 
@@ -81,5 +87,15 @@ export default class CardCombatScene extends Phaser.Scene {
     this.winPlaceholder.on("pointerdown", () => {
       this.scene.start("combat-reward");
     });
+  }
+
+  private handleDrawEvent(onAnimationComplete) {
+    const drawnCard = this.playerDeck.draw();
+    if (drawnCard) {
+      drawnCard.reveal(() => {
+        this.playerZone.addCard(drawnCard, onAnimationComplete);
+      });
+    };
+
   }
 }
