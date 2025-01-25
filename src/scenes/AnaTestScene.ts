@@ -22,7 +22,7 @@ export default class TestScene extends Phaser.Scene {
 
         let mrbatpat = this.add.sprite(256, 100, "mrbatpat").play("idle_mrbatpat")
 
-        let mrmagoo = this.add.sprite(128*3, 100, "mrmagoo").play("idle_mrmagoo")
+        let mrmagoo = this.add.sprite(128*3, 100, "mrmagoo-animations").play("talk_mrmagoo-animations")
 
         let mrdrop = this.add.sprite(128*4, 100, "mrdrop").play("idle_mrdrop")
 

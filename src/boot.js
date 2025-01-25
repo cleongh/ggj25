@@ -57,6 +57,7 @@ export default class Boot extends Phaser.Scene {
     })
 
     this.load.spritesheet("mrbuble-animations", "mrbuble-animations"+ ".png", { frameWidth: 128, frameHeight: 128 })
+    this.load.spritesheet("mrmagoo-animations", "mrmagoo-animations"+ ".png", { frameWidth: 128, frameHeight: 128 })
 
   }
 
@@ -82,6 +83,13 @@ export default class Boot extends Phaser.Scene {
     this.anims.create({
       key: 'talk_' + "mrbuble-animations",
       frames: this.anims.generateFrameNumbers("mrbuble-animations", { start: 4, end: 7 }),
+      frameRate: 6,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'talk_' + "mrmagoo-animations",
+      frames: this.anims.generateFrameNumbers("mrmagoo-animations", { start: 4, end: 7 }),
       frameRate: 6,
       repeat: -1
     })
