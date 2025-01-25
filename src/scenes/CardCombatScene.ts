@@ -3,8 +3,8 @@ import { CombatManager } from "../core/combat/CombatManager";
 import { enemyDefinitions } from "../data/enemyDefinitions";
 import { playerDefinitions } from "../data/cardDefinitions";
 import Deck from "../gameObjects/Deck";
-import { CombatEvent } from "../core/combat/CombatManager";
 import PlayerZone from "../gameObjects/PlayerZone";
+import { CombatEvent } from "../core/combat/CombatEvents";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
