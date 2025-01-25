@@ -56,24 +56,26 @@ export default class CardCombatScene extends Phaser.Scene {
     this.enemyZone = new EnemyZone(this, 360, 120);
 
     //Eventos de prueba
-    this.combatManager.eventPublisher.subscribe("playerDrawsCard", () => {
+    this.combatManager.eventPublisher.subscribe("playerDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleDrawEvent(onAnimationComplete)
       );
     });
+
     this.combatManager.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
+
     this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
-      this.effectQueue.enqueue((onAnimationComplete) =>
-        this.reloadDeck(evt.payload.card, onAnimationComplete)
-      );
+
     });
 
     this.combatManager.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
-      console.log("View [Enemy Plays Card]");
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.reloadDeck(evt.payload.deck, onAnimationComplete)
+      );
     });
 
     this.combatManager.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
