@@ -1,9 +1,13 @@
+import { CardData } from "../CardData";
 import { EnemyData } from "../EnemyData";
 
 export type GameEvent =
   | { type: "nodeSelected"; payload: { nodeId: string } }
   | { type: "combatEntered"; payload: { enemyData: EnemyData } }
-  | { type: "healingAreaEntered"; payload: { healedAmount: number } };
+  | { type: "healingAreaEntered"; payload: { healedAmount: number } }
+  | { type: "cardRewardEntered"; payload: { cards: CardData[] } }
+  | { type: "gameFinished"; payload: { victory: boolean } }
+  | { type: "mapStageEntered"; payload: {} };
 
 export type TypedEventHandler<T extends GameEvent["type"]> = (
   event: Extract<GameEvent, { type: T }>
