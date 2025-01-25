@@ -31,7 +31,7 @@ export default class PlayerZone extends Phaser.GameObjects.Container {
         0,
         CARD_WIDTH,
         CARD_HEIGHT,
-        0xcacaff
+        0xffcaca
       );
       bg.setStrokeStyle(1, 0xcacaca);
       this.add(bg);

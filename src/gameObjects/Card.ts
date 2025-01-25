@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { CardData, TokenType } from "../core/CardData";
 import Token from "./Token";
+import { cardTextStyle, cardValueStyle } from '../defaultFont.js';
 
 type CardCallback = (card: Card) => void;
 
@@ -64,7 +65,7 @@ export default class Card extends Phaser.GameObjects.Container {
       -CARD_WIDTH / 2 + PADDING,
       -CARD_HEIGHT / 2 + PADDING,
       cardData.text,
-      { fontFamily: "default", fontSize: 12, color: "0xff00ff" }
+      cardTextStyle
     )
       .setAlign("center")
       .setOrigin(0, 0);
@@ -72,10 +73,10 @@ export default class Card extends Phaser.GameObjects.Container {
 
     this.value = new Phaser.GameObjects.Text(
       scene,
-      10,
-      0,
+      -10,
+      6,
       cardData.damage.toString(),
-      { fontFamily: "default", fontSize: 80, color: "0xff0000" }
+      cardValueStyle
     )
       .setAlign("center")
       .setOrigin(0, 0);

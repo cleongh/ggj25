@@ -20,7 +20,7 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
         0,
         CARD_WIDTH,
         CARD_HEIGHT,
-        0xffcaca
+        0xcacaff
       );
       bg.setStrokeStyle(1, 0xcacaca);
       this.add(bg);

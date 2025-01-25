@@ -10,6 +10,7 @@ import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png"
 import playerCard from '../assets/cards/playerCard.png'
 import backCard from '../assets/cards/backCard.png'
+import enemyCard from '../assets/cards/enemyCard.png'
 
 /**
  * List of character names. We are assuming that character spritesheets are:
@@ -56,6 +57,7 @@ export default class Boot extends Phaser.Scene {
 
     this.load.image("playerCard", playerCard)
     this.load.image("backCard", backCard)
+    this.load.image("enemyCard", enemyCard)
 
     this.load.spritesheet("tokens", tokens, { frameWidth: 16, frameHeight: 16 });
 
@@ -94,5 +96,7 @@ export default class Boot extends Phaser.Scene {
 
     // this.scene.start("map", levelDefinitions["level01"]);
     this.scene.start("map");
+    //this.scene.start("intro");
+
   }
 }
