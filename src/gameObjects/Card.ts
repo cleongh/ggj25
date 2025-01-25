@@ -62,7 +62,7 @@ export default class Card extends Phaser.GameObjects.Container {
 
     this.text = new Phaser.GameObjects.Text(
       scene,
-      -CARD_WIDTH / 2 + PADDING,
+      -CARD_WIDTH / 2 + PADDING / 2,
       -CARD_HEIGHT / 2 + PADDING,
       cardData.text,
       cardTextStyle

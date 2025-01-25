@@ -15,7 +15,7 @@ export default class CombatRewardScene extends Phaser.Scene {
     if (!rewardCards) return;
 
     rewardCards.forEach((card, i) => {
-      const c = new Card(this, 200 + 200 * i, 300, "enemyCard", "enemyCard", card);
+      const c = new Card(this, 200 + 200 * i, 300, "playerCard", "backCard", card);
       c.instantShow();
       c.setClickHandler(() => {
         gameManager.selectRewardCard(card);

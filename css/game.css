@@ -12,3 +12,8 @@ body {
   font-family: 'Press Start 2P', cursive;
   /* Use the pixel-art font */
 }
+
+@font-face {
+  font-family: 'minecraftia';
+  src: url('../assets/fonts/Minecraftia.ttf') format('truetype');
+}

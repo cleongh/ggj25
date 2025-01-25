@@ -5,7 +5,7 @@ const defaultTextStyle = {
 };
 
 export const cardTextStyle = {
-    fontFamily: '"Press Start 2P", cursive',
+    fontFamily: 'minecraftia',
     fontSize: '8px',
     color: '#000000'
 }
