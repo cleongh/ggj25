@@ -44,6 +44,11 @@ export class Player extends CombatEntity {
     // Remove the card from the player's hand
     this.hand.splice(cardIndex, 1);
 
+    this.combatManager.eventPublisher.emit({
+      type: "playerPlaysCard",
+      payload: { card: card },
+    });
+
     this.combatManager.enemy.takeDamage(card.damage);
 
     // Add the card to the discard pile

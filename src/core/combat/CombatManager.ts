@@ -34,8 +34,8 @@ export class CombatManager {
 
   public startCombat(): void {
     // draw initial cards
-    const drawnEnemyCards = this.enemy.drawCards(3);
-    const drawnPlayerCards = this.player.drawCards(4);
+    this.enemy.drawCards(3);
+    this.player.drawCards(4);
   }
 
   public isOngoing(): boolean {
