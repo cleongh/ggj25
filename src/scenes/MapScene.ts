@@ -82,10 +82,10 @@ export default class MapScene extends Phaser.Scene {
 
   private drawNode(nodeData: LevelNode) {
     const nodeType = nodeData.interaction.type;
-
+    // 'enemy' 'healing' 'startingNode'
     // const img = 
     this.add.image(nodeData.x,
-      nodeData.y, 'fight_node')
+      nodeData.y, nodeType === 'enemy' ? 'fight_node' : nodeType === 'healing' ? 'health_node' : 'empty_node')
       .setInteractive()
       .on("pointerdown", () => {
         gameManager.selectNextNode(nodeData.id);
