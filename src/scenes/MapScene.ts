@@ -82,15 +82,24 @@ export default class MapScene extends Phaser.Scene {
 
   private drawNode(nodeData: LevelNode) {
     const nodeType = nodeData.interaction.type;
-    this.add
-      .text(
-        nodeData.x,
-        nodeData.y,
-        nodeType === "enemy" ? "E" : nodeType === "healing" ? "H" : "S"
-      )
+
+    // const img = 
+    this.add.image(nodeData.x,
+      nodeData.y, 'fight_node')
       .setInteractive()
       .on("pointerdown", () => {
         gameManager.selectNextNode(nodeData.id);
       });
+
+    // this.add
+    //   .text(
+    //     nodeData.x,
+    //     nodeData.y,
+    //     nodeType === "enemy" ? "E" : nodeType === "healing" ? "H" : "S"
+    //   )
+    //   .setInteractive()
+    //   .on("pointerdown", () => {
+    //     gameManager.selectNextNode(nodeData.id);
+    //   });
   }
 }
