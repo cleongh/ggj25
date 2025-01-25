@@ -25,7 +25,7 @@ export default class CardCombatScene extends Phaser.Scene {
   constructor() {
     super("card-combat");
 
-    this.combatManager = new CombatManager(enemyDefinitions["phdStudent"], {
+    this.combatManager = new CombatManager(enemyDefinitions.guille, {
       deck: playerDefinitions,
       health: 10,
       maxHealth: 10,
