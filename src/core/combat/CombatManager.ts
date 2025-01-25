@@ -24,8 +24,8 @@ export class CombatManager {
     return this.player.getDrawPile();
   }
 
-  public playCard(cardIndex: number): void {
-    this.player.playCard(cardIndex);
+  public playCard(cardData: CardData): void {
+    this.player.playCard(cardData);
 
     if (!this.ongoing) return;
     // play any enemy cards that are ready

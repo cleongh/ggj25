@@ -42,7 +42,10 @@ export default class CardCombatScene extends Phaser.Scene {
     );
 
     // Zona de cartas del jugador
-    this.playerZone = new PlayerZone(this, 280, 510);
+    this.playerZone = new PlayerZone(this, 280, 510, (card) => {
+      console.log(card, "clicked");
+      this.handleCardPlayed(card);
+    });
 
     // Zona de cartas del enemigo
     this.enemyZone = new EnemyZone(this, 360, 120);
@@ -54,9 +57,9 @@ export default class CardCombatScene extends Phaser.Scene {
       );
     });
     this.combatManager.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
-      this.handleEnemyDrawEvent(evt.payload.card, () => {
-        console.log("robo enemigo terminado");
-      });
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
+      );
     });
     this.combatManager.startCombat();
 
@@ -80,6 +83,10 @@ export default class CardCombatScene extends Phaser.Scene {
         this.playerZone.addCard(drawnCard, onAnimationComplete);
       });
     }
+  }
+
+  private handleCardPlayed(card: Card) {
+    this.combatManager.playCard(card.getCardData());
   }
 
   private handleEnemyDrawEvent(

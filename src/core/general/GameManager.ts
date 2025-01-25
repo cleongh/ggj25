@@ -1,3 +1,5 @@
+import { playerDefinitions } from "../../data/cardDefinitions";
+import { levelDefinitions } from "../../data/levelDefinitions";
 import { LevelData } from "../LevelData";
 import { PlayerData } from "../PlayerData";
 import { GameEventPublisher } from "./GameEvents";
@@ -13,7 +15,7 @@ export class GameManager {
   private playerStatus: PlayerStatus;
   private currentNodeId: string | undefined;
   private phase: GamePhase;
-  private levelData: LevelData;
+  public readonly levelData: LevelData;
   private readonly eventPublisher: GameEventPublisher;
 
   constructor(levelData: LevelData, playerData: PlayerData) {
@@ -26,6 +28,10 @@ export class GameManager {
     this.phase = GamePhase.NODE_SELECT;
     this.currentNodeId = undefined;
     this.eventPublisher = new GameEventPublisher();
+  }
+
+  public getCurrentNodeId() {
+    return this.currentNodeId;
   }
 
   public selectNextNode(nodeId: string) {
@@ -65,3 +71,9 @@ export class GameManager {
     }
   }
 }
+
+export const gameManager = new GameManager(levelDefinitions["level01"], {
+  name: "Mr Bubble",
+  maxHealth: 100,
+  deck: playerDefinitions,
+});

@@ -37,9 +37,11 @@ export class Player extends CombatEntity {
     }
   }
 
-  public playCard(cardIndex: number): void {
+  public playCard(cardData: CardData): void {
+    const cardIndex = this.hand.findIndex((c) => c === cardData);
+    if (cardIndex < 0) return;
+
     const card = this.hand[cardIndex];
-    if (!card) return;
 
     // Remove the card from the player's hand
     this.hand.splice(cardIndex, 1);
