@@ -67,6 +67,12 @@ export default class CardCombatScene extends Phaser.Scene {
       );
     });
     this.combatManager.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.reloadDeck(evt.payload.card, onAnimationComplete)
+      );
+    });
+
+    this.combatManager.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
       console.log("View [Enemy Plays Card]");
     });
 
@@ -126,5 +132,10 @@ export default class CardCombatScene extends Phaser.Scene {
     if (card) {
       this.playerDiscard.addToDiscard(card, onAnimationComplete);
     }
+  }
+
+  private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {
+    this.playerDiscard.clearDiscard();
+    this.playerDeck.loadDeck(cardData, onAnimationComplete)
   }
 }

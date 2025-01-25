@@ -61,9 +61,16 @@ export default class PlayerDiscard extends Phaser.GameObjects.Container {
                 y: { value: targetY, duration: duration, delay: 0 },
             },
             onComplete: () => {
+                console.log("termina de descartar", card.parentContainer)
                 onAnimationComplete();
             },
             ease: "Linear",
+        });
+    }
+
+    public clearDiscard() {
+        this.cards.forEach(element => {
+            element.destroy();
         });
     }
 }
