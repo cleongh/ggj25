@@ -53,6 +53,8 @@ export default class Boot extends Phaser.Scene {
       this.load.spritesheet(name, name + ".png", { frameWidth: width, frameHeight: 128 })
     })
 
+    this.load.spritesheet("mrbuble-animations", "mrbuble-animations"+ ".png", { frameWidth: 128, frameHeight: 128 })
+
   }
 
   /**
@@ -68,10 +70,17 @@ export default class Boot extends Phaser.Scene {
       let frames = (name == "mrdrop") ? 5 : 4
       this.anims.create({
         key: 'idle_' + name,
-        frames: this.anims.generateFrameNumbers(name, { start: 0, end: frames - 1 }),
+        frames: this.anims.generateFrameNumbers(name, { start: 0, end: 3 }),
         frameRate: 6,
         repeat: -1
       })
+    })
+
+    this.anims.create({
+      key: 'talk_' + "mrbuble-animations",
+      frames: this.anims.generateFrameNumbers("mrbuble-animations", { start: 4, end: 7 }),
+      frameRate: 6,
+      repeat: -1
     })
 
     this.scene.start('test-scene');
