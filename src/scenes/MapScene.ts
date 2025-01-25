@@ -47,8 +47,8 @@ export default class MapScene extends Phaser.Scene {
     });
 
     this.drawNode({
-      x: 50,
-      y: 250,
+      x: 250,
+      y: 550,
       nextNodes: [gameManager.levelData.rootNodeId],
       id: "startingArea",
       interaction: { type: "startingNode", payload: {} },
