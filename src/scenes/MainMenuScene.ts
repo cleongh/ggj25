@@ -1,27 +1,30 @@
 import Phaser from 'phaser'
+import defaultTextStyle from '../defaultFont';
 
 export default class MainMenuScene extends Phaser.Scene {
-  play: Phaser.GameObjects.Text;
-  credits: Phaser.GameObjects.Text;
+
   constructor() {
     super('main-menu');
-
-   
-    // this.quit = this.add.text(100, 100, "Quit").setInteractive();
-    
   }
 
   create() {
-    this.play = this.add.text(100, 100, "Play").setInteractive();
-    this.play.on('pointerdown', () => {
-      this.scene.start('intro')
-    });
+    const menuFont = { ...defaultTextStyle, fontSize: 53 };
+
+    this.add.image(0, 0, "menuBackground").setOrigin(0, 0).setTint(0xffffff);
+
+    this.add.text(this.cameras.main.width / 2, 100, "Play", menuFont).
+      setInteractive().
+      setOrigin(0.5, 0.5).
+      on('pointerdown', () => {
+        this.scene.start('intro')
+      });
 
 
-    this.credits = this.add.text(100, 150, "Credits").setInteractive();
-
-    this.credits.on('pointerdown', () => {
-      this.scene.start('credits')
-    });
+    this.add.text(this.cameras.main.width / 2, 400, "Credits", menuFont).
+      setInteractive().
+      setOrigin(0.5, 0.5).
+      on('pointerdown', () => {
+        this.scene.start('credits')
+      });
   }
 }

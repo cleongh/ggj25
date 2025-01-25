@@ -3,6 +3,9 @@ import { LevelNode } from "../core/LevelData";
 import { gameManager } from "../core/general/GameManager";
 import { GameEvent } from "../core/general/GameEvents";
 
+import defaultTextStyle from './../defaultFont.js'
+
+
 export default class MapScene extends Phaser.Scene {
   private combatEnteredHandler: (
     event: Extract<GameEvent, { type: "combatEntered" }>
@@ -20,7 +23,7 @@ export default class MapScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(100, 100, "El Mapa");
+    this.add.text(this.cameras.main.width / 2, 550, "Elige tu camino", defaultTextStyle).setOrigin(0.5, 0.5);
 
     gameManager.levelData.nodes.forEach((levelNode) => {
       this.drawNode(levelNode);
