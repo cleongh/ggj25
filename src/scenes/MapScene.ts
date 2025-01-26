@@ -24,17 +24,44 @@ export default class MapScene extends Phaser.Scene {
   create() {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
 
+    // nodo de inicio
     this.add
       .text(
-        this.cameras.main.width / 2,
-        550,
+        (3 * this.cameras.main.width) / 4 + 30,
+        50,
         "Elige tu camino",
         defaultTextStyle
       )
       .setOrigin(0.5, 0.5);
 
+    this.drawNode({
+      x: (3 * this.cameras.main.width) / 4 - 120,
+      y: 50,
+      nextNodes: [gameManager.levelData.rootNodeId],
+      id: "startingArea",
+      interaction: { type: "startingNode", payload: {} },
+    });
+
+    const currentNode = gameManager.levelData.nodes.find(
+      (n) => n.id === gameManager.getCurrentNodeId()
+    );
+
     gameManager.levelData.nodes.forEach((levelNode) => {
-      this.drawNode(levelNode);
+      const node = this.drawNode(levelNode);
+      if (
+        (!currentNode && levelNode.id === gameManager.levelData.rootNodeId) ||
+        (currentNode && currentNode.nextNodes.includes(levelNode.id))
+      ) {
+        node.setInteractive({ useHandCursor: true });
+        this.tweens.add({
+          targets: node,
+          scale: 1.2,
+          duration: 800,
+          yoyo: true,
+          repeat: -1,
+          ease: "Sine.easeInOut",
+        });
+      }
       levelNode.nextNodes.forEach((neighbourId) => {
         const nnode = gameManager.levelData.nodes.find(
           (n) => n.id === neighbourId
@@ -50,32 +77,6 @@ export default class MapScene extends Phaser.Scene {
       });
     });
 
-    this.drawNode({
-      x: 250,
-      y: 550,
-      nextNodes: [gameManager.levelData.rootNodeId],
-      id: "startingArea",
-      interaction: { type: "startingNode", payload: {} },
-    });
-
-    const currentNode = gameManager.levelData.nodes.find(
-      (n) => n.id === gameManager.levelData.rootNodeId
-    );
-    if (!currentNode) return;
-
-    const graphics = this.add.graphics();
-
-    const ellipse = new Phaser.Geom.Ellipse(
-      currentNode.x + 5,
-      currentNode.y + 5,
-      32,
-      32
-    );
-    Phaser.Geom.Ellipse.Circumference(ellipse);
-
-    graphics.lineStyle(3, 0xff0000);
-    graphics.strokeEllipseShape(ellipse);
-
     gameManager.eventPublisher.subscribe(
       "combatEntered",
       this.combatEnteredHandler
@@ -84,9 +85,7 @@ export default class MapScene extends Phaser.Scene {
 
   private drawNode(nodeData: LevelNode) {
     const nodeType = nodeData.interaction.type;
-    // 'enemy' 'healing' 'startingNode'
-    // const img =
-    this.add
+    return this.add
       .image(
         nodeData.x,
         nodeData.y,
@@ -100,16 +99,5 @@ export default class MapScene extends Phaser.Scene {
       .on("pointerdown", () => {
         gameManager.selectNextNode(nodeData.id);
       });
-
-    // this.add
-    //   .text(
-    //     nodeData.x,
-    //     nodeData.y,
-    //     nodeType === "enemy" ? "E" : nodeType === "healing" ? "H" : "S"
-    //   )
-    //   .setInteractive()
-    //   .on("pointerdown", () => {
-    //     gameManager.selectNextNode(nodeData.id);
-    //   });
   }
 }
