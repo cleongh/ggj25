@@ -23,25 +23,18 @@ export default class MapScene extends Phaser.Scene {
 
   create() {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
+    this.paintNodes();
 
-    // nodo de inicio
-    this.add
-      .text(
-        (3 * this.cameras.main.width) / 4 + 30,
-        50,
-        "Elige tu camino",
-        defaultTextStyle
-      )
-      .setOrigin(0.5, 0.5);
-
-    this.drawNode({
-      x: (3 * this.cameras.main.width) / 4 - 120,
-      y: 50,
-      nextNodes: [gameManager.levelData.rootNodeId],
-      id: "startingArea",
-      interaction: { type: "startingNode", payload: {} },
+    gameManager.eventPublisher.subscribe("healingAreaEntered", () => {
+      this.scene.start("map");
     });
+    gameManager.eventPublisher.subscribe(
+      "combatEntered",
+      this.combatEnteredHandler
+    );
+  }
 
+  private paintNodes() {
     const currentNode = gameManager.levelData.nodes.find(
       (n) => n.id === gameManager.getCurrentNodeId()
     );
@@ -76,11 +69,6 @@ export default class MapScene extends Phaser.Scene {
         //this.add.line(0, 0, ax, ay, bx, by, 0xff0000).setOrigin(0);
       });
     });
-
-    gameManager.eventPublisher.subscribe(
-      "combatEntered",
-      this.combatEnteredHandler
-    );
   }
 
   private drawNode(nodeData: LevelNode) {
