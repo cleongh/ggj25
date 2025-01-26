@@ -14,6 +14,7 @@ import creditbg from "../assets/credits.png"
 import playerCard from "../assets/cards/playerCard.png";
 import backCard from "../assets/cards/backCard.png";
 import enemyCard from "../assets/cards/enemyCard.png";
+import damage from "../assets/cards/damage.png";
 
 import checked_node from "../assets/checked_node.png";
 import empty_node from "../assets/empty_node.png";
@@ -94,7 +95,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image("lostBackground", lostMenuBackground);
     this.load.image("emptyBackground", bg);
     this.load.image("creditsBackground", creditbg);
-    
+
     this.load.image("realbuble", buble_real);
 
     this.load.image("playerCard", playerCard);
@@ -105,6 +106,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("empty_node", empty_node);
     this.load.image("fight_node", fight_node);
     this.load.image("health_node", health_node);
+
+    this.load.image("damage", damage);
 
     this.load.audio("sfx_click", sfx_click);
     this.load.audio("sfx_card", sfx_card);

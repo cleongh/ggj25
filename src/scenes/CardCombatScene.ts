@@ -9,6 +9,7 @@ import PlayerDiscard from "../gameObjects/PlayerDiscard";
 import { gameManager } from "../core/general/GameManager";
 import HealthBar from "../gameObjects/HealthBar";
 import BubbleArea from "../gameObjects/BubbleArea";
+import DamageIcon from "../gameObjects/DamageIcon";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -172,6 +173,7 @@ export default class CardCombatScene extends Phaser.Scene {
 
     cm.eventPublisher.subscribe("playerTakesDamage", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
+        new DamageIcon(this, this.playerSprite.x, this.playerSprite.y, evt.payload.damage);
         this.playerHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
@@ -179,6 +181,7 @@ export default class CardCombatScene extends Phaser.Scene {
 
     cm.eventPublisher.subscribe("enemyTakesDamage", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
+        new DamageIcon(this, this.enemySprite.x, this.enemySprite.y, evt.payload.damage);
         this.enemyHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
