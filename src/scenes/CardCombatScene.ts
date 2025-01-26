@@ -68,9 +68,10 @@ export default class CardCombatScene extends Phaser.Scene {
       128,
       16,
       cm.player.getMaxHealth(),
-      cm.player.getCurrentHealth()
+      cm.player.getCurrentHealth(),
+      "Mr. Buble"
     );
-    this.playerSprite = this.add.sprite(100, 305, "mrbuble-animations");
+    this.playerSprite = this.add.sprite(100, 300, "mrbuble-animations");
     this.playerSprite.play("idle_mrbuble-animations");
 
     // Sprite del enemigo y su barra de salud
@@ -81,11 +82,12 @@ export default class CardCombatScene extends Phaser.Scene {
       128,
       16,
       cm.enemy.getMaxHealth(),
-      cm.enemy.getCurrentHealth()
+      cm.enemy.getCurrentHealth(),
+      cm.enemy.getName()
     );
     this.enemySprite = this.add.sprite(
       680,
-      290,
+      285,
       cm.enemy.getTextureName() + "-animations"
     );
     this.enemySprite.play("idle_" + cm.enemy.getTextureName() + "-animations");

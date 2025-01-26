@@ -15,7 +15,8 @@ export default class HealthBar extends Phaser.GameObjects.Container {
     width: number,
     height: number,
     maxHealth: number,
-    currentHealth: number
+    currentHealth: number,
+    characterName: string = ""
   ) {
     super(scene, x, y);
     this.maxHealth = maxHealth;
@@ -25,9 +26,11 @@ export default class HealthBar extends Phaser.GameObjects.Container {
 
     this.bar = new Phaser.GameObjects.Graphics(scene);
     this.healthDisplay = scene.add.text(this.width / 2, height + 8, "", this.fontStyle).setOrigin(0.5, 0.5);
+    let nameText = scene.add.text(this.width / 2, -height/2 , characterName, this.fontStyle).setOrigin(0.5, 0.5);
 
     this.add(this.bar);
     this.add(this.healthDisplay);
+    this.add(nameText)
 
     this.draw();
     scene.add.existing(this);

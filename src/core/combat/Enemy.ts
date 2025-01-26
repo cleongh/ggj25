@@ -29,6 +29,10 @@ export class Enemy extends CombatEntity {
     return this.enemyData.texture;
   }
 
+  public getName(): string {
+    return this.enemyData.name;
+  }
+
   public takeDamage(damage: number): void {
     this.health -= damage;
     this.combatManager.eventPublisher.emit({
