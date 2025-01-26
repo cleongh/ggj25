@@ -132,16 +132,40 @@ export default class CardCombatScene extends Phaser.Scene {
       );
     });
 
-    cm.eventPublisher.subscribe("enemyDefeated", (_) => {
-      // TODO: ¿Animación?
+    // enter card reward phase when defeating an enemy
+    cm.eventPublisher.subscribe("enemyDefeated", () => {
       this.effectQueue.enqueue((onAnimationComplete) => {
-        this.scene.start("combat-reward");
+        const currNodeId = gameManager.getCurrentNodeId();
+        if (!currNodeId) {
+          onAnimationComplete();
+          return;
+        }
+        const currNode = gameManager.levelData.nodes.find(
+          (n) => n.id === currNodeId
+        );
+        if (!currNode) {
+          onAnimationComplete();
+          return;
+        }
+
+        if (currNode.nextNodes.length === 0) {
+          // victory condition
+          this.scene.start("win");
+          gameManager.resetGame();
+        } else {
+          gameManager.enterRewardSelectionStage();
+          this.scene.start("combat-reward");
+        }
+
         onAnimationComplete();
       });
     });
 
+    // end game in failure when being defeated in combat
+
     cm.eventPublisher.subscribe("playerDefeated", (_) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
+        gameManager.handlePlayerDefeated();
         this.scene.start("lose");
         onAnimationComplete();
       });

@@ -22,21 +22,15 @@ export class GameManager {
   private currentNodeId: string | undefined;
   private phase: GamePhase;
   public readonly levelData: LevelData;
-  public readonly eventPublisher: GameEventPublisher;
+  public eventPublisher: GameEventPublisher;
   private combatManager: CombatManager | undefined;
   private rewardCards: CardData[] | undefined;
+  private playerData: PlayerData;
 
   constructor(levelData: LevelData, playerData: PlayerData) {
-    this.playerStatus = {
-      health: playerData.maxHealth,
-      maxHealth: playerData.maxHealth,
-      deck: playerData.deck.slice(),
-    };
     this.levelData = levelData;
-    this.phase = GamePhase.NODE_SELECT;
-    this.currentNodeId = undefined;
-    this.eventPublisher = new GameEventPublisher();
-    this.rewardCards = undefined;
+    this.playerData = playerData;
+    this.resetGame();
   }
 
   public getCurrentNodeId() {
@@ -57,6 +51,39 @@ export class GameManager {
 
   public getPlayerMaxHealth(): number {
     return this.playerStatus.maxHealth;
+  }
+
+  public enterRewardSelectionStage() {
+    this.phase = GamePhase.CHOOSE_NEW_CARD;
+    this.combatManager = undefined;
+    this.rewardCards = getRandomRewardChoice(3);
+    this.eventPublisher.emit({
+      type: "cardRewardEntered",
+      payload: { cards: this.rewardCards },
+    });
+  }
+
+  public handlePlayerDefeated() {
+    this.phase = GamePhase.GAME_OVER;
+    this.combatManager = undefined;
+    this.resetGame();
+    this.eventPublisher.emit({
+      type: "gameFinished",
+      payload: { victory: false },
+    });
+  }
+
+  public resetGame() {
+    this.phase = GamePhase.NODE_SELECT;
+    this.currentNodeId = undefined;
+    this.eventPublisher = new GameEventPublisher();
+    this.rewardCards = undefined;
+
+    this.playerStatus = {
+      health: this.playerData.maxHealth,
+      maxHealth: this.playerData.maxHealth,
+      deck: this.playerData.deck.slice(),
+    };
   }
 
   public selectNextNode(nodeId: string) {
@@ -98,39 +125,6 @@ export class GameManager {
           node.interaction.payload,
           this.playerStatus
         );
-
-        // enter card reward phase when defeating an enemy
-        this.combatManager.eventPublisher.subscribe("enemyDefeated", () => {
-          const nodeId = gameManager.getCurrentNodeId();
-          if (!nodeId) return;
-          const node = gameManager.levelData.nodes.find((n) => n.id === nodeId);
-          if (!node) return;
-          if (node.nextNodes.length === 0) {
-            // victory condition
-            this.eventPublisher.emit({
-              type: "gameFinished",
-              payload: { victory: true },
-            });
-          } else {
-            this.phase = GamePhase.CHOOSE_NEW_CARD;
-            this.combatManager = undefined;
-            this.rewardCards = getRandomRewardChoice(3);
-            this.eventPublisher.emit({
-              type: "cardRewardEntered",
-              payload: { cards: this.rewardCards },
-            });
-          }
-        });
-
-        // end game in failure when being defeated in combat
-        this.combatManager.eventPublisher.subscribe("playerDefeated", () => {
-          this.phase = GamePhase.GAME_OVER;
-          this.combatManager = undefined;
-          this.eventPublisher.emit({
-            type: "gameFinished",
-            payload: { victory: false },
-          });
-        });
 
         // enter combat stage
         this.phase = GamePhase.BATTLE_STAGE;
