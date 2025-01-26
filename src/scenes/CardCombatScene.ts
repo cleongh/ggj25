@@ -203,7 +203,10 @@ export default class CardCombatScene extends Phaser.Scene {
 
     if (card) {
       this.playerDiscard.addToDiscard(card, onAnimationComplete);
+    } else {
+      onAnimationComplete();
     }
+
   }
 
   private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {
