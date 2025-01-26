@@ -1,9 +1,11 @@
 {
     "name": "plantillaphaser",
     "version": "1.0.0",
+    "main": "./main.js",
     "description": "Plantilla para juegos con Phaser",
     "scripts": {
         "start": "npx vite",
+        "electron-dev": "npx vite -c vite.config.electron.js",
         "build": "npx vite build --outDir docs/"
     },
     "repository": {
@@ -19,7 +21,9 @@
     "homepage": "https://github.com/cleongh/plantillaphaser#readme",
     "type": "module",
     "devDependencies": {
-        "vite": "5.4.6"
+        "electron": "33.3.2",
+        "vite": "5.4.6",
+        "vite-plugin-electron": "^0.29.0"
     },
     "dependencies": {
         "phaser": "3.85.2"
