@@ -8,6 +8,7 @@ import mainMenuBackground from "../assets/menu.png";
 import tokens from "../assets/tokens/tokens.png";
 import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png";
+import creditbg from "../assets/credits.png"
 import playerCard from "../assets/cards/playerCard.png";
 import backCard from "../assets/cards/backCard.png";
 import enemyCard from "../assets/cards/enemyCard.png";
@@ -76,6 +77,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
     this.load.image("emptyBackground", bg);
+    this.load.image("creditsBackground", creditbg);
+    
     this.load.image("realbuble", buble_real);
 
     this.load.image("playerCard", playerCard);
