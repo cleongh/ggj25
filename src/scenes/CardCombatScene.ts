@@ -213,17 +213,20 @@ export default class CardCombatScene extends Phaser.Scene {
 
     cm.startCombat();
 
+    /*
     this.quit = this.add.text(300, 100, "X").setInteractive();
-
     this.quit.on("pointerdown", () => {
       this.scene.start("main-menu");
     });
+    */
 
+    /*
     this.winPlaceholder = this.add.text(300, 300, "win").setInteractive();
 
     this.winPlaceholder.on("pointerdown", () => {
       cm.enemy.takeDamage(5000);
     });
+    */
   }
 
   private handleDrawEvent(onAnimationComplete: () => void) {
