@@ -20,6 +20,7 @@ import health_node from "../assets/health_node.png";
 import bubble_text_right from "../assets/bubble_text_right.png";
 import bubble_text_left from "../assets/bubble_text_left.png";
 import buble_real from "../assets/buble-real.png";
+import smoke from "../assets/smoke.png";
 
 import buble_audio from "../assets/buble.ogg";
 /**
@@ -94,6 +95,11 @@ export default class Boot extends Phaser.Scene {
       frameHeight: 16,
     });
 
+    this.load.spritesheet("smoke", smoke, {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
     // Load character spritesheets
     this.load.path = "ggj25/assets/characters/";
     characterNames.forEach((characterName) => {
@@ -137,6 +143,16 @@ export default class Boot extends Phaser.Scene {
         frameRate: 6,
         repeat: -1,
       });
+    });
+
+    this.anims.create({
+      key: "idle_smoke",
+      frames: this.anims.generateFrameNumbers("smoke", {
+        start: 0,
+        end: 3,
+      }),
+      frameRate: 4,
+      repeat: -1,
     });
 
     // this.scene.start("map", levelDefinitions["level01"]);
