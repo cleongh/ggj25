@@ -118,7 +118,6 @@ export default class MapScene extends Phaser.Scene {
   }
 
   private paintPlayer(playerHealth: number, playerMaxHealth: number) {
-    console.log("painting player and its health");
     this.playerHealthBar = new HealthBar(
       this,
       20,
