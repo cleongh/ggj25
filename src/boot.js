@@ -23,6 +23,7 @@ import buble_real from "../assets/buble-real.png";
 import smoke from "../assets/smoke.png";
 
 import buble_audio from "../assets/buble.ogg";
+import music_mainmenu from "../assets/music/MUSIC_MainMenuLoop.ogg";
 
 import sfx_click from '../assets/sfx/SFX_click.wav'
 import sfx_card from '../assets/sfx/SFX_card.wav'
@@ -67,6 +68,7 @@ export default class Boot extends Phaser.Scene {
 
     // Audio ¿por qué no funcionas?
     this.load.audio("buble", buble_audio);
+    this.load.audio("music_mainmenu", music_mainmenu);
 
     this.load.image("physical", physical);
     this.load.image("relationships", relationships);
