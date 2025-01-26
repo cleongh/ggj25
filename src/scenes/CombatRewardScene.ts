@@ -9,6 +9,7 @@ export default class CombatRewardScene extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.add.text(100, 100, "choose a card");
 
     const rewardCards = gameManager.getCurrentRewardCards();

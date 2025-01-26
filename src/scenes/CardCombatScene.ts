@@ -36,6 +36,7 @@ export default class CardCombatScene extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.add.text(100, 100, "card combat babe!");
 
     const cm = gameManager.getCombatManager();
@@ -225,12 +226,29 @@ export default class CardCombatScene extends Phaser.Scene {
     dialogueSource: "player" | "enemy",
     onAnimationComplete: () => void
   ) {
-    if (dialogueSource === "player") this.playerBubble.setText(dialogueText);
-    else this.enemyBubble.setText(dialogueText);
+    const cm = gameManager.getCombatManager();
+    if (!cm) return;
+
+    if (dialogueSource === "player") {
+      this.playerSprite.play("talk_mrbuble-animations");
+      this.playerBubble.setText(dialogueText);
+    } else {
+      this.enemySprite.play(
+        "talk_" + cm.enemy.getTextureName() + "-animations"
+      );
+      this.enemyBubble.setText(dialogueText);
+    }
 
     this.time.delayedCall(1500, () => {
-      if (dialogueSource === "player") this.playerBubble.setText("");
-      else this.enemyBubble.setText("");
+      if (dialogueSource === "player") {
+        this.playerSprite.play("idle_mrbuble-animations");
+        this.playerBubble.setText("");
+      } else {
+        this.enemySprite.play(
+          "idle_" + cm.enemy.getTextureName() + "-animations"
+        );
+        this.enemyBubble.setText("");
+      }
       onAnimationComplete();
     });
   }
