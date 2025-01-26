@@ -63,6 +63,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image("bg", bg);
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
+    this.load.image("emptyBackground", bg);
 
     this.load.image("playerCard", playerCard);
     this.load.image("backCard", backCard);
