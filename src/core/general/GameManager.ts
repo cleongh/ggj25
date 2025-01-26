@@ -25,14 +25,11 @@ export class GameManager {
   public eventPublisher: GameEventPublisher;
   private combatManager: CombatManager | undefined;
   private rewardCards: CardData[] | undefined;
+  private playerData: PlayerData;
 
   constructor(levelData: LevelData, playerData: PlayerData) {
-    this.playerStatus = {
-      health: playerData.maxHealth,
-      maxHealth: playerData.maxHealth,
-      deck: playerData.deck.slice(),
-    };
     this.levelData = levelData;
+    this.playerData = playerData;
     this.resetGame();
   }
 
@@ -81,6 +78,12 @@ export class GameManager {
     this.currentNodeId = undefined;
     this.eventPublisher = new GameEventPublisher();
     this.rewardCards = undefined;
+
+    this.playerStatus = {
+      health: this.playerData.maxHealth,
+      maxHealth: this.playerData.maxHealth,
+      deck: this.playerData.deck.slice(),
+    };
   }
 
   public selectNextNode(nodeId: string) {
