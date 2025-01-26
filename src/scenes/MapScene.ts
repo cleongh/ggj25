@@ -3,8 +3,7 @@ import { LevelNode } from "../core/LevelData";
 import { gameManager } from "../core/general/GameManager";
 import { GameEvent } from "../core/general/GameEvents";
 
-import defaultTextStyle from './../defaultFont.js'
-
+import defaultTextStyle from "./../defaultFont.js";
 
 export default class MapScene extends Phaser.Scene {
   private combatEnteredHandler: (
@@ -25,7 +24,14 @@ export default class MapScene extends Phaser.Scene {
   create() {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
 
-    this.add.text(this.cameras.main.width / 2, 550, "Elige tu camino", defaultTextStyle).setOrigin(0.5, 0.5);
+    this.add
+      .text(
+        this.cameras.main.width / 2,
+        550,
+        "Elige tu camino",
+        defaultTextStyle
+      )
+      .setOrigin(0.5, 0.5);
 
     gameManager.levelData.nodes.forEach((levelNode) => {
       this.drawNode(levelNode);
@@ -34,17 +40,13 @@ export default class MapScene extends Phaser.Scene {
           (n) => n.id === neighbourId
         );
         if (!nnode) return;
-        this.add
-          .line(
-            0,
-            0,
-            levelNode.x + 20,
-            levelNode.y + 5,
-            nnode.x - 5,
-            nnode.y + 5,
-            0xff0000
-          )
-          .setOrigin(0);
+
+        const ax = levelNode.x + 0.15 * (nnode.x - levelNode.x);
+        const ay = levelNode.y + 0.15 * (nnode.y - levelNode.y);
+        const bx = levelNode.x + 0.85 * (nnode.x - levelNode.x);
+        const by = levelNode.y + 0.85 * (nnode.y - levelNode.y);
+        this.add.graphics().lineStyle(5, 0x8f563b).lineBetween(ax, ay, bx, by);
+        //this.add.line(0, 0, ax, ay, bx, by, 0xff0000).setOrigin(0);
       });
     });
 
@@ -83,9 +85,17 @@ export default class MapScene extends Phaser.Scene {
   private drawNode(nodeData: LevelNode) {
     const nodeType = nodeData.interaction.type;
     // 'enemy' 'healing' 'startingNode'
-    // const img = 
-    this.add.image(nodeData.x,
-      nodeData.y, nodeType === 'enemy' ? 'fight_node' : nodeType === 'healing' ? 'health_node' : 'empty_node')
+    // const img =
+    this.add
+      .image(
+        nodeData.x,
+        nodeData.y,
+        nodeType === "enemy"
+          ? "fight_node"
+          : nodeType === "healing"
+          ? "health_node"
+          : "empty_node"
+      )
       .setInteractive()
       .on("pointerdown", () => {
         gameManager.selectNextNode(nodeData.id);
