@@ -36,7 +36,7 @@ export default class MapScene extends Phaser.Scene {
     
     this.sfx_click = this.sound.add("sfx_click", {volume: 2.0});
 
-    gameManager.eventPublisher.subscribe("healingAreaEntered", () => {
+    gameManager.eventPublisher.subscribe("healingAreaEntered", (evt) => {
       const currentNodeId = gameManager.getCurrentNodeId();
       if (!currentNodeId) return;
       const currentNode = gameManager.levelData.nodes.find(
@@ -52,6 +52,8 @@ export default class MapScene extends Phaser.Scene {
         if (!nnMapNode) return;
         this.toggleNodeAnimation(nnMapNode, true);
       });
+
+      this.playerHealthBar.dealDamage(-evt.payload.healedAmount)
     });
     gameManager.eventPublisher.subscribe(
       "combatEntered",
@@ -120,14 +122,14 @@ export default class MapScene extends Phaser.Scene {
     this.playerHealthBar = new HealthBar(
       this,
       20,
-      500,
+      560,
       128,
       16,
       playerMaxHealth,
       playerHealth
     );
     this.add
-      .sprite(20 + 128 / 2, 500 - 128 / 2, "mrbuble-animations")
+      .sprite(20 + 128 / 2, 560 - 128 / 2, "mrbuble-animations")
       .play("idle_mrbuble-animations");
   }
 

@@ -169,7 +169,7 @@ export const enemyDefinitions: { [key: string]: EnemyData } = {
     deck: allEnemyCards.slice(0, 12)
   },
   ana: {
-    name: "cleon",
+    name: "Rebase princess",
     health: 7,
     texture: "mrbatpat",
     deck: allEnemyCards.slice(0, 12)
