@@ -21,7 +21,7 @@ import bubble_text_right from "../assets/bubble_text_right.png";
 import bubble_text_left from "../assets/bubble_text_left.png";
 import buble_real from "../assets/buble-real.png";
 
-import buble_audio from "../assets/buble.mp3";
+import buble_audio from "../assets/buble.ogg";
 /**
  * List of character names. We are assuming that character spritesheets are:
  * - 4 128x128 frames per row

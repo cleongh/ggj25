@@ -8,13 +8,15 @@ export default class MainMenuScene extends Phaser.Scene {
   }
 
   create() {
+
+
     const menuFont = { ...defaultTextStyle, fontSize: 53 };
     const buttonFont = { ...defaultTextStyle, fontSize: 28 };
 
     this.add.image(0, 0, "menuBackground").setOrigin(0, 0).setTint(0xffffff);
 
     this.add.text(this.cameras.main.width / 2, 120, "Mr. Buble", menuFont).
-    setOrigin(0.5, 0.5);
+      setOrigin(0.5, 0.5);
 
     this.add.image(605, 65, "fake")
       .setOrigin(0, 0)
