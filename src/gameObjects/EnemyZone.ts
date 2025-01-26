@@ -36,6 +36,7 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
    * @returns
    */
   public addCard(card: Card, onAnimationComplete, duration = 500) {
+    console.log("ADD CARRRD");
     card.instantClearToken();
     card.instantShow();
     for (let i = 0; i < this.cards.length; i++) {
@@ -108,10 +109,9 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
       },
       ease: "Linear",
     });
-
   }
 
   public getCardByData(data: CardData): Card | undefined {
-    return this.cards.find(c => !!c && c.getCardData() === data);
+    return this.cards.find((c) => !!c && c.getCardData() === data);
   }
 }

@@ -26,4 +26,9 @@ export class EffectQueue {
       this.processNext();
     }
   }
+
+  public clearQueue() {
+    this.isProcessing = false;
+    this.queue = [];
+  }
 }

@@ -1,7 +1,4 @@
 import Phaser from "phaser";
-import { CombatManager } from "../core/combat/CombatManager";
-import { enemyDefinitions } from "../data/enemyDefinitions";
-import { playerDefinitions } from "../data/cardDefinitions";
 import Deck from "../gameObjects/Deck";
 import PlayerZone from "../gameObjects/PlayerZone";
 import { EffectQueue } from "./EffectQueue";
@@ -36,8 +33,8 @@ export default class CardCombatScene extends Phaser.Scene {
   }
 
   create() {
+    this.effectQueue.clearQueue();
     this.add.image(0, 0, "bg").setOrigin(0, 0);
-    this.add.text(100, 100, "card combat babe!");
 
     const cm = gameManager.getCombatManager();
     if (!cm) return;
@@ -170,18 +167,6 @@ export default class CardCombatScene extends Phaser.Scene {
     });
 
     cm.startCombat();
-
-    this.quit = this.add.text(300, 100, "X").setInteractive();
-
-    this.quit.on("pointerdown", () => {
-      this.scene.start("main-menu");
-    });
-
-    this.winPlaceholder = this.add.text(300, 300, "win").setInteractive();
-
-    this.winPlaceholder.on("pointerdown", () => {
-      cm.enemy.takeDamage(5000);
-    });
   }
 
   private handleDrawEvent(onAnimationComplete: () => void) {

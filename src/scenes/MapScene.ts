@@ -97,6 +97,7 @@ export default class MapScene extends Phaser.Scene {
       )
       .setInteractive()
       .on("pointerdown", () => {
+        console.log("CLICK NODO", nodeData.id);
         gameManager.selectNextNode(nodeData.id);
       });
   }

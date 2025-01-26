@@ -18,8 +18,9 @@ export default class MainMenuScene extends Phaser.Scene {
     this.add.text(this.cameras.main.width / 2, 120, "Mr. Buble", menuFont).
       setOrigin(0.5, 0.5);
 
-    this.add.image(605, 65, "fake")
-      .setOrigin(0, 0)
+    this.add.sprite(610, 100, "smoke")
+      .setOrigin(0.5, 1)
+      .play("idle_smoke")
       .setInteractive()
       .on('pointerdown', () => {
         this.scene.start('buble-easter')

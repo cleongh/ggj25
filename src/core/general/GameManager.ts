@@ -57,7 +57,9 @@ export class GameManager {
       // root node is the only choice
       if (nodeId !== this.levelData.rootNodeId) return;
     } else {
-      const currentNode = this.levelData.nodes.find((n) => n.id === nodeId);
+      const currentNode = this.levelData.nodes.find(
+        (n) => n.id === this.currentNodeId
+      );
       if (!currentNode || !currentNode.nextNodes.includes(nodeId)) return;
     }
     this.currentNodeId = nodeId;
@@ -92,6 +94,7 @@ export class GameManager {
         // enter card reward phase when defeating an enemy
         this.combatManager.eventPublisher.subscribe("enemyDefeated", () => {
           this.phase = GamePhase.CHOOSE_NEW_CARD;
+          this.combatManager = undefined;
           this.rewardCards = getRandomRewardChoice(3);
           this.eventPublisher.emit({
             type: "cardRewardEntered",
@@ -102,6 +105,7 @@ export class GameManager {
         // end game in failure when being defeated in combat
         this.combatManager.eventPublisher.subscribe("playerDefeated", () => {
           this.phase = GamePhase.GAME_OVER;
+          this.combatManager = undefined;
           this.eventPublisher.emit({
             type: "gameFinished",
             payload: { victory: false },
