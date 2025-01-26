@@ -147,6 +147,7 @@ export default class Card extends Phaser.GameObjects.Container {
   }
 
   public instantShow() {
+    this.setInteractive();
     this.bg.setVisible(true);
     this.back.setVisible(false);
     this.text.setVisible(true);
@@ -157,6 +158,7 @@ export default class Card extends Phaser.GameObjects.Container {
   }
 
   public instantHide() {
+    this.disableInteractive();
     this.bg.setVisible(false);
     this.back.setVisible(true);
     this.text.setVisible(false);
@@ -193,11 +195,12 @@ export default class Card extends Phaser.GameObjects.Container {
 
   private handleClick(): void {
     if (this.onClickCallback) this.onClickCallback(this);
+    this.onClickCallback = undefined;
   }
 
   public getCardData(): CardData {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) {}
+  public setTokenStatus(tokenStates: TokenType[]) { }
 }
