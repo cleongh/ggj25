@@ -19,7 +19,9 @@ import health_node from "../assets/health_node.png";
 
 import bubble_text_right from "../assets/bubble_text_right.png";
 import bubble_text_left from "../assets/bubble_text_left.png";
+import buble_real from "../assets/buble-real.png";
 
+import buble_audio from "../assets/buble.mp3";
 /**
  * List of character names. We are assuming that character spritesheets are:
  * - 4 128x128 frames per row
@@ -58,12 +60,16 @@ export default class Boot extends Phaser.Scene {
     //this.load.setPath('assets/sprites/');
     // this.load.image('platform', platform);
 
+    // Audio ¿por qué no funcionas?
+    this.load.audio("buble", buble_audio);
+
     this.load.image("physical", physical);
     this.load.image("relationships", relationships);
     this.load.image("bg", bg);
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
     this.load.image("emptyBackground", bg);
+    this.load.image("realbuble", buble_real);
 
     this.load.image("playerCard", playerCard);
     this.load.image("backCard", backCard);
