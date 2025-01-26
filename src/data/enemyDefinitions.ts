@@ -134,7 +134,7 @@ const allEnemyCards = [shower, surgery, noOneLoves, mop, contest, noOne, noBar, 
 export const enemyDefinitions: { [key: string]: EnemyData } = {
   guille: {
     name: "Will Magoo",
-    health: 50,
+    health: 5,
     texture: "mrmagoo",
     deck: allEnemyCards.slice(0, 5)
   },

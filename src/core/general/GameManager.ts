@@ -138,6 +138,6 @@ export class GameManager {
 
 export const gameManager = new GameManager(levelDefinitions["level01"], {
   name: "Mr Bubble",
-  maxHealth: 100,
+  maxHealth: 10,
   deck: playerDefinitions,
 });

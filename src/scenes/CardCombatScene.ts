@@ -119,7 +119,18 @@ export default class CardCombatScene extends Phaser.Scene {
     });
 
     cm.eventPublisher.subscribe("enemyDefeated", (_) => {
-      this.scene.start("combat-reward");
+      // TODO: ¿Animación?
+      this.effectQueue.enqueue((onAnimationComplete) => {
+        this.scene.start("combat-reward");
+        onAnimationComplete();
+      });
+    });
+
+    cm.eventPublisher.subscribe("playerDefeated", (_) => {
+      this.effectQueue.enqueue((onAnimationComplete) => {
+        this.scene.start("lose");
+        onAnimationComplete();
+      });
     });
 
     cm.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
