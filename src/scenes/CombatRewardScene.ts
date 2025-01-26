@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { gameManager } from "../core/general/GameManager";
 import Card from "../gameObjects/Card";
-import defaultTextStyle from "../defaultFont";
+import defaultTextStyle, { cardTextStyle, cardValueStyle } from "../defaultFont.js";
 
 export default class CombatRewardScene extends Phaser.Scene {
   next: Phaser.GameObjects.Text;
@@ -11,7 +11,7 @@ export default class CombatRewardScene extends Phaser.Scene {
 
   create() {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
-    this.add.text(this.cameras.main.width / 2, 100, "¡Buen trabajo!\n\nElige una nueva carta para seguir tu camino.",
+    this.add.text(this.cameras.main.width / 2, 100, "Elige una carta\n\nAñade un nuevo insulto a tu repositorio",
       { ...defaultTextStyle, align: 'center' }
     ).setOrigin(0.5, 0.5);
 
