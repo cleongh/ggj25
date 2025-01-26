@@ -2,7 +2,7 @@ import defaultTextStyle from '../defaultFont.js'
 import Phaser from 'phaser'
 
 export default class BubleScene extends Phaser.Scene {
-    
+
     //theMusic: Phaser.Sound.WebAudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound;
     mrbuble: Phaser.GameObjects.Image;
     constructor() {
@@ -15,16 +15,21 @@ export default class BubleScene extends Phaser.Scene {
     // }
 
     create() {
+
+
+        (this.sound as Phaser.Sound.WebAudioSoundManager).decodeAudio('buble');
+        this.sound.add('buble').play({ loop: true });
+
         //this.theMusic = this.sound.add("buble");
         //this.theMusic.play("buble");
-        this.add.image(0,0, "bg").setOrigin(0, 0)/* .setTint(0xffffff) */;
+        this.add.image(0, 0, "bg").setOrigin(0, 0)/* .setTint(0xffffff) */;
 
         const menuFont = { ...defaultTextStyle, fontSize: 63 };
 
         this.add.text(this.cameras.main.width / 2, 120, "Mr. Bublé", menuFont).
-    setOrigin(0.5, 0.5);
+            setOrigin(0.5, 0.5);
 
-        this.mrbuble = this.add.image(this.cameras.main.width/2, this.cameras.main.height + 450, "realbuble").setOrigin(0, 1);
+        this.mrbuble = this.add.image(this.cameras.main.width / 2, this.cameras.main.height + 450, "realbuble").setOrigin(0, 1);
         this.tweens.add({
             targets: this.mrbuble,
             y: { value: this.cameras.main.height, duration: 2000, delay: 0 },
@@ -39,7 +44,7 @@ export default class BubleScene extends Phaser.Scene {
         //     align: 'center'
         // }).setInteractive();
 
-        this.add.text(10, this.cameras.main.height-20, "Volver al menú", defaultTextStyle).setInteractive().on('pointerdown', () => {
+        this.add.text(10, this.cameras.main.height - 20, "Volver al menú", defaultTextStyle).setInteractive().on('pointerdown', () => {
             this.scene.start('main-menu');
         }).setOrigin(0, 0.5);
     }
