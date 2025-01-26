@@ -278,7 +278,7 @@ export default class CardCombatScene extends Phaser.Scene {
       this.enemyBubble.setText(dialogueText);
     }
 
-    this.time.delayedCall(1500, () => {
+    this.time.delayedCall(2500, () => {
       if (dialogueSource === "player") {
         this.playerSprite.play("idle_mrbuble-animations");
         this.playerBubble.setText("");
