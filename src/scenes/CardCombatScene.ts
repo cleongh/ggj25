@@ -54,11 +54,13 @@ export default class CardCombatScene extends Phaser.Scene {
 
     // Sprite del jugador y su barra de salud
     this.playerHealthBar = new HealthBar(this, 100 - (128 / 2), 375, 128, 16, cm.player.getMaxHealth(), cm.player.getCurrentHealth())
-    this.playerSprite = this.add.sprite(100, 315, "mrbuble-animations").play("idle_mrbuble-animations")
+    this.playerSprite = this.add.sprite(100, 315, "mrbuble-animations")
+    this.playerSprite.play("idle_mrbuble-animations")
 
     // Sprite del enemigo y su barra de salud
     this.enemyHealthBar = new HealthBar(this, 680 - (128 / 2), 375, 128, 16, cm.enemy.getMaxHealth(), cm.enemy.getCurrentHealth())
-    this.enemySprite = this.add.sprite(680, 300, cm.enemy.getTextureName() + "-animations").play("idle_" + cm.enemy.getTextureName() + "-animations")
+    this.enemySprite = this.add.sprite(680, 300, cm.enemy.getTextureName() + "-animations")
+    this.enemySprite.play("idle_" + cm.enemy.getTextureName() + "-animations")
 
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {
@@ -110,7 +112,6 @@ export default class CardCombatScene extends Phaser.Scene {
         this.playerHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
-      console.log("Player takes damage event received, damage: ", evt.payload.damage)
     })
 
     cm.eventPublisher.subscribe("enemyTakesDamage", (evt) => {
@@ -118,8 +119,6 @@ export default class CardCombatScene extends Phaser.Scene {
         this.enemyHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
-      console.log("Enemy takes damage event received, damage: ", evt.payload.damage)
-
     })
 
     cm.startCombat();
