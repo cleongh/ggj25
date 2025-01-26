@@ -36,28 +36,29 @@ export default class EnemyZone extends Phaser.GameObjects.Container {
    * @returns
    */
   public addCard(card: Card, onAnimationComplete, duration = 500) {
-    console.log("ADD CARRRD");
-    card.instantClearToken();
-    card.instantShow();
-    for (let i = 0; i < this.cards.length; i++) {
-      if (!this.cards[i]) {
-        this.cards[i] = card;
-        this.add(card);
-        card.x = i * (PADDING + CARD_WIDTH);
-        card.y = START_Y;
+    if (card) {
+      card.instantClearToken();
+      card.instantShow();
+      for (let i = 0; i < this.cards.length; i++) {
+        if (!this.cards[i]) {
+          this.cards[i] = card;
+          this.add(card);
+          card.x = i * (PADDING + CARD_WIDTH);
+          card.y = START_Y;
 
-        this.scene.tweens.add({
-          targets: card,
-          props: {
-            y: { value: 0, duration: duration, delay: 0 },
-          },
-          onComplete: () => {
-            onAnimationComplete();
-          },
-          ease: "Linear",
-        });
+          this.scene.tweens.add({
+            targets: card,
+            props: {
+              y: { value: 0, duration: duration, delay: 0 },
+            },
+            onComplete: () => {
+              onAnimationComplete();
+            },
+            ease: "Linear",
+          });
 
-        return;
+          return;
+        }
       }
     }
     onAnimationComplete();
