@@ -1,9 +1,12 @@
 import Phaser from "phaser";
+import defaultTextStyle from '../defaultFont';
 
 export default class HealthBar extends Phaser.GameObjects.Container {
   private bar: Phaser.GameObjects.Graphics;
+  private healthDisplay: Phaser.GameObjects.Text;
   private maxHealth: number;
   private currentHealth: number;
+  private fontStyle = { ...defaultTextStyle, fontSize: 10 };
 
   constructor(
     scene: Phaser.Scene,
@@ -21,7 +24,10 @@ export default class HealthBar extends Phaser.GameObjects.Container {
     this.height = height
 
     this.bar = new Phaser.GameObjects.Graphics(scene);
+    this.healthDisplay = scene.add.text(2, height+2, "", this.fontStyle);
+
     this.add(this.bar);
+    this.add(this.healthDisplay);
 
     this.draw();
     scene.add.existing(this);
@@ -29,10 +35,13 @@ export default class HealthBar extends Phaser.GameObjects.Container {
 
   private draw() {
     this.bar.clear();
-    this.bar.fillStyle(0x999999);
+    this.bar.fillStyle(0x333333);
     this.bar.fillRect(0, 0, this.width, this.height);
+    this.bar.fillStyle(0x888888);
+    this.bar.fillRect(2, 2, this.width-4, this.height-4);
     this.bar.fillStyle(this.colorFromHealth());
     this.bar.fillRect(2, 2, (this.width-4) * (this.currentHealth / this.maxHealth), this.height-4);
+    this.healthDisplay.text =  this.currentHealth + "/" + this.maxHealth
   }
 
   public setHealth(health: number) {
@@ -47,9 +56,9 @@ export default class HealthBar extends Phaser.GameObjects.Container {
 
   colorFromHealth(): number {
     let healthRatio = this.currentHealth / this.maxHealth
-    if (healthRatio < 0.1) {
+    if (healthRatio <= 0.2) {
       return 0xde042c
-    } else if (healthRatio < 0.5) {
+    } else if (healthRatio <= 0.5) {
       return 0xff9900
     } else {
       return 0x00d45f
