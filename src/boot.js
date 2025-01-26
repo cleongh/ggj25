@@ -25,7 +25,7 @@ import smoke from "../assets/smoke.png";
 import buble_audio from "../assets/buble.ogg";
 
 import sfx_click from '../assets/sfx/SFX_click.wav'
-import sfx_card from '../assets/sfx/sfx_card.wav'
+import sfx_card from '../assets/sfx/SFX_card.wav'
 
 /**
  * List of character names. We are assuming that character spritesheets are:
