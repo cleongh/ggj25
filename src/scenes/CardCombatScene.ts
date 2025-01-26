@@ -11,6 +11,7 @@ import { CardData, TokenType } from "../core/CardData";
 import PlayerDiscard from "../gameObjects/PlayerDiscard";
 import { gameManager } from "../core/general/GameManager";
 import HealthBar from "../gameObjects/HealthBar";
+import BubbleArea from "../gameObjects/BubbleArea";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -24,6 +25,8 @@ export default class CardCombatScene extends Phaser.Scene {
   enemyHealthBar: HealthBar;
   playerSprite: Phaser.GameObjects.Sprite;
   enemySprite: Phaser.GameObjects.Sprite;
+  enemyBubble: BubbleArea;
+  playerBubble: BubbleArea;
 
   private effectQueue: EffectQueue;
 
@@ -53,14 +56,37 @@ export default class CardCombatScene extends Phaser.Scene {
     this.enemyZone = new EnemyZone(this, 360, 120);
 
     // Sprite del jugador y su barra de salud
-    this.playerHealthBar = new HealthBar(this, 100 - (128 / 2), 375, 128, 16, cm.player.getMaxHealth(), cm.player.getCurrentHealth())
-    this.playerSprite = this.add.sprite(100, 315, "mrbuble-animations")
-    this.playerSprite.play("idle_mrbuble-animations")
+    this.playerHealthBar = new HealthBar(
+      this,
+      100 - 128 / 2,
+      375,
+      128,
+      16,
+      cm.player.getMaxHealth(),
+      cm.player.getCurrentHealth()
+    );
+    this.playerSprite = this.add.sprite(100, 315, "mrbuble-animations");
+    this.playerSprite.play("idle_mrbuble-animations");
 
     // Sprite del enemigo y su barra de salud
-    this.enemyHealthBar = new HealthBar(this, 680 - (128 / 2), 375, 128, 16, cm.enemy.getMaxHealth(), cm.enemy.getCurrentHealth())
-    this.enemySprite = this.add.sprite(680, 300, cm.enemy.getTextureName() + "-animations")
-    this.enemySprite.play("idle_" + cm.enemy.getTextureName() + "-animations")
+    this.enemyHealthBar = new HealthBar(
+      this,
+      680 - 128 / 2,
+      375,
+      128,
+      16,
+      cm.enemy.getMaxHealth(),
+      cm.enemy.getCurrentHealth()
+    );
+    this.enemySprite = this.add.sprite(
+      680,
+      300,
+      cm.enemy.getTextureName() + "-animations"
+    );
+    this.enemySprite.play("idle_" + cm.enemy.getTextureName() + "-animations");
+
+    this.enemyBubble = new BubbleArea(this, 415, 260, "right");
+    this.playerBubble = new BubbleArea(this, 380, 260, "left");
 
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {
@@ -78,6 +104,16 @@ export default class CardCombatScene extends Phaser.Scene {
     cm.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.enemyPlayCard(evt.payload.card, onAnimationComplete)
+      );
+    });
+
+    cm.eventPublisher.subscribe("playerPlaysCard", (evt) => {
+      this.effectQueue.enqueue((onAnimationComplete) =>
+        this.displayDialogue(
+          evt.payload.card.text,
+          "player",
+          onAnimationComplete
+        )
       );
     });
 
@@ -112,14 +148,14 @@ export default class CardCombatScene extends Phaser.Scene {
         this.playerHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
-    })
+    });
 
     cm.eventPublisher.subscribe("enemyTakesDamage", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
         this.enemyHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
-    })
+    });
 
     cm.startCombat();
 
@@ -179,13 +215,30 @@ export default class CardCombatScene extends Phaser.Scene {
   }
 
   private enemyPlayCard(cardData: CardData, onAnimationComplete: () => void) {
-    this.enemyZone.playCard(cardData, onAnimationComplete);
+    this.enemyZone.playCard(cardData, () => {
+      this.displayDialogue(cardData.text, "enemy", onAnimationComplete);
+    });
+  }
+
+  private displayDialogue(
+    dialogueText: string,
+    dialogueSource: "player" | "enemy",
+    onAnimationComplete: () => void
+  ) {
+    if (dialogueSource === "player") this.playerBubble.setText(dialogueText);
+    else this.enemyBubble.setText(dialogueText);
+
+    this.time.delayedCall(1500, () => {
+      if (dialogueSource === "player") this.playerBubble.setText("");
+      else this.enemyBubble.setText("");
+      onAnimationComplete();
+    });
   }
 
   private addTokenToCard(
     cardData: CardData,
     token: TokenType,
-    onAnimationComplete
+    onAnimationComplete: () => void
   ) {
     this.enemyZone
       .getCardByData(cardData)

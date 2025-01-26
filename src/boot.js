@@ -5,17 +5,20 @@ import physical from "../assets/tokens/physical.png";
 import relationships from "../assets/tokens/relationships.png";
 import work from "../assets/tokens/work.png";
 import mainMenuBackground from "../assets/menu.png";
-import tokens from "../assets/tokens/tokens.png"
+import tokens from "../assets/tokens/tokens.png";
 import { levelDefinitions } from "../src/data/levelDefinitions";
-import bg from "../assets/background.png"
-import playerCard from '../assets/cards/playerCard.png'
-import backCard from '../assets/cards/backCard.png'
-import enemyCard from '../assets/cards/enemyCard.png'
+import bg from "../assets/background.png";
+import playerCard from "../assets/cards/playerCard.png";
+import backCard from "../assets/cards/backCard.png";
+import enemyCard from "../assets/cards/enemyCard.png";
 
-import checked_node from '../assets/checked_node.png'
-import empty_node from '../assets/empty_node.png'
-import fight_node from '../assets/fight_node.png'
-import health_node from '../assets/health_node.png'
+import checked_node from "../assets/checked_node.png";
+import empty_node from "../assets/empty_node.png";
+import fight_node from "../assets/fight_node.png";
+import health_node from "../assets/health_node.png";
+
+import bubble_text_right from "../assets/bubble_text_right.png";
+import bubble_text_left from "../assets/bubble_text_left.png";
 
 /**
  * List of character names. We are assuming that character spritesheets are:
@@ -61,22 +64,34 @@ export default class Boot extends Phaser.Scene {
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
 
-    this.load.image("playerCard", playerCard)
-    this.load.image("backCard", backCard)
-    this.load.image("enemyCard", enemyCard)
+    this.load.image("playerCard", playerCard);
+    this.load.image("backCard", backCard);
+    this.load.image("enemyCard", enemyCard);
 
-    this.load.image('checked_node', checked_node)
-    this.load.image('empty_node', empty_node)
-    this.load.image('fight_node', fight_node)
-    this.load.image('health_node', health_node)
+    this.load.image("checked_node", checked_node);
+    this.load.image("empty_node", empty_node);
+    this.load.image("fight_node", fight_node);
+    this.load.image("health_node", health_node);
 
-    this.load.spritesheet("tokens", tokens, { frameWidth: 16, frameHeight: 16 });
+    this.load.spritesheet("bubble_text_right", bubble_text_right, {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+    this.load.spritesheet("bubble_text_left", bubble_text_left, {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+
+    this.load.spritesheet("tokens", tokens, {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
 
     // Load character spritesheets
     this.load.path = "ggj25/assets/characters/";
     characterNames.forEach((characterName) => {
       let width = characterName == "mrdrop" ? 144 : 128;
-      let spriteName = characterName + "-animations"
+      let spriteName = characterName + "-animations";
       this.load.spritesheet(spriteName, spriteName + ".png", {
         frameWidth: width,
         frameHeight: 128,
@@ -95,31 +110,30 @@ export default class Boot extends Phaser.Scene {
     // Create character idle animations
     characterNames.forEach((characterName) => {
       let frames = characterName == "mrdrop" ? 5 : 4;
-      let spriteName = characterName + "-animations"
+      let spriteName = characterName + "-animations";
 
       this.anims.create({
         key: "idle_" + spriteName,
         frames: this.anims.generateFrameNumbers(spriteName, {
           start: 0,
-          end: frames - 1
+          end: frames - 1,
         }),
         frameRate: 6,
-        repeat: -1
+        repeat: -1,
       });
       this.anims.create({
         key: "talk_" + spriteName,
         frames: this.anims.generateFrameNumbers(spriteName, {
           start: frames,
-          end: 2 * frames - 1
+          end: 2 * frames - 1,
         }),
         frameRate: 6,
-        repeat: -1
-      })
+        repeat: -1,
+      });
     });
 
     // this.scene.start("map", levelDefinitions["level01"]);
     // this.scene.start("map");
     this.scene.start("main-menu");
-
   }
 }
