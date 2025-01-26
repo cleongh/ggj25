@@ -5,6 +5,8 @@ import physical from "../assets/tokens/physical.png";
 import relationships from "../assets/tokens/relationships.png";
 import work from "../assets/tokens/work.png";
 import mainMenuBackground from "../assets/menu.png";
+import winMenuBackground from "../assets/background_win.png";
+import lostMenuBackground from "../assets/background_lost.png";
 import tokens from "../assets/tokens/tokens.png";
 import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png";
@@ -12,6 +14,7 @@ import creditbg from "../assets/credits.png"
 import playerCard from "../assets/cards/playerCard.png";
 import backCard from "../assets/cards/backCard.png";
 import enemyCard from "../assets/cards/enemyCard.png";
+import damage from "../assets/cards/damage.png";
 
 import checked_node from "../assets/checked_node.png";
 import empty_node from "../assets/empty_node.png";
@@ -22,6 +25,11 @@ import bubble_text_right from "../assets/bubble_text_right.png";
 import bubble_text_left from "../assets/bubble_text_left.png";
 import buble_real from "../assets/buble-real.png";
 import smoke from "../assets/smoke.png";
+
+import mrbatpat_animations from "../assets/characters/mrbatpat-animations.png"
+import mrbuble_animations from "../assets/characters/mrbuble-animations.png"
+import mrdrop_animations from "../assets/characters/mrdrop-animations.png"
+import mrmagoo_animations from "../assets/characters/mrmagoo-animations.png"
 
 import buble_audio from "../assets/buble.ogg";
 import music_mainmenu from "../assets/music/MUSIC_MainMenuLoop.ogg";
@@ -43,6 +51,13 @@ import sfx_card from '../assets/sfx/SFX_card.wav'
  * MrDrop is a known exception that has 144x128 dimensions and 5 frames per row.
  */
 let characterNames = ["mrbatpat", "mrbuble", "mrdrop", "mrmagoo"];
+
+let characterAssets = {
+  "mrbatpat": mrbatpat_animations,
+  "mrbuble": mrbuble_animations, 
+  "mrdrop": mrdrop_animations, 
+  "mrmagoo": mrmagoo_animations
+}
 
 /**
  * Escena para la precarga de los assets que se usarán en el juego.
@@ -76,9 +91,11 @@ export default class Boot extends Phaser.Scene {
     this.load.image("bg", bg);
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
+    this.load.image("winBackground", winMenuBackground);
+    this.load.image("lostBackground", lostMenuBackground);
     this.load.image("emptyBackground", bg);
     this.load.image("creditsBackground", creditbg);
-    
+
     this.load.image("realbuble", buble_real);
 
     this.load.image("playerCard", playerCard);
@@ -89,6 +106,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("empty_node", empty_node);
     this.load.image("fight_node", fight_node);
     this.load.image("health_node", health_node);
+
+    this.load.image("damage", damage);
 
     this.load.audio("sfx_click", sfx_click);
     this.load.audio("sfx_card", sfx_card);
@@ -113,11 +132,11 @@ export default class Boot extends Phaser.Scene {
     });
 
     // Load character spritesheets
-    this.load.path = "ggj25/assets/characters/";
+
     characterNames.forEach((characterName) => {
       let width = characterName == "mrdrop" ? 144 : 128;
       let spriteName = characterName + "-animations";
-      this.load.spritesheet(spriteName, spriteName + ".png", {
+      this.load.spritesheet(spriteName, characterAssets[characterName], {
         frameWidth: width,
         frameHeight: 128,
       });

@@ -1,25 +1,29 @@
 {
-    "name": "plantillaphaser",
+    "name": "Mr. Buble",
     "version": "1.0.0",
-    "description": "Plantilla para juegos con Phaser",
+    "main": "./main.js",
+    "description": "Ayuda a Mr. Buble a llevar a cabo su venganzo",
     "scripts": {
         "start": "npx vite",
+        "electron-dev": "npx vite -c vite.config.electron.js",
         "build": "npx vite build --outDir docs/"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/cleongh/plantillaphaser.git"
+        "url": "git+https://github.com/cleongh/ggj25.git"
     },
     "keywords": [],
     "author": "Carlos León <cleon@ucm.es>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/cleongh/plantillaphaser/issues"
+        "url": "https://github.com/cleongh/ggj25/issues"
     },
-    "homepage": "https://github.com/cleongh/plantillaphaser#readme",
+    "homepage": "https://github.com/cleongh/ggj25#readme",
     "type": "module",
     "devDependencies": {
-        "vite": "5.4.6"
+        "electron": "^34.0.1",
+        "vite": "5.4.6",
+        "vite-plugin-electron": "^0.29.0"
     },
     "dependencies": {
         "phaser": "3.85.2"

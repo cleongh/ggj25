@@ -9,6 +9,7 @@ import PlayerDiscard from "../gameObjects/PlayerDiscard";
 import { gameManager } from "../core/general/GameManager";
 import HealthBar from "../gameObjects/HealthBar";
 import BubbleArea from "../gameObjects/BubbleArea";
+import DamageIcon from "../gameObjects/DamageIcon";
 
 export default class CardCombatScene extends Phaser.Scene {
   quit: Phaser.GameObjects.Text;
@@ -44,7 +45,7 @@ export default class CardCombatScene extends Phaser.Scene {
     this.effectQueue.clearQueue();
     this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.sfx_card = this.sound.add("sfx_card", { volume: 2.0 });
-    this.sfx_click = this.sound.add("sfx_click", { volume: 2.0 });
+    this.sfx_click = this.sound.add("sfx_click", { volume: 3.0 });
 
     const cm = gameManager.getCombatManager();
     if (!cm) return;
@@ -68,9 +69,10 @@ export default class CardCombatScene extends Phaser.Scene {
       128,
       16,
       cm.player.getMaxHealth(),
-      cm.player.getCurrentHealth()
+      cm.player.getCurrentHealth(),
+      "Mr. Buble"
     );
-    this.playerSprite = this.add.sprite(100, 305, "mrbuble-animations");
+    this.playerSprite = this.add.sprite(100, 300, "mrbuble-animations");
     this.playerSprite.play("idle_mrbuble-animations");
 
     // Sprite del enemigo y su barra de salud
@@ -81,11 +83,12 @@ export default class CardCombatScene extends Phaser.Scene {
       128,
       16,
       cm.enemy.getMaxHealth(),
-      cm.enemy.getCurrentHealth()
+      cm.enemy.getCurrentHealth(),
+      cm.enemy.getName()
     );
     this.enemySprite = this.add.sprite(
       680,
-      290,
+      285,
       cm.enemy.getTextureName() + "-animations"
     );
     this.enemySprite.play("idle_" + cm.enemy.getTextureName() + "-animations");
@@ -194,6 +197,7 @@ export default class CardCombatScene extends Phaser.Scene {
 
     cm.eventPublisher.subscribe("playerTakesDamage", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
+        new DamageIcon(this, this.playerSprite.x, this.playerSprite.y, evt.payload.damage);
         this.playerHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
@@ -201,6 +205,7 @@ export default class CardCombatScene extends Phaser.Scene {
 
     cm.eventPublisher.subscribe("enemyTakesDamage", (evt) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
+        new DamageIcon(this, this.enemySprite.x, this.enemySprite.y, evt.payload.damage);
         this.enemyHealthBar.dealDamage(evt.payload.damage);
         onAnimationComplete();
       });
