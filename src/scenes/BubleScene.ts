@@ -31,7 +31,7 @@ export default class BubleScene extends Phaser.Scene {
         this.add.text(this.cameras.main.width / 2, 120, "Mr. Bublé", menuFont).
     setOrigin(0.5, 0.5);
     
-        let sfx_click = this.sound.add("sfx_click", {volume: 1.0});
+        let sfx_click = this.sound.add("sfx_click", {volume: 3.0});
 
         this.mrbuble = this.add.image(this.cameras.main.width / 2, this.cameras.main.height + 450, "realbuble").setOrigin(0, 1);
         this.tweens.add({

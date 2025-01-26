@@ -26,8 +26,14 @@ export default class CardCombatScene extends Phaser.Scene {
   playerBubble: BubbleArea;
 
   private effectQueue: EffectQueue;
-  sfx_card: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
-  sfx_click: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+  sfx_card:
+    | Phaser.Sound.NoAudioSound
+    | Phaser.Sound.HTML5AudioSound
+    | Phaser.Sound.WebAudioSound;
+  sfx_click:
+    | Phaser.Sound.NoAudioSound
+    | Phaser.Sound.HTML5AudioSound
+    | Phaser.Sound.WebAudioSound;
 
   constructor() {
     super("card-combat");
@@ -37,12 +43,11 @@ export default class CardCombatScene extends Phaser.Scene {
   create() {
     this.effectQueue.clearQueue();
     this.add.image(0, 0, "bg").setOrigin(0, 0);
-    this.sfx_card = this.sound.add("sfx_card", {volume: 1.0});
-    this.sfx_click = this.sound.add("sfx_click", {volume: 1.0});
+    this.sfx_card = this.sound.add("sfx_card", { volume: 2.0 });
+    this.sfx_click = this.sound.add("sfx_click", { volume: 3.0 });
 
     const cm = gameManager.getCombatManager();
     if (!cm) return;
-
 
     // Zona de cartas del jugador
     this.playerZone = new PlayerZone(this, 280, 510, (card) => {
@@ -63,9 +68,10 @@ export default class CardCombatScene extends Phaser.Scene {
       128,
       16,
       cm.player.getMaxHealth(),
-      cm.player.getCurrentHealth()
+      cm.player.getCurrentHealth(),
+      "Mr. Buble"
     );
-    this.playerSprite = this.add.sprite(100, 305, "mrbuble-animations");
+    this.playerSprite = this.add.sprite(100, 300, "mrbuble-animations");
     this.playerSprite.play("idle_mrbuble-animations");
 
     // Sprite del enemigo y su barra de salud
@@ -76,11 +82,12 @@ export default class CardCombatScene extends Phaser.Scene {
       128,
       16,
       cm.enemy.getMaxHealth(),
-      cm.enemy.getCurrentHealth()
+      cm.enemy.getCurrentHealth(),
+      cm.enemy.getName()
     );
     this.enemySprite = this.add.sprite(
       680,
-      290,
+      285,
       cm.enemy.getTextureName() + "-animations"
     );
     this.enemySprite.play("idle_" + cm.enemy.getTextureName() + "-animations");
@@ -91,31 +98,30 @@ export default class CardCombatScene extends Phaser.Scene {
     // Baraja del jugador en la esquinita izq.
     this.playerDeck = new Deck(this, 80, 520, cm.getPlayerDeck());
 
-
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {
-      this.sfx_card.play()
+      this.sfx_card.play();
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleDrawEvent(onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
-      this.sfx_card.play()
+      this.sfx_card.play();
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
-      this.sfx_card.play()
+      this.sfx_card.play();
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.enemyPlayCard(evt.payload.card, onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("playerPlaysCard", (evt) => {
-      this.sfx_card.play()
+      this.sfx_card.play();
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.displayDialogue(
           evt.payload.card.text,
@@ -141,14 +147,14 @@ export default class CardCombatScene extends Phaser.Scene {
     });
 
     cm.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
-      this.sfx_card.play()
+      this.sfx_card.play();
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.reloadDeck(evt.payload.deck, onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
-      this.sfx_card.play()
+      this.sfx_card.play();
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
       );
@@ -234,7 +240,6 @@ export default class CardCombatScene extends Phaser.Scene {
     } else {
       onAnimationComplete();
     }
-
   }
 
   private reloadDeck(cardData: CardData[], onAnimationComplete: () => void) {

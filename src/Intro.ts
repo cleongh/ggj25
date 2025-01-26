@@ -11,7 +11,7 @@ export default class Intro extends Phaser.Scene {
     create() {
         this.add.image(0, 0, "menuBackground").setOrigin(0, 0)/* .setTint(0xffffff) */;
         
-        let sfx_click = this.sound.add("sfx_click", {volume: 1.0});
+        let sfx_click = this.sound.add("sfx_click", {volume: 2.0});
 
         this.next = this.add.text(100, 100, "¿Por qué está tan enfadado Mr. Buble?\n\n¿Por la burbuja inmobiliaria?\n¿Demasiadas bebidas con burbujas?\n¿O porque hemos escrito mal su nombre?\n\n¡Ve, Mr. Buble, y ajusta cuentas con el mundo!", {
             ...defaultTextStyle, wordWrap: { width: 600 },
