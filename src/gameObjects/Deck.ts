@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { CardData } from "../core/CardData";
 import Card from "./Card";
 
-const OFFSET_CARDS = 4;
+const OFFSET_CARDS = 3;
 
 export default class Deck extends Phaser.GameObjects.Container {
   private cards: Card[] = [];

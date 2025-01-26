@@ -39,8 +39,6 @@ export default class CardCombatScene extends Phaser.Scene {
     const cm = gameManager.getCombatManager();
     if (!cm) return;
 
-    // Baraja del jugador en la esquinita izq.
-    this.playerDeck = new Deck(this, 80, 510, cm.getPlayerDeck());
 
     // Zona de cartas del jugador
     this.playerZone = new PlayerZone(this, 280, 510, (card) => {
@@ -85,6 +83,10 @@ export default class CardCombatScene extends Phaser.Scene {
 
     this.enemyBubble = new BubbleArea(this, 415, 260, "right");
     this.playerBubble = new BubbleArea(this, 380, 260, "left");
+
+    // Baraja del jugador en la esquinita izq.
+    this.playerDeck = new Deck(this, 80, 520, cm.getPlayerDeck());
+
 
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {

@@ -13,7 +13,7 @@ export default class HealthBar extends Phaser.GameObjects.Container {
     x: number,
     y: number,
     width: number,
-    height: number, 
+    height: number,
     maxHealth: number,
     currentHealth: number
   ) {
@@ -24,7 +24,7 @@ export default class HealthBar extends Phaser.GameObjects.Container {
     this.height = height
 
     this.bar = new Phaser.GameObjects.Graphics(scene);
-    this.healthDisplay = scene.add.text(2, height+2, "", this.fontStyle);
+    this.healthDisplay = scene.add.text(this.width / 2, height + 8, "", this.fontStyle).setOrigin(0.5, 0.5);
 
     this.add(this.bar);
     this.add(this.healthDisplay);
@@ -38,17 +38,17 @@ export default class HealthBar extends Phaser.GameObjects.Container {
     this.bar.fillStyle(0x333333);
     this.bar.fillRect(0, 0, this.width, this.height);
     this.bar.fillStyle(0x888888);
-    this.bar.fillRect(2, 2, this.width-4, this.height-4);
+    this.bar.fillRect(2, 2, this.width - 4, this.height - 4);
     this.bar.fillStyle(this.colorFromHealth());
-    this.bar.fillRect(2, 2, (this.width-4) * (this.currentHealth / this.maxHealth), this.height-4);
-    this.healthDisplay.text =  this.currentHealth + "/" + this.maxHealth
+    this.bar.fillRect(2, 2, (this.width - 4) * (this.currentHealth / this.maxHealth), this.height - 4);
+    this.healthDisplay.text = this.currentHealth + "/" + this.maxHealth
   }
 
   public setHealth(health: number) {
     this.currentHealth = Phaser.Math.Clamp(health, 0, this.maxHealth);
     this.draw();
   }
-  
+
   public dealDamage(damage: number) {
     this.currentHealth = Phaser.Math.Clamp(this.currentHealth - damage, 0, this.maxHealth);
     this.draw()
