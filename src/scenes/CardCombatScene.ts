@@ -135,29 +135,7 @@ export default class CardCombatScene extends Phaser.Scene {
     // enter card reward phase when defeating an enemy
     cm.eventPublisher.subscribe("enemyDefeated", () => {
       this.effectQueue.enqueue((onAnimationComplete) => {
-        const currNodeId = gameManager.getCurrentNodeId();
-        if (!currNodeId) {
-          onAnimationComplete();
-          return;
-        }
-        const currNode = gameManager.levelData.nodes.find(
-          (n) => n.id === currNodeId
-        );
-        if (!currNode) {
-          onAnimationComplete();
-          return;
-        }
-
-        if (currNode.nextNodes.length === 0) {
-          // victory condition
-          this.scene.start("win");
-          gameManager.resetGame();
-        } else {
-          gameManager.enterRewardSelectionStage();
-          this.scene.start("combat-reward");
-        }
-
-        onAnimationComplete();
+        this.enemyDefeated(onAnimationComplete);
       });
     });
 
@@ -324,5 +302,45 @@ export default class CardCombatScene extends Phaser.Scene {
     this.enemyZone
       .getCardByData(cardData)
       ?.fillToken(token, onAnimationComplete);
+  }
+
+  private enemyDefeated(onAnimationComplete) {
+    this.tweens.add({
+      targets: this.enemySprite,
+      props: {
+        tint: { value: 0xff0000, duration: 200, delay: 0, yoyo: true },
+        scale: { value: 0.8, duration: 200, delay: 0, yoyo: true }
+      },
+      ease: "Linear",
+      repeat: 5,
+      onComplete: () => {
+        console.log("tweeen")
+        const currNodeId = gameManager.getCurrentNodeId();
+        if (!currNodeId) {
+          onAnimationComplete();
+          return;
+        }
+        const currNode = gameManager.levelData.nodes.find(
+          (n) => n.id === currNodeId
+        );
+        if (!currNode) {
+          onAnimationComplete();
+          return;
+        }
+
+        if (currNode.nextNodes.length === 0) {
+          // victory condition
+          this.scene.start("win");
+          gameManager.resetGame();
+        } else {
+          gameManager.enterRewardSelectionStage();
+          this.scene.start("combat-reward");
+        }
+
+        onAnimationComplete();
+      }
+
+    })
+
   }
 }
