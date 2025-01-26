@@ -10,6 +10,7 @@ import lostMenuBackground from "../assets/background_lost.png";
 import tokens from "../assets/tokens/tokens.png";
 import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png";
+import creditbg from "../assets/credits.png"
 import playerCard from "../assets/cards/playerCard.png";
 import backCard from "../assets/cards/backCard.png";
 import enemyCard from "../assets/cards/enemyCard.png";
@@ -25,6 +26,7 @@ import buble_real from "../assets/buble-real.png";
 import smoke from "../assets/smoke.png";
 
 import buble_audio from "../assets/buble.ogg";
+import music_mainmenu from "../assets/music/MUSIC_MainMenuLoop.ogg";
 
 import sfx_click from '../assets/sfx/SFX_click.wav'
 import sfx_card from '../assets/sfx/SFX_card.wav'
@@ -69,6 +71,7 @@ export default class Boot extends Phaser.Scene {
 
     // Audio ¿por qué no funcionas?
     this.load.audio("buble", buble_audio);
+    this.load.audio("music_mainmenu", music_mainmenu);
 
     this.load.image("physical", physical);
     this.load.image("relationships", relationships);
@@ -78,6 +81,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("winBackground", winMenuBackground);
     this.load.image("lostBackground", lostMenuBackground);
     this.load.image("emptyBackground", bg);
+    this.load.image("creditsBackground", creditbg);
+    
     this.load.image("realbuble", buble_real);
 
     this.load.image("playerCard", playerCard);

@@ -10,7 +10,7 @@ export default class WinScene extends Phaser.Scene {
     }
 
     create() {
-        let sfx_click = this.sound.add("sfx_click", {volume: 1.0});
+        let sfx_click = this.sound.add("sfx_click", {volume: 3.0});
 
         const buttonFont = { ...defaultTextStyle, fontSize: 28 };
 

@@ -13,7 +13,7 @@ export default class Card extends Phaser.GameObjects.Container {
   private cardData: CardData;
   private onClickCallback?: CardCallback;
 
-  private bg: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
+  public bg: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
   private back: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
   private tokens: Token[] = [];
   private text: Phaser.GameObjects.Text;

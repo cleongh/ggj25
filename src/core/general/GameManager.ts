@@ -101,13 +101,25 @@ export class GameManager {
 
         // enter card reward phase when defeating an enemy
         this.combatManager.eventPublisher.subscribe("enemyDefeated", () => {
-          this.phase = GamePhase.CHOOSE_NEW_CARD;
-          this.combatManager = undefined;
-          this.rewardCards = getRandomRewardChoice(3);
-          this.eventPublisher.emit({
-            type: "cardRewardEntered",
-            payload: { cards: this.rewardCards },
-          });
+          const nodeId = gameManager.getCurrentNodeId();
+          if (!nodeId) return;
+          const node = gameManager.levelData.nodes.find((n) => n.id === nodeId);
+          if (!node) return;
+          if (node.nextNodes.length === 0) {
+            // victory condition
+            this.eventPublisher.emit({
+              type: "gameFinished",
+              payload: { victory: true },
+            });
+          } else {
+            this.phase = GamePhase.CHOOSE_NEW_CARD;
+            this.combatManager = undefined;
+            this.rewardCards = getRandomRewardChoice(3);
+            this.eventPublisher.emit({
+              type: "cardRewardEntered",
+              payload: { cards: this.rewardCards },
+            });
+          }
         });
 
         // end game in failure when being defeated in combat
