@@ -81,15 +81,15 @@ export class Enemy extends CombatEntity {
       const randomIndex = Math.floor(
         Math.random() * this.enemyData.deck.length
       );
-      const card = new EnemyCard(
-        this.combatManager,
-        this.enemyData.deck[randomIndex]
+      const cardDataCopy = JSON.parse(
+        JSON.stringify(this.enemyData.deck[randomIndex])
       );
+      const card = new EnemyCard(this.combatManager, cardDataCopy);
       this.visibleCards.push(card);
       drawnCards.push(card);
       this.combatManager.eventPublisher.emit({
         type: "enemyDrawsCard",
-        payload: { card: card.getCardData() },
+        payload: { card: cardDataCopy },
       });
     }
 
