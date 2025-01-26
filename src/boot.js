@@ -23,6 +23,11 @@ import bubble_text_left from "../assets/bubble_text_left.png";
 import buble_real from "../assets/buble-real.png";
 import smoke from "../assets/smoke.png";
 
+import mrbatpat_animations from "../assets/characters/mrbatpat-animations.png"
+import mrbuble_animations from "../assets/characters/mrbuble-animations.png"
+import mrdrop_animations from "../assets/characters/mrdrop-animations.png"
+import mrmagoo_animations from "../assets/characters/mrmagoo-animations.png"
+
 import buble_audio from "../assets/buble.ogg";
 import music_mainmenu from "../assets/music/MUSIC_MainMenuLoop.ogg";
 
@@ -43,6 +48,13 @@ import sfx_card from '../assets/sfx/SFX_card.wav'
  * MrDrop is a known exception that has 144x128 dimensions and 5 frames per row.
  */
 let characterNames = ["mrbatpat", "mrbuble", "mrdrop", "mrmagoo"];
+
+let characterAssets = {
+  "mrbatpat": mrbatpat_animations,
+  "mrbuble": mrbuble_animations, 
+  "mrdrop": mrdrop_animations, 
+  "mrmagoo": mrmagoo_animations
+}
 
 /**
  * Escena para la precarga de los assets que se usarán en el juego.
@@ -113,11 +125,11 @@ export default class Boot extends Phaser.Scene {
     });
 
     // Load character spritesheets
-    this.load.path = "ggj25/assets/characters/";
+
     characterNames.forEach((characterName) => {
       let width = characterName == "mrdrop" ? 144 : 128;
       let spriteName = characterName + "-animations";
-      this.load.spritesheet(spriteName, spriteName + ".png", {
+      this.load.spritesheet(spriteName, characterAssets[characterName], {
         frameWidth: width,
         frameHeight: 128,
       });
