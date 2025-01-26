@@ -26,6 +26,8 @@ export default class CardCombatScene extends Phaser.Scene {
   playerBubble: BubbleArea;
 
   private effectQueue: EffectQueue;
+  sfx_card: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+  sfx_click: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
 
   constructor() {
     super("card-combat");
@@ -35,6 +37,8 @@ export default class CardCombatScene extends Phaser.Scene {
   create() {
     this.effectQueue.clearQueue();
     this.add.image(0, 0, "bg").setOrigin(0, 0);
+    this.sfx_card = this.sound.add("sfx_card", {volume: 1.0});
+    this.sfx_click = this.sound.add("sfx_click", {volume: 1.0});
 
     const cm = gameManager.getCombatManager();
     if (!cm) return;
@@ -90,24 +94,28 @@ export default class CardCombatScene extends Phaser.Scene {
 
     //Eventos de prueba
     cm.eventPublisher.subscribe("playerDrawsCard", (evt) => {
+      this.sfx_card.play()
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleDrawEvent(onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("enemyDrawsCard", (evt) => {
+      this.sfx_card.play()
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handleEnemyDrawEvent(evt.payload.card, onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("enemyPlaysCard", (evt) => {
+      this.sfx_card.play()
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.enemyPlayCard(evt.payload.card, onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("playerPlaysCard", (evt) => {
+      this.sfx_card.play()
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.displayDialogue(
           evt.payload.card.text,
@@ -133,12 +141,14 @@ export default class CardCombatScene extends Phaser.Scene {
     });
 
     cm.eventPublisher.subscribe("playerShuffleDiscardIntoDraw", (evt) => {
+      this.sfx_card.play()
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.reloadDeck(evt.payload.deck, onAnimationComplete)
       );
     });
 
     cm.eventPublisher.subscribe("playerDiscardsCard", (evt) => {
+      this.sfx_card.play()
       this.effectQueue.enqueue((onAnimationComplete) =>
         this.handlePlayerDiscardEvent(evt.payload.card, onAnimationComplete)
       );
@@ -169,9 +179,22 @@ export default class CardCombatScene extends Phaser.Scene {
     });
 
     cm.startCombat();
+
+    this.quit = this.add.text(300, 100, "X").setInteractive();
+
+    this.quit.on("pointerdown", () => {
+      this.scene.start("main-menu");
+    });
+
+    this.winPlaceholder = this.add.text(300, 300, "win").setInteractive();
+
+    this.winPlaceholder.on("pointerdown", () => {
+      cm.enemy.takeDamage(5000);
+    });
   }
 
   private handleDrawEvent(onAnimationComplete: () => void) {
+    this.sfx_card.play();
     const drawnCard = this.playerDeck.draw();
     if (drawnCard) {
       drawnCard.reveal(() => {
@@ -181,6 +204,7 @@ export default class CardCombatScene extends Phaser.Scene {
   }
 
   private handleCardPlayed(card: Card) {
+    this.sfx_card.play();
     gameManager.getCombatManager()?.playCard(card.getCardData());
   }
 
@@ -188,6 +212,7 @@ export default class CardCombatScene extends Phaser.Scene {
     cardData: CardData,
     onAnimationComplete: () => void
   ) {
+    this.sfx_card.play();
     //generar carta
     const card = new Card(this, 0, 0, "enemyCard", null, cardData);
 
@@ -201,6 +226,7 @@ export default class CardCombatScene extends Phaser.Scene {
     cardData: CardData,
     onAnimationComplete: () => void
   ) {
+    this.sfx_card.play();
     let card = this.playerZone.getCardByData(cardData);
 
     if (card) {
@@ -217,6 +243,7 @@ export default class CardCombatScene extends Phaser.Scene {
   }
 
   private enemyPlayCard(cardData: CardData, onAnimationComplete: () => void) {
+    this.sfx_card.play();
     this.enemyZone.playCard(cardData, () => {
       this.displayDialogue(cardData.text, "enemy", onAnimationComplete);
     });

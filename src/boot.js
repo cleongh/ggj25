@@ -23,6 +23,10 @@ import buble_real from "../assets/buble-real.png";
 import smoke from "../assets/smoke.png";
 
 import buble_audio from "../assets/buble.ogg";
+
+import sfx_click from '../assets/sfx/SFX_click.wav'
+import sfx_card from '../assets/sfx/sfx_card.wav'
+
 /**
  * List of character names. We are assuming that character spritesheets are:
  * - 4 128x128 frames per row
@@ -80,6 +84,9 @@ export default class Boot extends Phaser.Scene {
     this.load.image("empty_node", empty_node);
     this.load.image("fight_node", fight_node);
     this.load.image("health_node", health_node);
+
+    this.load.audio("sfx_click", sfx_click);
+    this.load.audio("sfx_card", sfx_card);
 
     this.load.spritesheet("bubble_text_right", bubble_text_right, {
       frameWidth: 128,

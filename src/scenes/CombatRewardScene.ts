@@ -15,6 +15,8 @@ export default class CombatRewardScene extends Phaser.Scene {
       { ...defaultTextStyle, align: 'center' }
     ).setOrigin(0.5, 0.5);
 
+    let sfx_card = this.sound.add("sfx_card", {volume: 1.0});
+
     const rewardCards = gameManager.getCurrentRewardCards();
     if (!rewardCards) return;
 
@@ -22,6 +24,7 @@ export default class CombatRewardScene extends Phaser.Scene {
       const c = new Card(this, 200 + 200 * i, 300, "playerCard", "backCard", card);
       c.instantShow();
       c.setClickHandler(() => {
+        sfx_card.play()
         gameManager.selectRewardCard(card);
       });
     });

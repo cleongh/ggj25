@@ -9,6 +9,7 @@ export default class MapScene extends Phaser.Scene {
   private combatEnteredHandler: (
     event: Extract<GameEvent, { type: "combatEntered" }>
   ) => void;
+  sfx_click: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
 
   constructor() {
     super("map");
@@ -24,6 +25,8 @@ export default class MapScene extends Phaser.Scene {
   create() {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.paintNodes();
+    
+    this.sfx_click = this.sound.add("sfx_click", {volume: 1.0});
 
     gameManager.eventPublisher.subscribe("healingAreaEntered", () => {
       this.scene.start("map");
@@ -86,6 +89,7 @@ export default class MapScene extends Phaser.Scene {
       .setInteractive()
       .on("pointerdown", () => {
         console.log("CLICK NODO", nodeData.id);
+        this.sfx_click.play()
         gameManager.selectNextNode(nodeData.id);
       });
   }
