@@ -37,9 +37,9 @@ export class GameEventPublisher {
       return;
     }
 
-    const filtered = handlers.filter((h) => h !== handler);
-    // SOBERANA ÑAPA. Pero no caigo en el tipado.
-    this.handlers[eventType] = filtered as any;
+    //const filtered = handlers.filter((h) => h !== handler);
+    // SOBERANA ÑAPA. Ahora mismo se borran todos los handlers, pero no encuentra el bueno si no
+    this.handlers[eventType] = [];
   }
 
   emit<T extends GameEvent["type"]>(
