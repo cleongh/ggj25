@@ -4,12 +4,14 @@ import { gameManager } from "../core/general/GameManager";
 import { GameEvent } from "../core/general/GameEvents";
 
 import defaultTextStyle from "./../defaultFont.js";
+import HealthBar from "../gameObjects/HealthBar.js";
 
 export default class MapScene extends Phaser.Scene {
   private combatEnteredHandler: (
     event: Extract<GameEvent, { type: "combatEntered" }>
   ) => void;
   sfx_click: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+  private playerHealthBar: HealthBar
 
   constructor() {
     super("map");
@@ -28,13 +30,30 @@ export default class MapScene extends Phaser.Scene {
     
     this.sfx_click = this.sound.add("sfx_click", {volume: 1.0});
 
-    gameManager.eventPublisher.subscribe("healingAreaEntered", () => {
+    this.paintPlayer(gameManager.getCurrentPlayerHealth(), gameManager.getPlayerMaxHealth())
+
+    gameManager.eventPublisher.subscribe("healingAreaEntered", (event) => {
+      this.playerHealthBar.dealDamage(-event.payload.healedAmount)
       this.scene.start("map");
     });
     gameManager.eventPublisher.subscribe(
       "combatEntered",
       this.combatEnteredHandler
     );
+  }
+
+  private paintPlayer(playerHealth: number, playerMaxHealth: number) {
+    console.log("painting player and its health")
+    this.playerHealthBar = new HealthBar(
+      this,
+      20,
+      500,
+      128,
+      16,
+      playerMaxHealth,
+      playerHealth
+    );
+    this.add.sprite(20+128/2, 500-128/2, "mrbuble-animations").play("idle_mrbuble-animations");
   }
 
   private paintNodes() {
@@ -83,8 +102,8 @@ export default class MapScene extends Phaser.Scene {
         nodeType === "enemy"
           ? "fight_node"
           : nodeType === "healing"
-          ? "health_node"
-          : "empty_node"
+            ? "health_node"
+            : "empty_node"
       )
       .setInteractive()
       .on("pointerdown", () => {

@@ -51,6 +51,14 @@ export class GameManager {
     return this.combatManager;
   }
 
+  public getCurrentPlayerHealth(): number {
+    return this.playerStatus.health;
+  }
+
+  public getPlayerMaxHealth(): number {
+    return this.playerStatus.maxHealth;
+  }
+
   public selectNextNode(nodeId: string) {
     if (this.phase !== GamePhase.NODE_SELECT) return;
     if (!this.currentNodeId) {
