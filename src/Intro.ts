@@ -2,6 +2,7 @@ import defaultTextStyle from './defaultFont.js'
 
 export default class Intro extends Phaser.Scene {
     next: Phaser.GameObjects.Text;
+    play: Phaser.GameObjects.Text;
     constructor() {
         super('intro');
 
@@ -18,10 +19,23 @@ export default class Intro extends Phaser.Scene {
             align: 'center'
         }).setInteractive();
 
-        this.add.text(this.cameras.main.width / 2, 300, "Jugar", defaultTextStyle).setInteractive().on('pointerdown', () => {
+        this.play = this.add.text(this.cameras.main.width / 2, 300, "Jugar", defaultTextStyle).setInteractive().on('pointerdown', () => {
             sfx_click.play()
             this.scene.start('map');
         }).setOrigin(0.5, 0.5);
+
+        this.play.setInteractive().on('pointerover', () => this.enterButtonHoverState() )
+        .on('pointerout', () => this.enterButtonRestState() );
+    }
+
+    enterButtonHoverState()
+    {
+        this.play.setStyle({ fill: '#ff0'});
+    }
+
+    enterButtonRestState()
+    {
+        this.play.setStyle({ fill: '#1e1e1e' });
     }
 }
 
