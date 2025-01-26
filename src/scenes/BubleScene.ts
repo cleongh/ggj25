@@ -5,6 +5,7 @@ export default class BubleScene extends Phaser.Scene {
 
     //theMusic: Phaser.Sound.WebAudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound;
     mrbuble: Phaser.GameObjects.Image;
+    music: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
     constructor() {
         super('buble-easter');
     }
@@ -18,7 +19,8 @@ export default class BubleScene extends Phaser.Scene {
 
 
         (this.sound as Phaser.Sound.WebAudioSoundManager).decodeAudio('buble');
-        this.sound.add('buble').play({ loop: true });
+        this.music = this.sound.add('buble');
+        this.music.play({ loop: false });
 
         //this.theMusic = this.sound.add("buble");
         //this.theMusic.play("buble");
@@ -45,6 +47,7 @@ export default class BubleScene extends Phaser.Scene {
         // }).setInteractive();
 
         this.add.text(10, this.cameras.main.height - 20, "Volver al menú", defaultTextStyle).setInteractive().on('pointerdown', () => {
+            this.music.stop();
             this.scene.start('main-menu');
         }).setOrigin(0, 0.5);
     }
