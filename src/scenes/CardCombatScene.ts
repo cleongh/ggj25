@@ -44,7 +44,7 @@ export default class CardCombatScene extends Phaser.Scene {
     this.effectQueue.clearQueue();
     this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.sfx_card = this.sound.add("sfx_card", { volume: 2.0 });
-    this.sfx_click = this.sound.add("sfx_click", { volume: 2.0 });
+    this.sfx_click = this.sound.add("sfx_click", { volume: 3.0 });
 
     const cm = gameManager.getCombatManager();
     if (!cm) return;
