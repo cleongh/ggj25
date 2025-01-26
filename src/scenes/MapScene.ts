@@ -34,7 +34,7 @@ export default class MapScene extends Phaser.Scene {
     this.add.image(0, 0, "bg").setOrigin(0, 0);
     this.paintNodes();
     
-    this.sfx_click = this.sound.add("sfx_click", {volume: 2.0});
+    this.sfx_click = this.sound.add("sfx_click", {volume: 3.0});
 
     gameManager.eventPublisher.subscribe("healingAreaEntered", (evt) => {
       const currentNodeId = gameManager.getCurrentNodeId();

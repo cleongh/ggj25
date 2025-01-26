@@ -8,7 +8,7 @@ export default class Credits extends Phaser.Scene {
 
 
     create() {        
-        let sfx_click = this.sound.add("sfx_click", {volume: 2.0});
+        let sfx_click = this.sound.add("sfx_click", {volume: 3.0});
 
         this.goback = this.add.text(100, 100, "Menu!").setInteractive();
         this.goback.on('pointerdown', () => {
