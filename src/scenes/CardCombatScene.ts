@@ -143,9 +143,7 @@ export default class CardCombatScene extends Phaser.Scene {
 
     cm.eventPublisher.subscribe("playerDefeated", (_) => {
       this.effectQueue.enqueue((onAnimationComplete) => {
-        gameManager.handlePlayerDefeated();
-        this.scene.start("lose");
-        onAnimationComplete();
+        this.playerDefeated(onAnimationComplete);
       });
     });
 
@@ -343,4 +341,22 @@ export default class CardCombatScene extends Phaser.Scene {
     })
 
   }
+
+  playerDefeated(onAnimationComplete) {
+    this.tweens.add({
+      targets: this.playerSprite,
+      props: {
+        tint: { value: 0xff0000, duration: 200, delay: 0, yoyo: true },
+        scale: { value: 0.8, duration: 200, delay: 0, yoyo: true }
+      },
+      ease: "Linear",
+      repeat: 5,
+      onComplete: () => {
+        gameManager.handlePlayerDefeated();
+        this.scene.start("lose");
+        onAnimationComplete();
+      }
+    });
+  }
+
 }
