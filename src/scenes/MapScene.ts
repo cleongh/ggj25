@@ -4,6 +4,7 @@ import { gameManager } from "../core/general/GameManager";
 import { GameEvent } from "../core/general/GameEvents";
 
 import HealthBar from "../gameObjects/HealthBar.js";
+import HealIcon from "../gameObjects/HealIcon.js";
 
 export default class MapScene extends Phaser.Scene {
   private combatEnteredHandler: (
@@ -53,6 +54,7 @@ export default class MapScene extends Phaser.Scene {
         this.toggleNodeAnimation(nnMapNode, true);
       });
 
+      new HealIcon(this, 20 + 128 / 2, 560 - 128 / 2, evt.payload.healedAmount)
       this.playerHealthBar.dealDamage(-evt.payload.healedAmount)
     });
     gameManager.eventPublisher.subscribe(
