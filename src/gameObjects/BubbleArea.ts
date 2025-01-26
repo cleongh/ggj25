@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { cardTextStyle } from "../defaultFont";
 
 export default class BubbleArea extends Phaser.GameObjects.Container {
   private bubbleSprite: Phaser.GameObjects.NineSlice;
@@ -23,14 +24,18 @@ export default class BubbleArea extends Phaser.GameObjects.Container {
       repeat: -1,
     });
 
+    const BUBBLE_WIDTH = 420;
+    const BUBBLE_HEIGHT = 128;
+    const PADDING = 20;
+
     this.bubbleSprite = new Phaser.GameObjects.NineSlice(
       this.scene,
       0,
       0,
       frameKey,
       0,
-      400,
-      128,
+      BUBBLE_WIDTH,
+      BUBBLE_HEIGHT,
       33,
       33,
       33,
@@ -40,11 +45,20 @@ export default class BubbleArea extends Phaser.GameObjects.Container {
     this.add(this.bubbleSprite);
 
     // Create the text on top of the bubble
+    /*this.bubbleText = this.scene.add.text(0, 0, "", {
+      fontSize: "16px",
+      color: "#000000",
+      align: "center",
+    });*/
+
+    const wrapWidth = BUBBLE_WIDTH - PADDING;
     this.bubbleText = this.scene.add.text(0, 0, "", {
       fontSize: "16px",
       color: "#000000",
       align: "center",
+      wordWrap: { width: wrapWidth, useAdvancedWrap: true },
     });
+
     this.bubbleText.setOrigin(0.5, 0.5);
     this.add(this.bubbleText);
 

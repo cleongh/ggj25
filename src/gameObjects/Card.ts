@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { CardData, TokenType } from "../core/CardData";
 import Token from "./Token";
-import { cardTextStyle, cardValueStyle } from '../defaultFont.js';
+import { cardTextStyle, cardValueStyle } from "../defaultFont.js";
 
 type CardCallback = (card: Card) => void;
 
@@ -55,11 +55,24 @@ export default class Card extends Phaser.GameObjects.Container {
       );
       this.bg.setStrokeStyle(1, 0xcacaca);
     } else {
-      this.bg = new Phaser.GameObjects.Sprite(scene, 0, 0, textureFront)
+      this.bg = new Phaser.GameObjects.Sprite(scene, 0, 0, textureFront);
     }
     this.bg.setVisible(false);
 
-
+    const wrapWidth = CARD_WIDTH - PADDING;
+    const wrappedText = this.scene.add
+      .text(
+        -CARD_WIDTH / 2 + PADDING / 2,
+        -CARD_HEIGHT / 2 + PADDING - 8,
+        cardData.text,
+        {
+          ...cardTextStyle,
+          wordWrap: { width: wrapWidth, useAdvancedWrap: true },
+        }
+      )
+      .setVisible(false);
+    this.text = wrappedText;
+    /*
     this.text = new Phaser.GameObjects.Text(
       scene,
       -CARD_WIDTH / 2 + PADDING / 2,
@@ -70,7 +83,7 @@ export default class Card extends Phaser.GameObjects.Container {
       .setAlign("center")
       .setOrigin(0, 0);
     this.text.setVisible(false);
-
+*/
     this.value = new Phaser.GameObjects.Text(
       scene,
       -10,
@@ -94,8 +107,7 @@ export default class Card extends Phaser.GameObjects.Container {
         PADDING / 2 - CARD_WIDTH / 2 + (i + 1) * PADDING,
         44,
         element
-      )
-        .setOrigin(0, 0);
+      ).setOrigin(0, 0);
       this.tokens.push(token);
       this.add(token);
       token.setVisible(false);
@@ -112,19 +124,21 @@ export default class Card extends Phaser.GameObjects.Container {
   }
 
   public instantFillTokens() {
-    this.tokens.forEach(element => {
+    this.tokens.forEach((element) => {
       element.instantActivate();
     });
   }
 
   public instantClearToken() {
-    this.tokens.forEach(element => {
+    this.tokens.forEach((element) => {
       element.instantDeactivate();
     });
   }
 
   public fillToken(token: TokenType, onAnimationComplete) {
-    const t = this.tokens.find(element => element.getTokenType() === token && !element.isActive)
+    const t = this.tokens.find(
+      (element) => element.getTokenType() === token && !element.isActive
+    );
     if (t) {
       t.activate(onAnimationComplete);
       return;
@@ -185,5 +199,5 @@ export default class Card extends Phaser.GameObjects.Container {
     return this.cardData;
   }
 
-  public setTokenStatus(tokenStates: TokenType[]) { }
+  public setTokenStatus(tokenStates: TokenType[]) {}
 }
