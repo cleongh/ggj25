@@ -5,6 +5,8 @@ import physical from "../assets/tokens/physical.png";
 import relationships from "../assets/tokens/relationships.png";
 import work from "../assets/tokens/work.png";
 import mainMenuBackground from "../assets/menu.png";
+import winMenuBackground from "../assets/background_win.png";
+import lostMenuBackground from "../assets/background_lost.png";
 import tokens from "../assets/tokens/tokens.png";
 import { levelDefinitions } from "../src/data/levelDefinitions";
 import bg from "../assets/background.png";
@@ -73,6 +75,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("bg", bg);
     this.load.image("work", work);
     this.load.image("menuBackground", mainMenuBackground);
+    this.load.image("winBackground", winMenuBackground);
+    this.load.image("lostBackground", lostMenuBackground);
     this.load.image("emptyBackground", bg);
     this.load.image("realbuble", buble_real);
 
