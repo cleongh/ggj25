@@ -15,7 +15,7 @@ export default class CombatRewardScene extends Phaser.Scene {
       { ...defaultTextStyle, align: 'center' }
     ).setOrigin(0.5, 0.5);
 
-    let sfx_card = this.sound.add("sfx_card", {volume: 1.0});
+    let sfx_card = this.sound.add("sfx_card", { volume: 1.0 });
 
     const rewardCards = gameManager.getCurrentRewardCards();
     if (!rewardCards) return;
@@ -27,7 +27,28 @@ export default class CombatRewardScene extends Phaser.Scene {
         sfx_card.play()
         gameManager.selectRewardCard(card);
       });
+
+      c.bg.on('pointerover', () => {
+        this.tweens.add({
+          delay: 0,
+          targets: c,
+          props: {
+            scale: { value: 1.5, duration: 500, delay: 0 }
+          },
+        })
+      });
+
+      c.bg.on('pointerout', () => {
+        this.tweens.add({
+          delay: 0,
+          targets: c,
+          props: {
+            scale: { value: 1, duration: 100, delay: 0 }
+          },
+        })
+      });
     });
+
 
     gameManager.eventPublisher.subscribe(
       "mapStageEntered",
