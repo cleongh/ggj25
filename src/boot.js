@@ -15,6 +15,7 @@ import playerCard from "../assets/cards/playerCard.png";
 import backCard from "../assets/cards/backCard.png";
 import enemyCard from "../assets/cards/enemyCard.png";
 import damage from "../assets/cards/damage.png";
+import heal from "../assets/cards/heal.png"
 
 import checked_node from "../assets/checked_node.png";
 import empty_node from "../assets/empty_node.png";
@@ -108,6 +109,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image("health_node", health_node);
 
     this.load.image("damage", damage);
+    this.load.image("heal", heal);
 
     this.load.audio("sfx_click", sfx_click);
     this.load.audio("sfx_card", sfx_card);
