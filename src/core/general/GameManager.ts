@@ -110,7 +110,8 @@ export class GameManager {
     )
       return;
 
-    this.playerStatus.deck.push(cardData);
+    const cardCopy = JSON.parse(JSON.stringify(cardData));
+    this.playerStatus.deck.push(cardCopy);
     this.phase = GamePhase.NODE_SELECT;
     this.eventPublisher.emit({ type: "mapStageEntered", payload: {} });
   }
