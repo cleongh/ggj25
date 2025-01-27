@@ -1,11 +1,11 @@
 {
     "name": "Mr. Buble",
     "version": "1.0.0",
-    "main": "./main.js",
+    "main": "./out/main/main.js",
     "description": "Ayuda a Mr. Buble a llevar a cabo su venganzo",
     "scripts": {
         "start": "npx vite",
-        "electron-dev": "npx vite -c vite.config.electron.js",
+        "electron": "npx vite build -c vite.config.electron.js",
         "build": "npx vite build --outDir docs/"
     },
     "repository": {
@@ -22,8 +22,8 @@
     "type": "module",
     "devDependencies": {
         "electron": "^34.0.1",
-        "vite": "5.4.6",
-        "vite-plugin-electron": "^0.29.0"
+        "electron-vite": "^2.3.0",
+        "vite": "5.4.6"
     },
     "dependencies": {
         "phaser": "3.85.2"

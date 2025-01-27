@@ -111,3 +111,5 @@ src/star.ts~
 /.parcelrc~
 *~
 .~lock.sistema.ods#
+
+out/
