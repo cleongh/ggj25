@@ -1,7 +1,7 @@
 {
     "name": "mr-buble",
     "version": "1.0.0",
-    "main": "./out/main/main.js",
+    "main": "./main.js",
     "description": "Ayuda a Mr. Buble a llevar a cabo su venganzo",
     "scripts": {
         "build:win": "npm run electron && npx electron-builder --win --config",
