@@ -1,11 +1,14 @@
 {
-    "name": "Mr. Buble",
+    "name": "mr-buble",
     "version": "1.0.0",
     "main": "./out/main/main.js",
     "description": "Ayuda a Mr. Buble a llevar a cabo su venganzo",
     "scripts": {
+        "build:win": "npm run electron && npx electron-builder --win --config",
+        "build:mac": "npm run electron && npx electron-builder --mac --config",
+        "build:linux": "npm run electron && npx electron-builder --linux --config",
         "start": "npx vite",
-        "electron": "npx vite build -c vite.config.electron.js",
+        "electron": "npx electron-vite build",
         "build": "npx vite build --outDir docs/"
     },
     "repository": {
@@ -22,6 +25,7 @@
     "type": "module",
     "devDependencies": {
         "electron": "^34.0.1",
+        "electron-builder": "^25.1.8",
         "electron-vite": "^2.3.0",
         "vite": "5.4.6"
     },
